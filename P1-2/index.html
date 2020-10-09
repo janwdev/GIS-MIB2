@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+</head>
+
+<body>
+    <header>
+        <h1>P1-2</h1>
+        <nav>
+            <ul>
+                <li><a href="ueber.html">Über mich</a></li>
+                <li><a href="kontakt.html">Kontakt</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Portfolio</h1>
+        <div id="CarlValentin">
+            <h2><a href="https://www.carl-valentin.de/">Carl Valentin GmbH</a></h2>
+            <img src="https://www.carl-valentin.de/fileadmin/user_upload/logo_sonstiges/cvlogo_example.png" width="200"
+                alt="Carl Valentin Logo">
+            <p><a href="https://www.carl-valentin.de/unternehmen/ueber-uns/">Über</a></p>
+            <p>Für Carl Valentin entwickelte ich bereits Anwendungen, Apps und Skripte in Java, Flutter, Python und Lua.
+                <br>
+                Desweiteren erstellte ich Filme und Animationen für den Support und als Grußkarten</p>
+            <p>Hier eine Auswahl meiner Projekte:</p>
+            <nav>
+                <ul>
+                    <li><a href="#cvTabs">TABS</a></li>
+                    <li><a href="#cvRemoteControll"> RemoteControll (App)</a></li>
+                    <li><a href="#cvProgs">Desktop-Programme (Auswahl)</a></li>
+                    <li><a href="#cvAnim">Animationen (Auswahl)</a></li>
+                    <li><a href="#cvVideos">Videos (Auswahl)</a></li>
+                </ul>
+            </nav>
+
+            <div id="cvTabs">
+                <h3>TAPS</h3>
+                <p>SIA-Projekt mit dem Technischen Gymnasium der staatlichen Feintechnikschule Schwenningen. <br>
+                    Aufgabe: Integration eines mechanischen Touch-Testers in ein bestehendes Testsystem zum Testen von
+                    Thermotransfer-Etikettendruckern. <br>
+                    Bisheriges Verfahren: <br>
+                <ol>
+                    <li>Senden der Druckerdaten an den Drucker</li>
+                    <li>Emulieren eines Tastendrucks in der Firmware </li>
+                    <li>Vergleich der im Druckerspeicher erstellten Grafik mit einer hinterlegten Referenz</li>
+                </ol>
+                Die Emulation des Tastendrucks soll dabei durch eine reale Bedienung der Tasten über einen Plotter
+                ersetzt
+                werden. <br>
+                Der XY-Plotter wurde selbst gebaut und in Java programmiert. Er kann über eine Touchoberfläche bedient
+                oder
+                über
+                das Netzwerk angesteuert werden.
+                <p>Video des fertigen Plotters:</p>
+                <video width="500" controls>
+                    <source src="assets/video/kompSIACVVideo.mp4" type="video/mp4">
+                    Your browser does not support the video
+                </video>
+            </div>
+
+            <div id="cvRemoteControll">
+                <h3>RemoteControll - App</h3>
+                <p>Eine App, mit welchen sich die Thermotransferdrucker von Carl Valentin aus der Ferne fernsteuern
+                    lassen. Dafür wurde das Bedieninterface mitsamt der Displazdarstellung der Drucker abgebildet und
+                    die Darstellung jeweils auf Smartphone und Tabletgröße sowie auf die Displayausrichtung angepasst.
+                    Weitere Funktionen sind zum Beispiel das flashen von Firmwareupdates von einem FTP-Server auf den
+                    Drucker sowie die Bedienung mit Maus für eine Portierung auf Windows und Linux.</p>
+                <div>
+                    <span>
+                        <img src="assets/pictures/RemConIp.PNG" height="300" alt="IP Eingabe">
+                        <img src="assets/pictures/RemConSearch.PNG" height="300" alt="Druckersuche">
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        <img src="assets/pictures/RemConTabH.PNG" height="300" alt="Tabletansicht Quer">
+                        <img src="assets/pictures/RemConTabV.PNG" height="300" alt="Tabletansicht Hochkant">
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        <img src="assets/pictures/RemConPhoneH.PNG" height="300" alt="Smartphoneansicht Hochkant">
+                        <img src="assets/pictures/RemConPhoneV.PNG" height="300" alt="Smartphoneansicht Quer">
+                    </span>
+                </div>
+            </div>
+
+            <div id="cvProgs">
+                <h3>Programme</h3>
+                <div>
+                    <h4>jFileTransfer</h4>
+                    <p>Ein Programm, mit welchem Dateien via FTP von einem Drucker auf den lokalen PC oder einen anderen
+                        Drucker übertragen werden können. Das ganze funktioniert bidirektional. Die Oberfläche ist auf
+                        eine Touchbedienung angepasst.</p>
+                    <img src="assets/pictures/jFileTransfer.jpg" height="500" alt="jFileTransfer Screenshot">
+                </div>
+                <div>
+                    <h4>LabelDwarf</h4>
+                    <p>Ein Etiketteneditor, mit welchem sich Etiketten erstellen und bearbeiten lassen. Alle Elemente
+                        sind per Drag-and-Drop platzierbar. Es können Texte, QR-Codes und Zeitelemente auf das Etikett
+                        angebracht werden.</p>
+                    <img src="assets/pictures/labelDwarf.jpg" height="500" alt="labelDwarf Screenshot">
+                </div>
+            </div>
+
+            <div id="cvAnim">
+                <h3>Animationen - Grußkarten</h3>
+                <p>Ostern</p>
+                <img src="assets/anim/HappyEaster-komp.gif" width="500" alt="Osteranimation GIF">
+                <p>Weihnachten</p>
+                <img src="assets/anim/WeihnachtsAnimKomp.gif" width="500" alt="Weihnachtsanimation GIF">
+            </div>
+
+            <div id="cvVideos">
+                <h3>Support-Videos</h3>
+                <p>Erstellung mehrerer Support-Videos für Kunden mit animiertem Logo im Intro und animierten
+                    Textbannern. Hier ein Beispiel:</p>
+                <iframe src="http://www.youtube.com/embed/PfVvAvFlsC8" width="500" height="315"
+                    allowfullscreen></iframe>
+            </div>
+        </div>
+    </main>
+    <footer>
+    </footer>
+</body>
+
+</html>
