@@ -1,0 +1,18 @@
+/* https://github.com/gabriel-rausch/EIA1-Material/blob/master/L03/task_material/Anmerkungen.pdf */
+
+body{
+    background-image: url("../pictures/bg.png");
+    width: 800px;
+    margin: auto;
+    font-family: sans-serif;
+}
+
+ .center-media{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+ h1, h2, h2, h3, h4 {
+      color: chocolate;
+  }
