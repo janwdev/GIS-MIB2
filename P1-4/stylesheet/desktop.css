@@ -1,0 +1,93 @@
+/* https://github.com/gabriel-rausch/EIA1-Material/blob/master/L03/task_material/Anmerkungen.pdf */
+
+body{
+    font-family: sans-serif;
+}
+
+main {
+    background-image: url("assets/pictures/bg.png");
+    width: 800px;
+    margin: auto;
+}
+
+h1, h2, h2, h3, h4 {
+    color: chocolate;
+}
+
+a {
+    color: chocolate;
+}
+
+nav+h1 {
+    margin-top: 50px;
+}
+
+#cv-logo {
+    background-color: white;
+}
+
+#cv-youtube {
+    border: none;
+}
+
+.nav-cv-li-a {
+    text-decoration: none;
+}
+
+.center-media {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.nav-main-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    background-color: #333;
+}
+
+.nav-li {
+    float: right;
+}
+
+.nav-main-li-a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.nav-main-li-a-actual {
+    display: block;
+    color: gray;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+
+.nav-main-li-a:hover {
+    background-color: #111;
+}
+
+.nav-main-li-a-actual:hover {
+    background-color: #111;
+}
+
+.contactform {
+    display: flex;
+    flex-flow: row wrap;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.contactform-element {
+    margin-top: 10px;
+}
