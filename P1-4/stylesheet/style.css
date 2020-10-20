@@ -48,25 +48,51 @@ img, video {
 
 header {
     position: fixed;
-    top: 0;
     width: 100%;
-    background: white;
+    top: 0;
+    right: 0;
+    background: #333;
 }
 
-/* Nav- Menu : https://www.mediaevent.de/tutorial/css-transform.html */
+header h1 {
+    color: white;
+    padding-left: 20px;
+}
+
+/* Nav- Menu*/
+
 nav.topmenu {
     height: auto;
+    /*Menu ausblenden*/
     max-height: 0;
     overflow: hidden;
-    transition: all 0.5s;
+    /*Animation HamburgerMenu Kreuz*/
+    transition: rotate 0.5s;
 }
+
+ul.menulist {
+    list-style-type: none;
+    text-align: center;
+    /*Elemente in Spalten rueckwerts anordnen*/
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+ul.menulist li>a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding-top: 50px;
+    text-decoration: none;
+}
+
+/*HamburgerMenu Icon*/
 
 label.hamburg {
     display: block;
     float: right;
     width: 75px;
     height: 72px;
-    background: #555;
     position: relative;
     border-radius: 4px;
 }
@@ -74,6 +100,8 @@ label.hamburg {
 input#hamburg {
     display: none
 }
+
+/*Hamburger Linien*/
 
 .line {
     position: absolute;
@@ -111,62 +139,61 @@ input#hamburg {
     transform: translateY(-12px) rotate(45deg);
 }
 
-#hamburg:checked+.hamburg+nav.topmenu {
-    max-height: 100%;
-}
+/*Verberge Header Text wenn Navigation ausgeklappt*/
 
 #hamburg:checked~#header-text {
     visibility: hidden;
     height: 0px;
 }
 
-/* Tablet */
-@media (min-width: 600px) {
+/*Navigation ausklappen*/
+
+#hamburg:checked+.hamburg+nav.topmenu {
+    max-height: 100%;
 }
 
+/*Aktuelle Seite ausgrauen*/
+
+#nav-main-li-a-actual {
+    color: gray;
+}
+
+/* Tablet */
+
+@media (min-width: 600px) {}
+
 /* PC */
+
 @media (min-width: 1025px) {
     main {
-        margin-top: 90px;
         max-width: 800px;
     }
     header {
         max-height: 80px;
         background-color: #333;
     }
-    header h1 {
-        color: white;
-        padding-left: 20px;
-    }
+    /*Navigationsmenu*/
     .hamburg {
         visibility: hidden;
         max-width: 0px;
         width: 0px;
+        max-height: 0px;
+        height: 0px;
     }
     nav.topmenu {
-        max-height: 100%;
-        height: auto;
-        overflow: hidden;
         display: inline;
     }
-    ul.menu {
-        list-style-type: none;
-        padding-right: 50px;
+    ul.menulist {
+        display: block;
+        padding-right: 10px;
     }
-    ul.menu li {
+    ul.menulist li {
         float: right;
     }
-    ul.menu li>a {
-        display: block;
-        color: white;
-        text-align: center;
+    ul.menulist li>a {
         padding: 14px 16px;
-        text-decoration: none;
     }
-    #nav-main-li-a-actual {
-        color: gray;
-    }
-    ul.menu li>a:hover {
+    ul.menulist li>a:hover {
         background-color: #111;
     }
     #nav-main-li-a-actual:hover {
