@@ -1,9 +1,9 @@
 body {
     font-family: sans-serif;
+    background-image: url("../assets/pictures/bg.png");
 }
 
 main {
-    background-image: url("assets/pictures/bg.png");
     margin: auto;
     margin-top: 90px;
 }
@@ -187,9 +187,10 @@ input#hamburg {
         max-height: 80px;
         background-color: #333;
     }
+
     #cvRemoteControll img {
         display: inline;
-        width: 49%;
+        max-width: 49%;
     }
     #cvAnim:after {
         content: "";

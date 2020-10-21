@@ -1,11 +1,14 @@
 /* https://github.com/gabriel-rausch/EIA1-Material/blob/master/L03/task_material/Anmerkungen.pdf */
 
+body {
+    background-image: url("../assets/pictures/bg.png");
+}
+
 header {
     font-family: sans-serif;
 }
 
 main {
-    background-image: url("assets/pictures/bg.png");
     width: 800px;
     margin: auto;
     font-family: sans-serif;
