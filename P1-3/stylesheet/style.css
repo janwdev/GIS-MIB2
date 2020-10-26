@@ -22,12 +22,12 @@ a {
     color: chocolate;
 }
 
-#cv-logo {
-    background-color: white;
-}
-
 #head-heading {
     margin-top: 50px;
+}
+
+#cv-logo {
+    background-color: white;
 }
 
 #cv-youtube {
@@ -75,6 +75,31 @@ a {
     text-decoration: none;
 }
 
+#nav-sec {
+    position: fixed;
+    top: 0px;
+    right: 10px;
+    margin-top: 50px;
+}
+
+#nav-sec div {
+    opacity: 0;
+}
+
+#nav-sec:hover div {
+    opacity: 1;
+}
+#nav-sec:hover #instasw{
+    opacity: 0;
+    width: 0px;
+}
+
+#nav-sec * {
+    float: right;
+    list-style-type: none;
+    text-decoration: none;
+}
+
 /* Change the link color to #111 (black) on hover */
 
 .nav-main-li-a:hover {
@@ -94,4 +119,23 @@ a {
 
 .contactform-element {
     margin-top: 10px;
+    background-color: gray;
+    color: white;
+}
+
+.contactform-element::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: white;
+    opacity: 1;
+    /* Firefox */
+}
+
+.contactform-element:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: white;
+}
+
+.contactform-element::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: white;
 }
