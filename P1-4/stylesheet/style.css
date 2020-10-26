@@ -59,6 +59,29 @@ img, video {
 
 .contactform-element {
     margin-top: 10px;
+    background-color: gray;
+    color: white;
+}
+
+.contactform-element::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: white;
+    opacity: 1;
+    /* Firefox */
+}
+
+.contactform-element:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: white;
+}
+
+.contactform-element::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: white;
+}
+
+.imgWordclock {
+    height: 400px;
 }
 
 header {
@@ -67,6 +90,7 @@ header {
     top: 0;
     right: 0;
     background: #333;
+    z-index: 1000;
 }
 
 header h1 {
@@ -76,7 +100,7 @@ header h1 {
 
 /* Nav- Menu*/
 
-nav.topmenu {
+.topmenu {
     height: auto;
     /*Menu ausblenden*/
     max-height: 0;
@@ -85,7 +109,7 @@ nav.topmenu {
     transition: rotate 0.5s;
 }
 
-ul.menulist {
+.menulist {
     list-style-type: none;
     text-align: center;
     /*Elemente in Spalten rueckwerts anordnen*/
@@ -93,7 +117,7 @@ ul.menulist {
     flex-direction: column-reverse;
 }
 
-ul.menulist li>a {
+.menulist li>a {
     display: block;
     color: white;
     text-align: center;
@@ -103,7 +127,7 @@ ul.menulist li>a {
 
 /*HamburgerMenu Icon*/
 
-label.hamburg {
+.hamburg {
     display: block;
     float: right;
     width: 75px;
@@ -112,7 +136,7 @@ label.hamburg {
     border-radius: 4px;
 }
 
-input#hamburg {
+#hamburg {
     display: none
 }
 
@@ -163,7 +187,7 @@ input#hamburg {
 
 /*Navigation ausklappen*/
 
-#hamburg:checked+.hamburg+nav.topmenu {
+#hamburg:checked+.hamburg+.topmenu {
     max-height: 100%;
 }
 
@@ -173,21 +197,38 @@ input#hamburg {
     color: gray;
 }
 
+/* Sekundäre Navigation */
+
+#nav-sec {
+    display: block;
+    color: white;
+    text-align: center;
+}
+
+#nav-sec div {
+    opacity: 0;
+}
+
+#nav-sec:hover div {
+    opacity: 1;
+}
+
+#nav-sec:hover #instasw {
+    opacity: 0;
+    width: 0px;
+}
+
+#nav-sec * {
+    list-style-type: none;
+    text-decoration: none;
+}
+
 /* Tablet */
 
-@media (min-width: 600px) {}
-
-/* PC */
-
-@media (min-width: 1025px) {
+@media (min-width: 600px) {
     main {
         max-width: 800px;
     }
-    header {
-        max-height: 80px;
-        background-color: #333;
-    }
-
     #cvRemoteControll img {
         display: inline;
         max-width: 49%;
@@ -201,6 +242,45 @@ input#hamburg {
         float: left;
         width: 50%;
     }
+    .imgDrache {
+        display: inline;
+        max-width: 49%;
+    }
+    .imgWordclock {
+        max-width: 49%;
+    }
+}
+
+/* PC */
+
+@media (min-width: 1025px) {
+    main {
+        max-width: 800px;
+    }
+    header {
+        max-height: 80px;
+        background-color: #333;
+    }
+    #cvRemoteControll img {
+        display: inline;
+        max-width: 49%;
+    }
+    #cvAnim:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    .cvAnimColumn {
+        float: left;
+        width: 50%;
+    }
+    .imgDrache {
+        display: inline;
+        max-width: 49%;
+    }
+    .imgWordclock {
+        max-width: 49%;
+    }
     /*Navigationsmenu*/
     .hamburg {
         visibility: hidden;
@@ -209,23 +289,33 @@ input#hamburg {
         max-height: 0px;
         height: 0px;
     }
-    nav.topmenu {
+    .topmenu {
         display: inline;
     }
-    ul.menulist {
+    .menulist {
         display: block;
         padding-right: 10px;
     }
-    ul.menulist li {
+    .menulist li {
         float: right;
     }
-    ul.menulist li>a {
+    .menulist li>a {
         padding: 14px 16px;
     }
-    ul.menulist li>a:hover {
+    .menulist li>a:hover {
         background-color: #111;
     }
     #nav-main-li-a-actual:hover {
         background-color: #111;
+    }
+    /*Sekundäre Navigationsleiste*/
+    #nav-sec {
+        position: fixed;
+        top: 90px;
+        right: 10px;
+        margin-top: 0px;
+    }
+    #nav-sec * {
+        float: right;
     }
 }
