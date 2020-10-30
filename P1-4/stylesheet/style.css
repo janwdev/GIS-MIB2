@@ -217,15 +217,6 @@ aside {
     opacity: 0;
 }
 
-#nav-sec:hover div {
-    opacity: 1;
-}
-
-#nav-sec:hover #instasw {
-    opacity: 0;
-    width: 0px;
-}
-
 #nav-sec * {
     list-style-type: none;
     text-decoration: none;
@@ -289,6 +280,7 @@ aside {
     .imgWordclock {
         max-width: 49%;
     }
+
     /*Navigationsmenu*/
     .hamburg {
         visibility: hidden;
@@ -325,5 +317,14 @@ aside {
     }
     #nav-sec * {
         float: right;
+    }
+
+    #nav-sec:hover div {
+        opacity: 1;
+    }
+    
+    #nav-sec:hover #instasw {
+        opacity: 0;
+        width: 0px;
     }
 }
