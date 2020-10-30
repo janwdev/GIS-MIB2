@@ -98,6 +98,14 @@ header h1 {
     padding-left: 20px;
 }
 
+aside {
+    width: 30%;
+    padding-left: 15px;
+    margin-left: 15px;
+    margin-bottom: 15px;
+    float: right;
+}
+
 /* Nav- Menu*/
 
 .topmenu {
