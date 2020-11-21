@@ -1,3 +1,5 @@
+namespace P2_1{
+
 // Aufgabe 5
 console.log("Aufgabe 5");
 
@@ -139,4 +141,5 @@ function chessintelligent(sizeZ: number, sizeS: number): void {
         output += "\n";
     }
     console.log(output);
+}
 }
