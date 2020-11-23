@@ -92,12 +92,6 @@ namespace P2_2_2 {
     console.log();
     console.log("Aufgabe 2-2_2");
 
-    let numberArray: number[] = [3, 2, 1, 4];
-    numberArray = backwards(numberArray);
-    for (const element of numberArray) {
-        console.log(element);
-    }
-
     function backwards(array: number[]): number[] {
         let backwardArray: number[] = [];
         for (let index: number = array.length - 1; index >= 0; index--) {
@@ -105,16 +99,6 @@ namespace P2_2_2 {
         }
         return backwardArray;
     }
-
-    let secNumberArray: number[] = [5, 6, 7, 8];
-    let retArray: number[] = join(numberArray, secNumberArray);
-    console.log("Arrays zusammengefügt: ");
-    let outputString: String = "";
-    for (const element of retArray) {
-        outputString = outputString + element.toString() + " ";
-    }
-    console.log(outputString);
-
 
     function join(...arrays: number[][]): number[] {
         let backArray: number[] = [];
@@ -128,12 +112,6 @@ namespace P2_2_2 {
         return backArray;
     }
 
-    retArray = split(secNumberArray, 1, 3);
-    outputString = "Split: ";
-    for (const element of retArray) {
-        outputString = outputString + element.toString();
-    }
-    console.log(outputString);
     function split(array: number[], i1: number, i2: number): number[] {
         if (i1 < 0 || i2 < 0) {
             return undefined;
@@ -153,4 +131,107 @@ namespace P2_2_2 {
         return backArray;
     }
 
+    let arr: number[] = [5, 42, 17, 2018, -10, 60, -10010];
+    let arrBack: number[] = backwards(arr);
+    console.log(arr);
+    console.log(arrBack);
+    console.log(join(arr, [15, 9001, -440]));
+    console.log(join([123, 666, -911], arr, [15, 9001, -440, 1024])); // Bonus b)
+    arr = split(arr, 0, 4);
+    console.log(arr);
+    console.log(split(arr, 1, 2));
+    console.log(split(arr, 2, 0));     // Bonus c)
+    console.log(split(arr, -1, 2));    // Bonus c)
+    console.log(split(arr, 0, 7));     // Bonus c)
+}
+
+namespace P2_2_3 {
+    let canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("myFirstCanvas");
+    let context: CanvasRenderingContext2D = canvas.getContext("2d");
+
+    // Himmel
+    context.fillStyle = "blue";
+    context.fillRect(0, 0, 800, 600);
+
+    // Grass
+    context.fillStyle = "green";
+    context.fillRect(0, 300, 800, 200);
+
+    // Wolke
+    context.beginPath();
+    context.moveTo(170, 80);
+    context.bezierCurveTo(130, 100, 130, 150, 230, 150);
+    context.bezierCurveTo(250, 180, 320, 180, 340, 150);
+    context.bezierCurveTo(420, 150, 420, 120, 390, 100);
+    context.bezierCurveTo(430, 40, 370, 30, 340, 50);
+    context.bezierCurveTo(320, 5, 250, 20, 250, 50);
+    context.bezierCurveTo(200, 5, 150, 20, 170, 80);
+    context.fillStyle = "#8ED6FF";
+    context.fill();
+    context.closePath();
+
+    // Baum
+    context.fillStyle = "brown";
+    context.fillRect(175, 100, 50, 300);
+    context.beginPath();
+    context.fillStyle = "green";
+    context.arc(200, 150, 75, 0, 2 * Math.PI, false);
+    context.fill();
+    context.closePath();
+
+    // Haus
+    context.fillStyle = "yellow";
+    context.fillRect(500, 250, 200, 200);
+    context.beginPath();
+    context.fillStyle = "red";
+    context.moveTo(470, 250);
+    context.lineTo(730, 250);
+    context.lineTo(600, 50);
+    context.fill();
+    context.closePath();
+
+    class Rechteck {
+        x1: number;
+        y1: number;
+        x2: number;
+        y2: number;
+
+        maxWidth: number = 750;
+        maxHeight: number = 450;
+
+        constructor() {
+            this.x1 = this.getRandomInt(0, this.maxWidth);
+            this.x2 = this.getRandomInt(this.x1, this.maxWidth);
+            this.y1 = this.getRandomInt(0, this.maxHeight);
+            this.y2 = this.getRandomInt(this.y1, this.maxHeight);
+        }
+
+        getRandomInt(min: number, max: number): number {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
+
+        drawRect(): void {
+            context.beginPath();
+            context.fillStyle = "purple";
+            context.strokeStyle = "black";
+            context.lineWidth = 5;
+            context.moveTo(this.x1, this.y1);
+            context.lineTo(this.x2, this.y1);
+            context.lineTo(this.x2, this.y2);
+            context.lineTo(this.x1, this.y2);
+            context.closePath();
+            context.stroke();
+            context.fill();
+            context.closePath();
+        }
+    }
+
+    let rechtArray: Rechteck [] = [new Rechteck(), new Rechteck(), new Rechteck()];
+    for (const recht of rechtArray) {
+        recht.drawRect();
+    }
+
+    // TODO f und g
 }

@@ -78,11 +78,6 @@ var P2_2_2;
 (function (P2_2_2) {
     console.log();
     console.log("Aufgabe 2-2_2");
-    let numberArray = [3, 2, 1, 4];
-    numberArray = backwards(numberArray);
-    for (const element of numberArray) {
-        console.log(element);
-    }
     function backwards(array) {
         let backwardArray = [];
         for (let index = array.length - 1; index >= 0; index--) {
@@ -90,14 +85,6 @@ var P2_2_2;
         }
         return backwardArray;
     }
-    let secNumberArray = [5, 6, 7, 8];
-    let retArray = join(numberArray, secNumberArray);
-    console.log("Arrays zusammengefügt: ");
-    let outputString = "";
-    for (const element of retArray) {
-        outputString = outputString + element.toString() + " ";
-    }
-    console.log(outputString);
     function join(...arrays) {
         let backArray = [];
         let retIndex = 0;
@@ -109,12 +96,6 @@ var P2_2_2;
         });
         return backArray;
     }
-    retArray = split(secNumberArray, 1, 3);
-    outputString = "Split: ";
-    for (const element of retArray) {
-        outputString = outputString + element.toString();
-    }
-    console.log(outputString);
     function split(array, i1, i2) {
         if (i1 < 0 || i2 < 0) {
             return undefined;
@@ -135,5 +116,92 @@ var P2_2_2;
         }
         return backArray;
     }
+    let arr = [5, 42, 17, 2018, -10, 60, -10010];
+    let arrBack = backwards(arr);
+    console.log(arr);
+    console.log(arrBack);
+    console.log(join(arr, [15, 9001, -440]));
+    console.log(join([123, 666, -911], arr, [15, 9001, -440, 1024])); // Bonus b)
+    arr = split(arr, 0, 4);
+    console.log(arr);
+    console.log(split(arr, 1, 2));
+    console.log(split(arr, 2, 0)); // Bonus c)
+    console.log(split(arr, -1, 2)); // Bonus c)
+    console.log(split(arr, 0, 7)); // Bonus c)
 })(P2_2_2 || (P2_2_2 = {}));
+var P2_2_3;
+(function (P2_2_3) {
+    let canvas = document.getElementById("myFirstCanvas");
+    let context = canvas.getContext("2d");
+    // Himmel
+    context.fillStyle = "blue";
+    context.fillRect(0, 0, 800, 600);
+    // Grass
+    context.fillStyle = "green";
+    context.fillRect(0, 300, 800, 200);
+    // Wolke
+    context.beginPath();
+    context.moveTo(170, 80);
+    context.bezierCurveTo(130, 100, 130, 150, 230, 150);
+    context.bezierCurveTo(250, 180, 320, 180, 340, 150);
+    context.bezierCurveTo(420, 150, 420, 120, 390, 100);
+    context.bezierCurveTo(430, 40, 370, 30, 340, 50);
+    context.bezierCurveTo(320, 5, 250, 20, 250, 50);
+    context.bezierCurveTo(200, 5, 150, 20, 170, 80);
+    context.fillStyle = "#8ED6FF";
+    context.fill();
+    context.closePath();
+    // Baum
+    context.fillStyle = "brown";
+    context.fillRect(175, 100, 50, 300);
+    context.beginPath();
+    context.fillStyle = "green";
+    context.arc(200, 150, 75, 0, 2 * Math.PI, false);
+    context.fill();
+    context.closePath();
+    // Haus
+    context.fillStyle = "yellow";
+    context.fillRect(500, 250, 200, 200);
+    context.beginPath();
+    context.fillStyle = "red";
+    context.moveTo(470, 250);
+    context.lineTo(730, 250);
+    context.lineTo(600, 50);
+    context.fill();
+    context.closePath();
+    class Rechteck {
+        constructor() {
+            this.maxWidth = 750;
+            this.maxHeight = 450;
+            this.x1 = this.getRandomInt(0, this.maxWidth);
+            this.x2 = this.getRandomInt(this.x1, this.maxWidth);
+            this.y1 = this.getRandomInt(0, this.maxHeight);
+            this.y2 = this.getRandomInt(this.y1, this.maxHeight);
+        }
+        getRandomInt(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
+        drawRect() {
+            context.beginPath();
+            context.fillStyle = "purple";
+            context.strokeStyle = "black";
+            context.lineWidth = 5;
+            context.moveTo(this.x1, this.y1);
+            context.lineTo(this.x2, this.y1);
+            context.lineTo(this.x2, this.y2);
+            context.lineTo(this.x1, this.y2);
+            context.closePath();
+            context.stroke();
+            context.fill();
+            context.closePath();
+        }
+    }
+    let rechtArray = [new Rechteck(), new Rechteck(), new Rechteck()];
+    for (const recht of rechtArray) {
+        recht.drawRect();
+    }
+    // TODO f und g
+})(P2_2_3 || (P2_2_3 = {}));
 //# sourceMappingURL=script.js.map
