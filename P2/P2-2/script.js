@@ -78,12 +78,62 @@ var P2_2_2;
 (function (P2_2_2) {
     console.log();
     console.log("Aufgabe 2-2_2");
+    let numberArray = [3, 2, 1, 4];
+    numberArray = backwards(numberArray);
+    for (const element of numberArray) {
+        console.log(element);
+    }
     function backwards(array) {
-        let backwardArray;
-        for (let index = 0; index < array.length; index++) {
-            const element = array[index];
+        let backwardArray = [];
+        for (let index = array.length - 1; index >= 0; index--) {
+            backwardArray[index] = array[array.length - index - 1];
         }
         return backwardArray;
+    }
+    let secNumberArray = [5, 6, 7, 8];
+    let retArray = join(numberArray, secNumberArray);
+    console.log("Arrays zusammengefügt: ");
+    let outputString = "";
+    for (const element of retArray) {
+        outputString = outputString + element.toString() + " ";
+    }
+    console.log(outputString);
+    function join(...arrays) {
+        let backArray = [];
+        let retIndex = 0;
+        arrays.forEach(array => {
+            for (let index = 0; index < array.length; index++) {
+                backArray[retIndex] = array[index];
+                retIndex++;
+            }
+        });
+        return backArray;
+    }
+    retArray = split(secNumberArray, 1, 3);
+    outputString = "Split: ";
+    for (const element of retArray) {
+        outputString = outputString + element.toString();
+    }
+    console.log(outputString);
+    function split(array, i1, i2) {
+        if (i1 < 0 || i2 < 0) {
+            return undefined;
+        }
+        else if (i2 < i1) {
+            let temp = i1;
+            i1 = i2;
+            i2 = temp;
+        }
+        else if (i2 > array.length) {
+            return undefined;
+        }
+        let backArray = [];
+        let i = 0;
+        for (let index = i1; index <= i2; index++) {
+            backArray[i] = array[index];
+            i++;
+        }
+        return backArray;
     }
 })(P2_2_2 || (P2_2_2 = {}));
 //# sourceMappingURL=script.js.map
