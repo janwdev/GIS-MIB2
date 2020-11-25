@@ -1,0 +1,10 @@
+.blockChildren *{
+    margin: auto;
+    display: block;
+}
+
+.centerButtons{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
