@@ -8,7 +8,7 @@
 - P1-4 [Portfolio](https://janwdev.github.io/GIS-MIB2/P1/P1-4/)
 
 ### P2
-- [P2-1]("https://janwdev.github.io/GIS-MIB2/P2/P2-1/")
-- [P2-2]("https://janwdev.github.io/GIS-MIB2/P2/P2-2/")
-- [P2-3]("https://janwdev.github.io/GIS-MIB2/P2/P2-3/")
-- [P2-4]("https://janwdev.github.io/GIS-MIB2/P2/P2-4/")
+- [P2-1](https://janwdev.github.io/GIS-MIB2/P2/P2-1/)
+- [P2-2](https://janwdev.github.io/GIS-MIB2/P2/P2-2/)
+- [P2-3](https://janwdev.github.io/GIS-MIB2/P2/P2-3/)
+- [P2-4](https://janwdev.github.io/GIS-MIB2/P2/P2-4/)
