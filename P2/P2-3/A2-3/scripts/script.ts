@@ -24,6 +24,7 @@ namespace P2_3_2_3 {
         bottom: Posibility;
     }
 
+    console.log("Path: " + window.location.pathname);
     if (window.location.pathname == "/P2/P2-3/A2-3/index.html") {
         let imageTop: HTMLImageElement = <HTMLImageElement>document.getElementById("picTop");
         let imageMiddle: HTMLImageElement = <HTMLImageElement>document.getElementById("picMiddle");
