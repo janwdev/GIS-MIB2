@@ -24,7 +24,8 @@ namespace P2_3_2_3 {
         bottom: Posibility;
     }
 
-    if (window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1) == "index.html") {
+    let path: string = window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1);
+    if (path == "index.html" || path == "") {
         let imageTop: HTMLImageElement = <HTMLImageElement>document.getElementById("picTop");
         let imageMiddle: HTMLImageElement = <HTMLImageElement>document.getElementById("picMiddle");
         let imageButtom: HTMLImageElement = <HTMLImageElement>document.getElementById("picBottom");

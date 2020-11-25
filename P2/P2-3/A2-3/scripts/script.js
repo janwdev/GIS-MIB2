@@ -18,7 +18,8 @@ var P2_3_2_3;
         }
     }
     P2_3_2_3.Posibility = Posibility;
-    if (window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1) == "index.html") {
+    let path = window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1);
+    if (path == "index.html" || path == "") {
         let imageTop = document.getElementById("picTop");
         let imageMiddle = document.getElementById("picMiddle");
         let imageButtom = document.getElementById("picBottom");
