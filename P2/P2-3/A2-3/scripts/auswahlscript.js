@@ -3,17 +3,18 @@ var P2_3_2_3;
 (function (P2_3_2_3) {
     let selected;
     let htmlImgs = [];
+    let path = window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1);
     window.addEventListener("load", loadContent);
     function loadContent() {
-        if (window.location.pathname == "/P2/P2-3/A2-3/selTop.html") {
+        if (path == "selTop.html") {
             selected = P2_3_2_3.selectedElements.top;
             addContentToDetailWindow(P2_3_2_3.posibilityTop);
         }
-        else if (window.location.pathname == "/P2/P2-3/A2-3/selMiddle.html") {
+        else if (path == "selMiddle.html") {
             selected = P2_3_2_3.selectedElements.middle;
             addContentToDetailWindow(P2_3_2_3.posibilityMiddle);
         }
-        else if (window.location.pathname == "/P2/P2-3/A2-3/selBottom.html") {
+        else if (path == "selBottom.html") {
             selected = P2_3_2_3.selectedElements.bottom;
             addContentToDetailWindow(P2_3_2_3.posibilityBottom);
         }
@@ -49,13 +50,13 @@ var P2_3_2_3;
     let btCancel = document.getElementById("btAbort");
     btCancel.addEventListener("click", cancel);
     function saveSelection() {
-        if (window.location.pathname == "/P2/P2-3/A2-3/selTop.html") {
+        if (path == "selTop.html") {
             P2_3_2_3.selectedElements.top = selected;
         }
-        else if (window.location.pathname == "/P2/P2-3/A2-3/selMiddle.html") {
+        else if (path == "selMiddle.html") {
             P2_3_2_3.selectedElements.middle = selected;
         }
-        else if (window.location.pathname == "/P2/P2-3/A2-3/selBottom.html") {
+        else if (path == "selBottom.html") {
             P2_3_2_3.selectedElements.bottom = selected;
         }
         window.open("index.html", "_self");

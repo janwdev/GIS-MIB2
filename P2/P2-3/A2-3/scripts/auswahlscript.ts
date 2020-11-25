@@ -1,17 +1,18 @@
 namespace P2_3_2_3 {
     let selected: Posibility;
     let htmlImgs: HTMLImageElement[] = [];
+    let path: string = window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1);
 
     window.addEventListener("load", loadContent);
 
     function loadContent(): void {
-        if (window.location.pathname == "/P2/P2-3/A2-3/selTop.html") {
+        if (path == "selTop.html") {
             selected = selectedElements.top;
             addContentToDetailWindow(posibilityTop);
-        } else if (window.location.pathname == "/P2/P2-3/A2-3/selMiddle.html") {
+        } else if (path == "selMiddle.html") {
             selected = selectedElements.middle;
             addContentToDetailWindow(posibilityMiddle);
-        } else if (window.location.pathname == "/P2/P2-3/A2-3/selBottom.html") {
+        } else if (path == "selBottom.html") {
             selected = selectedElements.bottom;
             addContentToDetailWindow(posibilityBottom);
         }
@@ -51,11 +52,11 @@ namespace P2_3_2_3 {
     btCancel.addEventListener("click", cancel);
 
     function saveSelection(): void {
-        if (window.location.pathname == "/P2/P2-3/A2-3/selTop.html") {
+        if (path == "selTop.html") {
             selectedElements.top = selected;
-        } else if (window.location.pathname == "/P2/P2-3/A2-3/selMiddle.html") {
+        } else if (path == "selMiddle.html") {
             selectedElements.middle = selected;
-        } else if (window.location.pathname == "/P2/P2-3/A2-3/selBottom.html") {
+        } else if (path == "selBottom.html") {
             selectedElements.bottom = selected;
         }
         window.open("index.html", "_self");
