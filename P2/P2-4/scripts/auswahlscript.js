@@ -7,6 +7,9 @@ var P2_4;
     let imageTop = document.getElementById("picTop");
     let imageMiddle = document.getElementById("picMiddle");
     let imageButtom = document.getElementById("picBottom");
+    let btSave = document.getElementById("btSave");
+    btSave.addEventListener("click", saveSelection);
+    let btCancel = document.getElementById("btAbort");
     window.addEventListener("load", loadContent);
     function loadContent() {
         let json = sessionStorage.getItem(P2_4.keyConfig);
@@ -25,6 +28,19 @@ var P2_4;
         else if (path == "selBottom.html") {
             selected = P2_4.selectedElements.bottom;
             addContentToDetailWindow(P2_4.posibilityBottom);
+        }
+        if (P2_4.selectedElements.top == undefined || P2_4.selectedElements.middle == undefined || P2_4.selectedElements.bottom == undefined) {
+            btSave.textContent = "Weiter";
+            btCancel.textContent = "Zurück";
+            if (path == "selTop.html") {
+                btCancel.disabled = true;
+            }
+            btCancel.addEventListener("click", back);
+        }
+        else {
+            btSave.textContent = "Speichern";
+            btCancel.textContent = "Abbrechen";
+            btCancel.addEventListener("click", cancel);
         }
     }
     function loadImages() {
@@ -64,10 +80,6 @@ var P2_4;
             }
         });
     }
-    let btSave = document.getElementById("btSave");
-    btSave.addEventListener("click", saveSelection);
-    let btCancel = document.getElementById("btAbort");
-    btCancel.addEventListener("click", cancel);
     function saveSelection() {
         if (path == "selTop.html") {
             P2_4.selectedElements.top = selected;
@@ -85,6 +97,16 @@ var P2_4;
     function cancel() {
         window.open("index.html", "_self");
         console.log("Abgebrochen");
+    }
+    function back() {
+        let pathToOpen;
+        if (path == "selMiddle.html") {
+            pathToOpen = "selTop.html";
+        }
+        else if (path == "selBottom.html") {
+            pathToOpen = "selMiddle.html";
+        }
+        window.open(pathToOpen, "_self");
     }
 })(P2_4 || (P2_4 = {}));
 //# sourceMappingURL=auswahlscript.js.map

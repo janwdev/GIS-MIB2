@@ -1,8 +1,8 @@
 namespace P2_4 {
-    export let keyConfig: string = "ConfigJson";
     export let posibilityTop: Posibility[] = [];
     export let posibilityMiddle: Posibility[] = [];
     export let posibilityBottom: Posibility[] = [];
+    export let selectedElements: Selected = {top: undefined, middle: undefined, bottom: undefined};
 
     let path: string = window.location.pathname.substring(0, window.location.pathname.lastIndexOf("/") + 1);
 
@@ -12,9 +12,6 @@ namespace P2_4 {
     let lt1Middle: Posibility = new Posibility("Leuchtturm1 - Mitte", 1, path + "assets/mitte/Leuchtturm1_m.png");
     // Unten
     let lt1Bottom: Posibility = new Posibility("Leuchtturm1 - Unten", 2, path + "assets/unten/Leuchtturm1_u.png");
-
-    //TODO durch dummy ersetzen
-    export let selectedElements: Selected = {top: undefined, middle: undefined, bottom: undefined};
 
     // Leuchtturm 2
     let lt2Top: Posibility = new Posibility("Leuchtturm2 - Oben", 0, path + "assets/oben/Leuchtturm2_o.png");

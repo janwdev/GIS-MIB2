@@ -1,4 +1,5 @@
 namespace P2_4 {
+    export let keyConfig: string = "ConfigJson";
     export class Posibility {
         name: string;
         type: number;
@@ -73,6 +74,27 @@ namespace P2_4 {
 
     let path: string = window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1);
     if (path == "index.html" || path == "") {
+        window.addEventListener("load", finishedLoading);
+
+        function finishedLoading(): void {
+            let json: string = sessionStorage.getItem(keyConfig);
+            if (json != null) {
+                selectedFromJSON(json);
+                if (selectedElements.top == undefined) {
+                    window.open("selTop.html", "_self");
+                } else if (selectedElements.middle == undefined) {
+                    window.open("selMiddle.html", "_self");
+                } else if (selectedElements.bottom == undefined) {
+                    window.open("selBottom.html", "_self");
+                } else {
+                    window.open("end.html", "_self");
+                }
+            } else {
+                console.log("Keine Auswahl getroffen");
+                window.open("selTop.html", "_self");
+            }
+        }
+    } else if (path == "end.html") {
         let imageTop: HTMLImageElement = <HTMLImageElement>document.getElementById("picTop");
         let imageMiddle: HTMLImageElement = <HTMLImageElement>document.getElementById("picMiddle");
         let imageButtom: HTMLImageElement = <HTMLImageElement>document.getElementById("picBottom");

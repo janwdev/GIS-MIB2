@@ -7,6 +7,10 @@ namespace P2_4 {
     let imageMiddle: HTMLImageElement = <HTMLImageElement>document.getElementById("picMiddle");
     let imageButtom: HTMLImageElement = <HTMLImageElement>document.getElementById("picBottom");
 
+    let btSave: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btSave");
+    btSave.addEventListener("click", saveSelection);
+    let btCancel: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btAbort");
+
     window.addEventListener("load", loadContent);
 
     function loadContent(): void {
@@ -24,6 +28,19 @@ namespace P2_4 {
         } else if (path == "selBottom.html") {
             selected = selectedElements.bottom;
             addContentToDetailWindow(posibilityBottom);
+        }
+
+        if (selectedElements.top == undefined || selectedElements.middle == undefined || selectedElements.bottom == undefined) {
+            btSave.textContent = "Weiter";
+            btCancel.textContent = "Zurück";
+            if (path == "selTop.html") {
+                btCancel.disabled = true;
+            }
+            btCancel.addEventListener("click", back);
+        } else {
+            btSave.textContent = "Speichern";
+            btCancel.textContent = "Abbrechen";
+            btCancel.addEventListener("click", cancel);
         }
     }
 
@@ -65,12 +82,7 @@ namespace P2_4 {
                 htmlImg.classList.remove("selectedImage");
             }
         });
-    }
-
-    let btSave: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btSave");
-    btSave.addEventListener("click", saveSelection);
-    let btCancel: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btAbort");
-    btCancel.addEventListener("click", cancel);
+    }    
 
     function saveSelection(): void {
         if (path == "selTop.html") {
@@ -88,5 +100,15 @@ namespace P2_4 {
     function cancel(): void {
         window.open("index.html", "_self");
         console.log("Abgebrochen");
+    }
+
+    function back(): void {
+        let pathToOpen: string;
+        if (path == "selMiddle.html") {
+            pathToOpen = "selTop.html";
+        } else if (path == "selBottom.html") {
+            pathToOpen = "selMiddle.html";
+        }
+        window.open(pathToOpen, "_self");
     }
 }

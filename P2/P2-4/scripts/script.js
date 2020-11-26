@@ -1,6 +1,7 @@
 "use strict";
 var P2_4;
 (function (P2_4) {
+    P2_4.keyConfig = "ConfigJson";
     class Posibility {
         constructor(_name, _type, _link) {
             this.name = _name;
@@ -61,6 +62,31 @@ var P2_4;
     P2_4.selectedFromJSON = selectedFromJSON;
     let path = window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1);
     if (path == "index.html" || path == "") {
+        window.addEventListener("load", finishedLoading);
+        function finishedLoading() {
+            let json = sessionStorage.getItem(P2_4.keyConfig);
+            if (json != null) {
+                selectedFromJSON(json);
+                if (P2_4.selectedElements.top == undefined) {
+                    window.open("selTop.html", "_self");
+                }
+                else if (P2_4.selectedElements.middle == undefined) {
+                    window.open("selMiddle.html", "_self");
+                }
+                else if (P2_4.selectedElements.bottom == undefined) {
+                    window.open("selBottom.html", "_self");
+                }
+                else {
+                    window.open("end.html", "_self");
+                }
+            }
+            else {
+                console.log("Keine Auswahl getroffen");
+                window.open("selTop.html", "_self");
+            }
+        }
+    }
+    else if (path == "end.html") {
         let imageTop = document.getElementById("picTop");
         let imageMiddle = document.getElementById("picMiddle");
         let imageButtom = document.getElementById("picBottom");
