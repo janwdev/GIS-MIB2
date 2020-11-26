@@ -3,9 +3,18 @@ namespace P2_4 {
     let htmlImgs: HTMLImageElement[] = [];
     let path: string = window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1);
 
+    let imageTop: HTMLImageElement = <HTMLImageElement>document.getElementById("picTop");
+    let imageMiddle: HTMLImageElement = <HTMLImageElement>document.getElementById("picMiddle");
+    let imageButtom: HTMLImageElement = <HTMLImageElement>document.getElementById("picBottom");
+
     window.addEventListener("load", loadContent);
 
     function loadContent(): void {
+        let json: string = sessionStorage.getItem(keyConfig);
+        if (json != null) {
+            selectedFromJSON(json);
+        }
+        loadImages();
         if (path == "selTop.html") {
             selected = selectedElements.top;
             addContentToDetailWindow(posibilityTop);
@@ -18,17 +27,29 @@ namespace P2_4 {
         }
     }
 
+    function loadImages(): void {
+        if (selectedElements.top != undefined) {
+            imageTop.src = selectedElements.top.link;
+        }
+        if (selectedElements.middle != undefined) {
+            imageMiddle.src = selectedElements.middle.link;
+        }
+        if (selectedElements.bottom != undefined) {
+            imageButtom.src = selectedElements.bottom.link;
+        }
+        console.log(selectedElements);
+    }
+
     function addContentToDetailWindow(images: Posibility[]): void {
         let divToAdd: HTMLDivElement = <HTMLDivElement>document.getElementById("selectDetailImgSection");
         images.forEach(img => {
             let imgElement: HTMLImageElement = document.createElement("img");
             htmlImgs.push(imgElement);
-            imgElement.className += "detailImg";
             imgElement.src = img.link;
             if (img == selected) {
                 setSelected(img, imgElement);
             }
-            imgElement.addEventListener("click", function(): void {
+            imgElement.addEventListener("click", function (): void {
                 setSelected(img, imgElement);
             });
             divToAdd.appendChild(imgElement);
@@ -59,6 +80,7 @@ namespace P2_4 {
         } else if (path == "selBottom.html") {
             selectedElements.bottom = selected;
         }
+        selectedToJSON();
         window.open("index.html", "_self");
         console.log("selected: " + selected.name);
     }

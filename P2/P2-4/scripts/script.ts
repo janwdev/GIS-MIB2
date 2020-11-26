@@ -9,12 +9,23 @@ namespace P2_4 {
             this.type = _type;
             this.link = _link;
             if (this.type == 0) {
-                posibilityTop.push(this);
+                this.removeSameFromArray(posibilityTop, this.name);
+                posibilityTop.unshift(this);
             } else if (this.type == 1) {
-                posibilityMiddle.push(this);
+                this.removeSameFromArray(posibilityMiddle, this.name);
+                posibilityMiddle.unshift(this);
             } else if (this.type == 2) {
-                posibilityBottom.push(this);
+                this.removeSameFromArray(posibilityBottom, this.name);
+                posibilityBottom.unshift(this);
             }
+        }
+
+        removeSameFromArray(posArray: Posibility[], name: string): void {
+            posArray.forEach((element, i) => {
+                if (element.name === name) {
+                    posArray.splice(i, 1);
+                }
+            });
         }
 
         getInterface(): PosibilityInterface {
@@ -33,16 +44,15 @@ namespace P2_4 {
         middle: Posibility;
         bottom: Posibility;
     }
-    
-    function selectedToJSON(): string {
+
+    export function selectedToJSON(): void {
         let json: string;
         json = JSON.stringify(selectedElements);
         console.log(json);
-
-        return json;
+        sessionStorage.setItem(keyConfig, json);
     }
 
-    function selectedFromJSON(jsonStr: string): void {
+    export function selectedFromJSON(jsonStr: string): void {
         let json: Selected = JSON.parse(jsonStr);
         Object.keys(json).forEach(key => {
             if (key == "top") {
@@ -70,19 +80,27 @@ namespace P2_4 {
         window.addEventListener("load", finishedLoading);
 
         function finishedLoading(): void {
-            //TODO only testing
-            let json: string = selectedToJSON();
-            selectedElements.top = undefined;
-            selectedElements.middle = undefined;
-            selectedElements.bottom = undefined;
-            selectedFromJSON(json);
-            loadImages();
+            let json: string = sessionStorage.getItem(keyConfig);
+            if (json != null) {
+                selectedFromJSON(json);
+                loadImages();
+            } else {
+                //TODO Message auf Statusfeld schreiben
+                console.log("Keine Auswahl getroffen");
+                loadImages();
+            }
         }
 
         function loadImages(): void {
-            imageTop.src = selectedElements.top.link;
-            imageMiddle.src = selectedElements.middle.link;
-            imageButtom.src = selectedElements.bottom.link;
+            if (selectedElements.top != undefined) {
+                imageTop.src = selectedElements.top.link;
+            }
+            if (selectedElements.middle != undefined) {
+                imageMiddle.src = selectedElements.middle.link;
+            }
+            if (selectedElements.bottom != undefined) {
+                imageButtom.src = selectedElements.bottom.link;
+            }
             console.log(selectedElements);
         }
 

@@ -1,6 +1,7 @@
 "use strict";
 var P2_4;
 (function (P2_4) {
+    P2_4.keyConfig = "ConfigJson";
     P2_4.posibilityTop = [];
     P2_4.posibilityMiddle = [];
     P2_4.posibilityBottom = [];
@@ -11,7 +12,8 @@ var P2_4;
     let lt1Middle = new P2_4.Posibility("Leuchtturm1 - Mitte", 1, path + "assets/mitte/Leuchtturm1_m.png");
     // Unten
     let lt1Bottom = new P2_4.Posibility("Leuchtturm1 - Unten", 2, path + "assets/unten/Leuchtturm1_u.png");
-    P2_4.selectedElements = { top: P2_4.posibilityTop[0], middle: P2_4.posibilityMiddle[0], bottom: P2_4.posibilityBottom[0] };
+    //TODO durch dummy ersetzen
+    P2_4.selectedElements = { top: undefined, middle: undefined, bottom: undefined };
     // Leuchtturm 2
     let lt2Top = new P2_4.Posibility("Leuchtturm2 - Oben", 0, path + "assets/oben/Leuchtturm2_o.png");
     let lt2Middle = new P2_4.Posibility("Leuchtturm2 - Mitte", 1, path + "assets/mitte/Leuchtturm2_m.png");

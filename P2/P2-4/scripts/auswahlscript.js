@@ -4,8 +4,16 @@ var P2_4;
     let selected;
     let htmlImgs = [];
     let path = window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1);
+    let imageTop = document.getElementById("picTop");
+    let imageMiddle = document.getElementById("picMiddle");
+    let imageButtom = document.getElementById("picBottom");
     window.addEventListener("load", loadContent);
     function loadContent() {
+        let json = sessionStorage.getItem(P2_4.keyConfig);
+        if (json != null) {
+            P2_4.selectedFromJSON(json);
+        }
+        loadImages();
         if (path == "selTop.html") {
             selected = P2_4.selectedElements.top;
             addContentToDetailWindow(P2_4.posibilityTop);
@@ -19,12 +27,23 @@ var P2_4;
             addContentToDetailWindow(P2_4.posibilityBottom);
         }
     }
+    function loadImages() {
+        if (P2_4.selectedElements.top != undefined) {
+            imageTop.src = P2_4.selectedElements.top.link;
+        }
+        if (P2_4.selectedElements.middle != undefined) {
+            imageMiddle.src = P2_4.selectedElements.middle.link;
+        }
+        if (P2_4.selectedElements.bottom != undefined) {
+            imageButtom.src = P2_4.selectedElements.bottom.link;
+        }
+        console.log(P2_4.selectedElements);
+    }
     function addContentToDetailWindow(images) {
         let divToAdd = document.getElementById("selectDetailImgSection");
         images.forEach(img => {
             let imgElement = document.createElement("img");
             htmlImgs.push(imgElement);
-            imgElement.className += "detailImg";
             imgElement.src = img.link;
             if (img == selected) {
                 setSelected(img, imgElement);
@@ -59,6 +78,7 @@ var P2_4;
         else if (path == "selBottom.html") {
             P2_4.selectedElements.bottom = selected;
         }
+        P2_4.selectedToJSON();
         window.open("index.html", "_self");
         console.log("selected: " + selected.name);
     }

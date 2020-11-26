@@ -7,14 +7,24 @@ var P2_4;
             this.type = _type;
             this.link = _link;
             if (this.type == 0) {
-                P2_4.posibilityTop.push(this);
+                this.removeSameFromArray(P2_4.posibilityTop, this.name);
+                P2_4.posibilityTop.unshift(this);
             }
             else if (this.type == 1) {
-                P2_4.posibilityMiddle.push(this);
+                this.removeSameFromArray(P2_4.posibilityMiddle, this.name);
+                P2_4.posibilityMiddle.unshift(this);
             }
             else if (this.type == 2) {
-                P2_4.posibilityBottom.push(this);
+                this.removeSameFromArray(P2_4.posibilityBottom, this.name);
+                P2_4.posibilityBottom.unshift(this);
             }
+        }
+        removeSameFromArray(posArray, name) {
+            posArray.forEach((element, i) => {
+                if (element.name === name) {
+                    posArray.splice(i, 1);
+                }
+            });
         }
         getInterface() {
             return { name: this.name, type: this.type, link: this.link };
@@ -25,8 +35,9 @@ var P2_4;
         let json;
         json = JSON.stringify(P2_4.selectedElements);
         console.log(json);
-        return json;
+        sessionStorage.setItem(P2_4.keyConfig, json);
     }
+    P2_4.selectedToJSON = selectedToJSON;
     function selectedFromJSON(jsonStr) {
         let json = JSON.parse(jsonStr);
         Object.keys(json).forEach(key => {
@@ -47,6 +58,7 @@ var P2_4;
             }
         });
     }
+    P2_4.selectedFromJSON = selectedFromJSON;
     let path = window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1);
     if (path == "index.html" || path == "") {
         let imageTop = document.getElementById("picTop");
@@ -54,18 +66,27 @@ var P2_4;
         let imageButtom = document.getElementById("picBottom");
         window.addEventListener("load", finishedLoading);
         function finishedLoading() {
-            //TODO only testing
-            let json = selectedToJSON();
-            P2_4.selectedElements.top = undefined;
-            P2_4.selectedElements.middle = undefined;
-            P2_4.selectedElements.bottom = undefined;
-            selectedFromJSON(json);
-            loadImages();
+            let json = sessionStorage.getItem(P2_4.keyConfig);
+            if (json != null) {
+                selectedFromJSON(json);
+                loadImages();
+            }
+            else {
+                //TODO Message auf Statusfeld schreiben
+                console.log("Keine Auswahl getroffen");
+                loadImages();
+            }
         }
         function loadImages() {
-            imageTop.src = P2_4.selectedElements.top.link;
-            imageMiddle.src = P2_4.selectedElements.middle.link;
-            imageButtom.src = P2_4.selectedElements.bottom.link;
+            if (P2_4.selectedElements.top != undefined) {
+                imageTop.src = P2_4.selectedElements.top.link;
+            }
+            if (P2_4.selectedElements.middle != undefined) {
+                imageMiddle.src = P2_4.selectedElements.middle.link;
+            }
+            if (P2_4.selectedElements.bottom != undefined) {
+                imageButtom.src = P2_4.selectedElements.bottom.link;
+            }
             console.log(P2_4.selectedElements);
         }
         let btEditTop = document.getElementById("btTop");
