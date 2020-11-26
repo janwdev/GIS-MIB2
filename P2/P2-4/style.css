@@ -1,0 +1,21 @@
+.blockChildren *{
+    margin: auto;
+    display: block;
+}
+
+.centerButtons{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.selectedImage{
+    border: 2px solid blue;
+    box-shadow:0px 12px 22px 1px #333;
+ }
+
+ .detailImg{
+     /*TODO*/
+     max-width: 200px;
+     max-height: 200px;
+ }
