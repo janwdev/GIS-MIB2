@@ -1,5 +1,6 @@
 namespace P2_4 {
     export let keyConfig: string = "ConfigJson";
+    export let selectedElements: Selected = {top: undefined, middle: undefined, bottom: undefined};
     export class Posibility {
         name: string;
         type: number;
@@ -44,6 +45,12 @@ namespace P2_4 {
         top: Posibility;
         middle: Posibility;
         bottom: Posibility;
+    }
+
+    export interface AllPosArrayInterface {
+        top: Posibility[];
+        middle: Posibility[];
+        bottom: Posibility[];
     }
 
     export function selectedToJSON(): void {

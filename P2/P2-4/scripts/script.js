@@ -2,6 +2,7 @@
 var P2_4;
 (function (P2_4) {
     P2_4.keyConfig = "ConfigJson";
+    P2_4.selectedElements = { top: undefined, middle: undefined, bottom: undefined };
     class Posibility {
         constructor(_name, _type, _link) {
             this.name = _name;
