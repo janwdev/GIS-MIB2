@@ -57,7 +57,6 @@ namespace P2_5 {
         if (selectedElements.bottom != undefined) {
             imageButtom.src = selectedElements.bottom.link;
         }
-        console.log(selectedElements);
     }
 
     function addContentToDetailWindow(images: Posibility[]): void {
@@ -85,7 +84,7 @@ namespace P2_5 {
                 htmlImg.classList.remove("selectedImage");
             }
         });
-    }    
+    }
 
     function saveSelection(): void {
         if (path == "selTop.html") {

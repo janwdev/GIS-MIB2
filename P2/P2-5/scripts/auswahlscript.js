@@ -55,7 +55,6 @@ var P2_5;
         if (P2_5.selectedElements.bottom != undefined) {
             imageButtom.src = P2_5.selectedElements.bottom.link;
         }
-        console.log(P2_5.selectedElements);
     }
     function addContentToDetailWindow(images) {
         let divToAdd = document.getElementById("selectDetailImgSection");

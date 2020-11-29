@@ -6,7 +6,6 @@ namespace P2_5 {
     export function allPosArrayToJSON(): string {
         let allPosArray: AllPosArrayInterface = { top: posibilityTop, middle: posibilityMiddle, bottom: posibilityBottom };
         let json: string = JSON.stringify(allPosArray);
-        console.log(json);
         return json;
     }
 

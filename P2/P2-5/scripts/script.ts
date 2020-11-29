@@ -56,7 +56,6 @@ namespace P2_5 {
     export function selectedToJSON(): void {
         let json: string;
         json = JSON.stringify(selectedElements);
-        console.log(json);
         sessionStorage.setItem(keyConfig, json);
     }
 
@@ -132,7 +131,6 @@ namespace P2_5 {
             if (selectedElements.bottom != undefined) {
                 imageButtom.src = selectedElements.bottom.link;
             }
-            console.log(selectedElements);
         }
 
         let btEditTop: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btTop");
@@ -156,7 +154,8 @@ namespace P2_5 {
         }
 
         async function sendCacheToServer(url: string): Promise<void> {
-            let browserCacheData = sessionStorage.getItem(keyConfig);
+            let browserCacheData: JSON = JSON.parse(sessionStorage.getItem(keyConfig));
+            console.log("Send saved Elements to Server:");
             console.log(browserCacheData);
             let query: URLSearchParams = new URLSearchParams(<any>browserCacheData);
             url = url + "?" + query.toString();
@@ -166,16 +165,14 @@ namespace P2_5 {
         }
 
         function showServerAnswer(answer: any): void {
-            console.log(answer);
             let statusFeld: HTMLDivElement = <HTMLDivElement>document.getElementById("serverAusgabe");
             if (answer.message != undefined) {
-                statusFeld.textContent = answer.message;
+                statusFeld.textContent = "Server-Antwort: " + answer.message;
                 statusFeld.style.color = "green";
             } else if (answer.error != undefined) {
-                statusFeld.textContent = answer.error;
+                statusFeld.textContent = "Server-Antwort: " + answer.error;
                 statusFeld.style.color = "red";
             }
-            // TODO
         }
     }
 }

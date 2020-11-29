@@ -36,7 +36,6 @@ var P2_5;
     function selectedToJSON() {
         let json;
         json = JSON.stringify(P2_5.selectedElements);
-        console.log(json);
         sessionStorage.setItem(P2_5.keyConfig, json);
     }
     P2_5.selectedToJSON = selectedToJSON;
@@ -115,7 +114,6 @@ var P2_5;
             if (P2_5.selectedElements.bottom != undefined) {
                 imageButtom.src = P2_5.selectedElements.bottom.link;
             }
-            console.log(P2_5.selectedElements);
         }
         let btEditTop = document.getElementById("btTop");
         btEditTop.addEventListener("click", openDetailTop);
@@ -136,7 +134,8 @@ var P2_5;
             console.log("Open Detail Bottom");
         }
         async function sendCacheToServer(url) {
-            let browserCacheData = sessionStorage.getItem(P2_5.keyConfig);
+            let browserCacheData = JSON.parse(sessionStorage.getItem(P2_5.keyConfig));
+            console.log("Send saved Elements to Server:");
             console.log(browserCacheData);
             let query = new URLSearchParams(browserCacheData);
             url = url + "?" + query.toString();
@@ -145,17 +144,15 @@ var P2_5;
             showServerAnswer(text);
         }
         function showServerAnswer(answer) {
-            console.log(answer);
             let statusFeld = document.getElementById("serverAusgabe");
             if (answer.message != undefined) {
-                statusFeld.textContent = answer.message;
+                statusFeld.textContent = "Server-Antwort: " + answer.message;
                 statusFeld.style.color = "green";
             }
             else if (answer.error != undefined) {
-                statusFeld.textContent = answer.error;
+                statusFeld.textContent = "Server-Antwort: " + answer.error;
                 statusFeld.style.color = "red";
             }
-            // TODO
         }
     }
 })(P2_5 || (P2_5 = {}));

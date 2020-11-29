@@ -7,7 +7,6 @@ var P2_5;
     function allPosArrayToJSON() {
         let allPosArray = { top: P2_5.posibilityTop, middle: P2_5.posibilityMiddle, bottom: P2_5.posibilityBottom };
         let json = JSON.stringify(allPosArray);
-        console.log(json);
         return json;
     }
     P2_5.allPosArrayToJSON = allPosArrayToJSON;
