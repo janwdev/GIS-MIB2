@@ -1,6 +1,6 @@
 namespace P2_5 {
     export let keyConfig: string = "ConfigJson";
-    export let selectedElements: Selected = {top: undefined, middle: undefined, bottom: undefined};
+    export let selectedElements: Selected = { top: undefined, middle: undefined, bottom: undefined };
     export class Posibility {
         name: string;
         type: number;
@@ -114,6 +114,7 @@ namespace P2_5 {
             if (json != null) {
                 selectedFromJSON(json);
                 loadImages();
+                sendCacheToServer("https://gis-communication.herokuapp.com/");
             } else {
                 //TODO Message auf Statusfeld schreiben
                 console.log("Keine Auswahl getroffen");
@@ -152,6 +153,29 @@ namespace P2_5 {
         function openDetailBottom(): void {
             window.open("selBottom.html", "_self");
             console.log("Open Detail Bottom");
+        }
+
+        async function sendCacheToServer(url: string): Promise<void> {
+            let browserCacheData = sessionStorage.getItem(keyConfig);
+            console.log(browserCacheData);
+            let query: URLSearchParams = new URLSearchParams(<any>browserCacheData);
+            url = url + "?" + query.toString();
+            let resp: Response = await fetch(url);
+            let text: JSON = await resp.json();
+            showServerAnswer(text);
+        }
+
+        function showServerAnswer(answer: any): void {
+            console.log(answer);
+            let statusFeld: HTMLDivElement = <HTMLDivElement>document.getElementById("serverAusgabe");
+            if (answer.message != undefined) {
+                statusFeld.textContent = answer.message;
+                statusFeld.style.color = "green";
+            } else if (answer.error != undefined) {
+                statusFeld.textContent = answer.error;
+                statusFeld.style.color = "red";
+            }
+            // TODO
         }
     }
 }

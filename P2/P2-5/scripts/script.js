@@ -97,6 +97,7 @@ var P2_5;
             if (json != null) {
                 selectedFromJSON(json);
                 loadImages();
+                sendCacheToServer("https://gis-communication.herokuapp.com/");
             }
             else {
                 //TODO Message auf Statusfeld schreiben
@@ -133,6 +134,28 @@ var P2_5;
         function openDetailBottom() {
             window.open("selBottom.html", "_self");
             console.log("Open Detail Bottom");
+        }
+        async function sendCacheToServer(url) {
+            let browserCacheData = sessionStorage.getItem(P2_5.keyConfig);
+            console.log(browserCacheData);
+            let query = new URLSearchParams(browserCacheData);
+            url = url + "?" + query.toString();
+            let resp = await fetch(url);
+            let text = await resp.json();
+            showServerAnswer(text);
+        }
+        function showServerAnswer(answer) {
+            console.log(answer);
+            let statusFeld = document.getElementById("serverAusgabe");
+            if (answer.message != undefined) {
+                statusFeld.textContent = answer.message;
+                statusFeld.style.color = "green";
+            }
+            else if (answer.error != undefined) {
+                statusFeld.textContent = answer.error;
+                statusFeld.style.color = "red";
+            }
+            // TODO
         }
     }
 })(P2_5 || (P2_5 = {}));
