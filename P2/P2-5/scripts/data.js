@@ -19,7 +19,19 @@ var P2_5;
             if (key == "top" || key == "middle" || key == "bottom") {
                 let posIf = json[key];
                 posIf.forEach(pos => {
-                    new P2_5.Posibility(pos.name, pos.type, pos.link);
+                    let posibility = new P2_5.Posibility(pos.name, pos.type, pos.link);
+                    if (posibility.type == 0) {
+                        posibility.removeSameFromArray(P2_5.posibilityTop, posibility.name);
+                        P2_5.posibilityTop.unshift(posibility);
+                    }
+                    else if (posibility.type == 1) {
+                        posibility.removeSameFromArray(P2_5.posibilityMiddle, posibility.name);
+                        P2_5.posibilityMiddle.unshift(posibility);
+                    }
+                    else if (posibility.type == 2) {
+                        posibility.removeSameFromArray(P2_5.posibilityBottom, posibility.name);
+                        P2_5.posibilityBottom.unshift(posibility);
+                    }
                 });
             }
         });

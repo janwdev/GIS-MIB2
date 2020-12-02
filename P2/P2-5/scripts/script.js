@@ -8,18 +8,6 @@ var P2_5;
             this.name = _name;
             this.type = _type;
             this.link = _link;
-            if (this.type == 0) {
-                this.removeSameFromArray(P2_5.posibilityTop, this.name);
-                P2_5.posibilityTop.unshift(this);
-            }
-            else if (this.type == 1) {
-                this.removeSameFromArray(P2_5.posibilityMiddle, this.name);
-                P2_5.posibilityMiddle.unshift(this);
-            }
-            else if (this.type == 2) {
-                this.removeSameFromArray(P2_5.posibilityBottom, this.name);
-                P2_5.posibilityBottom.unshift(this);
-            }
         }
         removeSameFromArray(posArray, name) {
             posArray.forEach((element, i) => {

@@ -10,16 +10,6 @@ namespace P2_5 {
             this.name = _name;
             this.type = _type;
             this.link = _link;
-            if (this.type == 0) {
-                this.removeSameFromArray(posibilityTop, this.name);
-                posibilityTop.unshift(this);
-            } else if (this.type == 1) {
-                this.removeSameFromArray(posibilityMiddle, this.name);
-                posibilityMiddle.unshift(this);
-            } else if (this.type == 2) {
-                this.removeSameFromArray(posibilityBottom, this.name);
-                posibilityBottom.unshift(this);
-            }
         }
 
         removeSameFromArray(posArray: Posibility[], name: string): void {
@@ -160,11 +150,16 @@ namespace P2_5 {
             let query: URLSearchParams = new URLSearchParams(<any>browserCacheData);
             url = url + "?" + query.toString();
             let resp: Response = await fetch(url);
-            let text: JSON = await resp.json();
+            let text: ServerAntwort = await resp.json();
             showServerAnswer(text);
         }
 
-        function showServerAnswer(answer: any): void {
+        interface ServerAntwort {
+            error: string;
+            message: string;
+        }
+
+        function showServerAnswer(answer: ServerAntwort): void {
             let statusFeld: HTMLDivElement = <HTMLDivElement>document.getElementById("serverAusgabe");
             if (answer.message != undefined) {
                 statusFeld.textContent = "Server-Antwort: " + answer.message;

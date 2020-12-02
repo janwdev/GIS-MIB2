@@ -18,7 +18,17 @@ namespace P2_5 {
             if (key == "top" || key == "middle" || key == "bottom") {
                 let posIf: PosibilityInterface[] = json[key];
                 posIf.forEach(pos => {
-                    new Posibility(pos.name, pos.type, pos.link);
+                    let posibility: Posibility = new Posibility(pos.name, pos.type, pos.link);
+                    if (posibility.type == 0) {
+                        posibility.removeSameFromArray(posibilityTop, posibility.name);
+                        posibilityTop.unshift(posibility);
+                    } else if (posibility.type == 1) {
+                        posibility.removeSameFromArray(posibilityMiddle, posibility.name);
+                        posibilityMiddle.unshift(posibility);
+                    } else if (posibility.type == 2) {
+                        posibility.removeSameFromArray(posibilityBottom, posibility.name);
+                        posibilityBottom.unshift(posibility);
+                    }
                 });
             }
         });

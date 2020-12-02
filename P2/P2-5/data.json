@@ -1,1 +1,68 @@
-{"top":[{"name":"Leuchtturm4 - Oben","type":0,"link":"assets/oben/Leuchtturm4_o.png"},{"name":"Leuchtturm3 - Oben","type":0,"link":"assets/oben/Leuchtturm3_o.png"},{"name":"Leuchtturm2 - Oben","type":0,"link":"assets/oben/Leuchtturm2_o.png"},{"name":"Leuchtturm1 - Oben","type":0,"link":"assets/oben/Leuchtturm1_o.png"}],"middle":[{"name":"Leuchtturm4 - Mitte","type":1,"link":"assets/mitte/Leuchtturm4_m.png"},{"name":"Leuchtturm3 - Mitte","type":1,"link":"assets/mitte/Leuchtturm3_m.png"},{"name":"Leuchtturm2 - Mitte","type":1,"link":"assets/mitte/Leuchtturm2_m.png"},{"name":"Leuchtturm1 - Mitte","type":1,"link":"assets/mitte/Leuchtturm1_m.png"}],"bottom":[{"name":"Leuchtturm4 - Unten","type":2,"link":"assets/unten/Leuchtturm4_u.png"},{"name":"Leuchtturm3 - Unten","type":2,"link":"assets/unten/Leuchtturm3_u.png"},{"name":"Leuchtturm2 - Unten","type":2,"link":"assets/unten/Leuchtturm2_u.png"},{"name":"Leuchtturm1 - Unten","type":2,"link":"assets/unten/Leuchtturm1_u.png"}]}
+{
+    "top": [
+        {
+            "name": "Leuchtturm4 - Oben",
+            "type": 0,
+            "link": "assets/oben/Leuchtturm4_o.png"
+        },
+        {
+            "name": "Leuchtturm3 - Oben",
+            "type": 0,
+            "link": "assets/oben/Leuchtturm3_o.png"
+        },
+        {
+            "name": "Leuchtturm2 - Oben",
+            "type": 0,
+            "link": "assets/oben/Leuchtturm2_o.png"
+        },
+        {
+            "name": "Leuchtturm1 - Oben",
+            "type": 0,
+            "link": "assets/oben/Leuchtturm1_o.png"
+        }
+    ],
+    "middle": [
+        {
+            "name": "Leuchtturm4 - Mitte",
+            "type": 1,
+            "link": "assets/mitte/Leuchtturm4_m.png"
+        },
+        {
+            "name": "Leuchtturm3 - Mitte",
+            "type": 1,
+            "link": "assets/mitte/Leuchtturm3_m.png"
+        },
+        {
+            "name": "Leuchtturm2 - Mitte",
+            "type": 1,
+            "link": "assets/mitte/Leuchtturm2_m.png"
+        },
+        {
+            "name": "Leuchtturm1 - Mitte",
+            "type": 1,
+            "link": "assets/mitte/Leuchtturm1_m.png"
+        }
+    ],
+    "bottom": [
+        {
+            "name": "Leuchtturm4 - Unten",
+            "type": 2,
+            "link": "assets/unten/Leuchtturm4_u.png"
+        },
+        {
+            "name": "Leuchtturm3 - Unten",
+            "type": 2,
+            "link": "assets/unten/Leuchtturm3_u.png"
+        },
+        {
+            "name": "Leuchtturm2 - Unten",
+            "type": 2,
+            "link": "assets/unten/Leuchtturm2_u.png"
+        },
+        {
+            "name": "Leuchtturm1 - Unten",
+            "type": 2,
+            "link": "assets/unten/Leuchtturm1_u.png"
+        }
+    ]
+}
