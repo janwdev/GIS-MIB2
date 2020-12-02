@@ -12,10 +12,10 @@ namespace P2_5 {
             this.link = _link;
         }
 
-        removeSameFromArray(posArray: Posibility[], name: string): void {
-            posArray.forEach((element, i) => {
-                if (element.name === name) {
-                    posArray.splice(i, 1);
+        removeSameFromArray(_posArray: Posibility[], _name: string): void {
+            _posArray.forEach((element, i) => {
+                if (element.name === _name) {
+                    _posArray.splice(i, 1);
                 }
             });
         }
@@ -49,8 +49,8 @@ namespace P2_5 {
         sessionStorage.setItem(keyConfig, json);
     }
 
-    export function selectedFromJSON(jsonStr: string): void {
-        let json: Selected = JSON.parse(jsonStr);
+    export function selectedFromJSON(_jsonStr: string): void {
+        let json: Selected = JSON.parse(_jsonStr);
         Object.keys(json).forEach(key => {
             if (key == "top") {
                 let pos: PosibilityInterface = json[key];
@@ -143,13 +143,13 @@ namespace P2_5 {
             console.log("Open Detail Bottom");
         }
 
-        async function sendCacheToServer(url: string): Promise<void> {
+        async function sendCacheToServer(_url: string): Promise<void> {
             let browserCacheData: JSON = JSON.parse(sessionStorage.getItem(keyConfig));
             console.log("Send saved Elements to Server:");
             console.log(browserCacheData);
             let query: URLSearchParams = new URLSearchParams(<any>browserCacheData);
-            url = url + "?" + query.toString();
-            let resp: Response = await fetch(url);
+            _url = _url + "?" + query.toString();
+            let resp: Response = await fetch(_url);
             let text: ServerAntwort = await resp.json();
             showServerAnswer(text);
         }
@@ -159,13 +159,13 @@ namespace P2_5 {
             message: string;
         }
 
-        function showServerAnswer(answer: ServerAntwort): void {
+        function showServerAnswer(_answer: ServerAntwort): void {
             let statusFeld: HTMLDivElement = <HTMLDivElement>document.getElementById("serverAusgabe");
-            if (answer.message != undefined) {
-                statusFeld.textContent = "Server-Antwort: " + answer.message;
+            if (_answer.message != undefined) {
+                statusFeld.textContent = "Server-Antwort: " + _answer.message;
                 statusFeld.style.color = "green";
-            } else if (answer.error != undefined) {
-                statusFeld.textContent = "Server-Antwort: " + answer.error;
+            } else if (_answer.error != undefined) {
+                statusFeld.textContent = "Server-Antwort: " + _answer.error;
                 statusFeld.style.color = "red";
             }
         }

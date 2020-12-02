@@ -9,11 +9,11 @@ namespace P2_5 {
         return json;
     }
 
-    export function allPosArrayFromJSON(jsonStr: string): void {
+    export function allPosArrayFromJSON(_jsonStr: string): void {
         posibilityTop = [];
         posibilityMiddle = [];
         posibilityBottom = [];
-        let json: AllPosArrayInterface = JSON.parse(jsonStr);
+        let json: AllPosArrayInterface = JSON.parse(_jsonStr);
         Object.keys(json).forEach(key => {
             if (key == "top" || key == "middle" || key == "bottom") {
                 let posIf: PosibilityInterface[] = json[key];

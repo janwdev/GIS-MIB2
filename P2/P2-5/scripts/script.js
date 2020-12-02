@@ -9,10 +9,10 @@ var P2_5;
             this.type = _type;
             this.link = _link;
         }
-        removeSameFromArray(posArray, name) {
-            posArray.forEach((element, i) => {
-                if (element.name === name) {
-                    posArray.splice(i, 1);
+        removeSameFromArray(_posArray, _name) {
+            _posArray.forEach((element, i) => {
+                if (element.name === _name) {
+                    _posArray.splice(i, 1);
                 }
             });
         }
@@ -27,8 +27,8 @@ var P2_5;
         sessionStorage.setItem(P2_5.keyConfig, json);
     }
     P2_5.selectedToJSON = selectedToJSON;
-    function selectedFromJSON(jsonStr) {
-        let json = JSON.parse(jsonStr);
+    function selectedFromJSON(_jsonStr) {
+        let json = JSON.parse(_jsonStr);
         Object.keys(json).forEach(key => {
             if (key == "top") {
                 let pos = json[key];
@@ -121,24 +121,24 @@ var P2_5;
             window.open("selBottom.html", "_self");
             console.log("Open Detail Bottom");
         }
-        async function sendCacheToServer(url) {
+        async function sendCacheToServer(_url) {
             let browserCacheData = JSON.parse(sessionStorage.getItem(P2_5.keyConfig));
             console.log("Send saved Elements to Server:");
             console.log(browserCacheData);
             let query = new URLSearchParams(browserCacheData);
-            url = url + "?" + query.toString();
-            let resp = await fetch(url);
+            _url = _url + "?" + query.toString();
+            let resp = await fetch(_url);
             let text = await resp.json();
             showServerAnswer(text);
         }
-        function showServerAnswer(answer) {
+        function showServerAnswer(_answer) {
             let statusFeld = document.getElementById("serverAusgabe");
-            if (answer.message != undefined) {
-                statusFeld.textContent = "Server-Antwort: " + answer.message;
+            if (_answer.message != undefined) {
+                statusFeld.textContent = "Server-Antwort: " + _answer.message;
                 statusFeld.style.color = "green";
             }
-            else if (answer.error != undefined) {
-                statusFeld.textContent = "Server-Antwort: " + answer.error;
+            else if (_answer.error != undefined) {
+                statusFeld.textContent = "Server-Antwort: " + _answer.error;
                 statusFeld.style.color = "red";
             }
         }

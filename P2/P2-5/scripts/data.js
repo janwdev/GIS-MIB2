@@ -10,11 +10,11 @@ var P2_5;
         return json;
     }
     P2_5.allPosArrayToJSON = allPosArrayToJSON;
-    function allPosArrayFromJSON(jsonStr) {
+    function allPosArrayFromJSON(_jsonStr) {
         P2_5.posibilityTop = [];
         P2_5.posibilityMiddle = [];
         P2_5.posibilityBottom = [];
-        let json = JSON.parse(jsonStr);
+        let json = JSON.parse(_jsonStr);
         Object.keys(json).forEach(key => {
             if (key == "top" || key == "middle" || key == "bottom") {
                 let posIf = json[key];

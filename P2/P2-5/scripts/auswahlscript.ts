@@ -59,9 +59,9 @@ namespace P2_5 {
         }
     }
 
-    function addContentToDetailWindow(images: Posibility[]): void {
+    function addContentToDetailWindow(_images: Posibility[]): void {
         let divToAdd: HTMLDivElement = <HTMLDivElement>document.getElementById("selectDetailImgSection");
-        images.forEach(img => {
+        _images.forEach(img => {
             let imgElement: HTMLImageElement = document.createElement("img");
             htmlImgs.push(imgElement);
             imgElement.src = img.link;
@@ -75,12 +75,12 @@ namespace P2_5 {
         });
     }
 
-    function setSelected(img: Posibility, imgElement: HTMLImageElement): void {
-        selected = img;
-        imgElement.className += " selectedImage";
-        console.log("selected: " + img.name);
+    function setSelected(_img: Posibility, _imgElement: HTMLImageElement): void {
+        selected = _img;
+        _imgElement.className += " selectedImage";
+        console.log("selected: " + _img.name);
         htmlImgs.forEach(htmlImg => {
-            if (htmlImg != imgElement) {
+            if (htmlImg != _imgElement) {
                 htmlImg.classList.remove("selectedImage");
             }
         });

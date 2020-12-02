@@ -56,9 +56,9 @@ var P2_5;
             imageButtom.src = P2_5.selectedElements.bottom.link;
         }
     }
-    function addContentToDetailWindow(images) {
+    function addContentToDetailWindow(_images) {
         let divToAdd = document.getElementById("selectDetailImgSection");
-        images.forEach(img => {
+        _images.forEach(img => {
             let imgElement = document.createElement("img");
             htmlImgs.push(imgElement);
             imgElement.src = img.link;
@@ -71,12 +71,12 @@ var P2_5;
             divToAdd.appendChild(imgElement);
         });
     }
-    function setSelected(img, imgElement) {
-        selected = img;
-        imgElement.className += " selectedImage";
-        console.log("selected: " + img.name);
+    function setSelected(_img, _imgElement) {
+        selected = _img;
+        _imgElement.className += " selectedImage";
+        console.log("selected: " + _img.name);
         htmlImgs.forEach(htmlImg => {
-            if (htmlImg != imgElement) {
+            if (htmlImg != _imgElement) {
                 htmlImg.classList.remove("selectedImage");
             }
         });
