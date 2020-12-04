@@ -160,7 +160,7 @@ namespace P2_5 {
         }
 
         function showServerAnswer(_answer: ServerAntwort): void {
-            let statusFeld: HTMLDivElement = <HTMLDivElement>document.getElementById("serverAusgabe");
+            let statusFeld: HTMLParagraphElement = <HTMLParagraphElement>document.getElementById("serverAusgabe");
             if (_answer.message != undefined) {
                 statusFeld.textContent = "Server-Antwort: " + _answer.message;
                 statusFeld.style.color = "green";
