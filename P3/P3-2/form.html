@@ -1,16 +1,27 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="script.js" defer></script>
     <title>Form</title>
 </head>
+
 <body>
     <form>
-        <input name="name" type="text" placeholder="Name">
-        <input name="email" type="email" placeholder="Email" required>
-        <button type="button" id="send">Abschicken</button>
+        <div>
+            <input name="name" type="text" placeholder="Name">
+            <input name="email" type="email" placeholder="Email">
+        </div>
+        <div>
+            <button type="button" id="sendHTML">Abschicken HTML</button>
+            <button type="button" id="sendJSON">Abschicken JSON</button>
+        </div>
+        <p id="answerSec"></p>
+
+
     </form>
 </body>
+
 </html>
