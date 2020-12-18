@@ -1,8 +1,8 @@
 "use strict";
 var P3_2;
 (function (P3_2) {
-    let url = "http://localhost:8100";
-    //let url: string = "https://gis2020jw.herokuapp.com";
+    //let url: string = "http://localhost:8100";
+    let url = "https://gis2020jw.herokuapp.com";
     let formData = new FormData(document.forms[0]);
     let answerSec = document.getElementById("answerSec");
     let btSend = document.getElementById("sendHTML");
