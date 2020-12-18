@@ -10,6 +10,8 @@ namespace P3_2 {
     btSend.addEventListener("click", sendHTML);
     let btSendJSON: HTMLButtonElement = <HTMLButtonElement>document.getElementById("sendJSON");
     btSendJSON.addEventListener("click", sendJSON);
+    let btSendPostJSON: HTMLButtonElement = <HTMLButtonElement>document.getElementById("sendPostJSON");
+    btSendPostJSON.addEventListener("click", sendPostJSON);
 
     async function sendHTML(): Promise<void> {
         let response: Response = await send(url + "/html");
@@ -30,5 +32,21 @@ namespace P3_2 {
         _url = _url + "?" + query.toString();
         let response: Response = await fetch(_url);
         return response;
+    }
+
+    async function sendPostJSON(): Promise<void> {
+        let data: string = JSON.stringify(Object.fromEntries(formData));
+        let response: Response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "text/plain",
+            },
+            body: data
+        });
+        let json: JSON = await response.json();
+        console.log("Answer:");
+        console.log(json);
+        answerSec.innerHTML = "<pre>" + JSON.stringify(json, undefined, 2) + "</pre>";
+
     }
 }

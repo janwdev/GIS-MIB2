@@ -18,26 +18,42 @@ var P_3_2Server;
     }
     function handleRequest(_request, _response) {
         console.log("I hear voices!"); // Konsolenausgabe
-        console.log(_request.url); // URL auf Konsole ausgeben
         _response.setHeader("Access-Control-Allow-Origin", "*");
-        //_response.write(_request.url + "<br/>"); // Antwort URL ausgeben
-        let actUrl = url.parse(_request.url, true);
-        let query = actUrl.query;
-        if (actUrl.pathname == "/html") {
-            _response.setHeader("content-type", "text/html; charset=utf-8"); // Antwort als Text
-            for (let key in query) {
-                console.log(key + ":" + query[key]);
-                _response.write(key + ":" + query[key] + "<br/>");
-            }
-        }
-        else if (actUrl.pathname == "/json") {
-            _response.setHeader("content-type", "application/json"); // Antwort als JSON
-            _response.write(JSON.stringify(query));
+        if (_request.method == "POST") {
+            let body = "";
+            _request.on("data", data => {
+                body += data;
+            });
+            _request.on("end", async () => {
+                let post = JSON.parse(body);
+                console.log("Post-Data:");
+                console.log(post);
+                _response.setHeader("content-type", "application/json"); // Antwort als JSON
+                _response.write(JSON.stringify(post));
+                _response.end(); // Antwort abschliessen
+            });
         }
         else {
-            _response.write("please open /html or /json");
+            console.log(_request.url); // URL auf Konsole ausgeben
+            //_response.write(_request.url + "<br/>"); // Antwort URL ausgeben
+            let actUrl = url.parse(_request.url, true);
+            let query = actUrl.query;
+            if (actUrl.pathname == "/html") {
+                _response.setHeader("content-type", "text/html; charset=utf-8"); // Antwort als Text
+                for (let key in query) {
+                    console.log(key + ":" + query[key]);
+                    _response.write(key + ":" + query[key] + "<br/>");
+                }
+            }
+            else if (actUrl.pathname == "/json") {
+                _response.setHeader("content-type", "application/json"); // Antwort als JSON
+                _response.write(JSON.stringify(query));
+            }
+            else {
+                _response.write("please open /html or /json");
+            }
+            _response.end(); // Antwort abschliessen
         }
-        _response.end(); // Antwort abschliessen
     }
 })(P_3_2Server = exports.P_3_2Server || (exports.P_3_2Server = {}));
 //# sourceMappingURL=bspServer.js.map

@@ -9,6 +9,8 @@ var P3_2;
     btSend.addEventListener("click", sendHTML);
     let btSendJSON = document.getElementById("sendJSON");
     btSendJSON.addEventListener("click", sendJSON);
+    let btSendPostJSON = document.getElementById("sendPostJSON");
+    btSendPostJSON.addEventListener("click", sendPostJSON);
     async function sendHTML() {
         let response = await send(url + "/html");
         let text = await response.text();
@@ -26,6 +28,20 @@ var P3_2;
         _url = _url + "?" + query.toString();
         let response = await fetch(_url);
         return response;
+    }
+    async function sendPostJSON() {
+        let data = JSON.stringify(Object.fromEntries(formData));
+        let response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "text/plain",
+            },
+            body: data
+        });
+        let json = await response.json();
+        console.log("Answer:");
+        console.log(json);
+        answerSec.innerHTML = "<pre>" + JSON.stringify(json, undefined, 2) + "</pre>";
     }
 })(P3_2 || (P3_2 = {}));
 //# sourceMappingURL=script.js.map
