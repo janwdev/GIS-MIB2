@@ -4,11 +4,13 @@
   "description": "## Aufgaben ### P1 - Website über mich [Aufgabe 2](https://janwdev.github.io/GIS-MIB2/P1/P1-1/) - P1-2 [Portfolio](https://janwdev.github.io/GIS-MIB2/P1/P1-2/) - P1-3 [Portfolio](https://janwdev.github.io/GIS-MIB2/P1/P1-3/) - P1-4 [Portfolio](https://janwdev.github.io/GIS-MIB2/P1/P1-4/)",
   "main": "index.js",
   "dependencies": {
-    "@types/node": "^14.14.12"
+    "@types/mongodb": "^3.6.3",
+    "@types/node": "^14.14.12",
+    "mongodb": "^3.6.3"
   },
   "devDependencies": {},
   "scripts": {
-    "start": "node P3/P3-2/bspServer.js"
+    "start": "node P3/P3-4/server.js remote"
   },
   "repository": {
     "type": "git",
