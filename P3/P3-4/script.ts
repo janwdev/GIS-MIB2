@@ -1,7 +1,7 @@
 namespace P3_4 {
 
-    let url: string = "http://localhost:8100";
-    //let url: string = "https://gis2020jw.herokuapp.com";
+    //let url: string = "http://localhost:8100";
+    let url: string = "https://gis2020jw.herokuapp.com";
 
     let form: HTMLFormElement = <HTMLFormElement>document.getElementById("form");
     let answerSection: HTMLDivElement = <HTMLDivElement>document.getElementById("answerSection");
