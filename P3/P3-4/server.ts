@@ -87,6 +87,12 @@ export namespace P_3_4Server {
                             console.log(data);
                             answer = JSON.stringify(data);
                             break;
+                        case "delete":
+                            let id: string = <string>data._id;
+                            deleteData(id);
+                            let s: string = '{ "delid":"' + id + '"}';
+                            answer = JSON.stringify(JSON.parse(s));
+                            break;
                         default:
                             console.log("Wrong command given");
                             console.log("Command: ", command);
@@ -111,6 +117,17 @@ export namespace P_3_4Server {
     async function retrieveData(): Promise<string> {
         let data: string[] = await collection.find().toArray();
         return JSON.stringify(data);
+    }
+
+    function deleteData(id: string): void {
+        console.log("Try to delete: " + id);
+        collection.deleteOne({_id: new Mongo.ObjectID(id)}, function(err: Mongo.MongoError): void {
+            if (err){
+              console.log("failed to delete element with id: " + id);
+              throw err;
+            }
+            console.log("success to delete element with id: " + id);
+         });
     }
 
 

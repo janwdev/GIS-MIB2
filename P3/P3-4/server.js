@@ -76,6 +76,12 @@ var P_3_4Server;
                             console.log(data);
                             answer = JSON.stringify(data);
                             break;
+                        case "delete":
+                            let id = data._id;
+                            deleteData(id);
+                            let s = '{ "delid":"' + id + '"}';
+                            answer = JSON.stringify(JSON.parse(s));
+                            break;
                         default:
                             console.log("Wrong command given");
                             console.log("Command: ", command);
@@ -96,6 +102,16 @@ var P_3_4Server;
     async function retrieveData() {
         let data = await collection.find().toArray();
         return JSON.stringify(data);
+    }
+    function deleteData(id) {
+        console.log("Try to delete: " + id);
+        collection.deleteOne({ _id: new Mongo.ObjectID(id) }, function (err) {
+            if (err) {
+                console.log("failed to delete element with id: " + id);
+                throw err;
+            }
+            console.log("success to delete element with id: " + id);
+        });
     }
 })(P_3_4Server = exports.P_3_4Server || (exports.P_3_4Server = {}));
 //# sourceMappingURL=server.js.map
