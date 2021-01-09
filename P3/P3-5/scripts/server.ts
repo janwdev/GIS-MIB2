@@ -139,11 +139,6 @@ export namespace P_3_5Server {
         collection.insertOne(_data);
     }
 
-    async function retrieveData(): Promise<string> {
-        let data: string[] = await collection.find().toArray();
-        return JSON.stringify(data);
-    }
-
     function deleteData(id: string): void {
         console.log("Try to delete: " + id);
         collection.deleteOne({ _id: new Mongo.ObjectID(id) }, function (err: Mongo.MongoError): void {
@@ -155,5 +150,25 @@ export namespace P_3_5Server {
         });
     }
 
+    interface UserDatabaseContent {
+        _id: string;
+        password: string;
+        name: string;
+        firstname: string;
+        email: string;
+    }
+
+    async function retrieveData(): Promise<string> {
+        let data: string[] = await collection.find().toArray();
+        let retData: UserDatabaseContent[] = [];
+        data.forEach(element => {
+            let dataElement: UserDatabaseContent = JSON.parse(JSON.stringify(element)); //TODO typedef mit interface
+            delete dataElement.password;
+            delete dataElement._id;
+            retData.push(dataElement);
+        });
+        // console.log(retData);
+        return JSON.stringify(retData);
+    }
 
 }

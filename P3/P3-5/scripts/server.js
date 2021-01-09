@@ -124,10 +124,6 @@ var P_3_5Server;
     function storeData(_data) {
         collection.insertOne(_data);
     }
-    async function retrieveData() {
-        let data = await collection.find().toArray();
-        return JSON.stringify(data);
-    }
     function deleteData(id) {
         console.log("Try to delete: " + id);
         collection.deleteOne({ _id: new Mongo.ObjectID(id) }, function (err) {
@@ -137,6 +133,18 @@ var P_3_5Server;
             }
             console.log("success to delete element with id: " + id);
         });
+    }
+    async function retrieveData() {
+        let data = await collection.find().toArray();
+        let retData = [];
+        data.forEach(element => {
+            let dataElement = JSON.parse(JSON.stringify(element)); //TODO typedef mit interface
+            delete dataElement.password;
+            delete dataElement._id;
+            retData.push(dataElement);
+        });
+        // console.log(retData);
+        return JSON.stringify(retData);
     }
 })(P_3_5Server = exports.P_3_5Server || (exports.P_3_5Server = {}));
 //# sourceMappingURL=server.js.map
