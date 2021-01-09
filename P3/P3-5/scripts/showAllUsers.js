@@ -48,8 +48,54 @@ var P3_5;
                     tabCell.textContent = obj[key];
                 }
             }
+            // Delete
+            //let tabCellDel: HTMLTableCellElement = tr.insertCell();
+            let btDel = document.createElement("button");
+            btDel.textContent = "Delete";
+            //tabCellDel.appendChild(btDel);
+            btDel.addEventListener("click", function () {
+                deleteDatabaseElementFromArray(i, array);
+            });
         }
+        //### Delete Header
+        //let thDel: HTMLTableHeaderCellElement = document.createElement("th");
+        //tr.appendChild(thDel);
+        //###
         answerSection.appendChild(table);
+    }
+    //###Delete
+    function deleteDatabaseElementFromArray(i, array) {
+        let obj = array[i];
+        let id = undefined;
+        for (let key in obj) {
+            if (key == "_id") {
+                id = obj[key];
+                break;
+            }
+        }
+        if (id != undefined) {
+            //Delete element with id
+            deleteDatabaseElementWithID(id);
+        }
+        else {
+            alert("Error no id found");
+        }
+    }
+    async function deleteDatabaseElementWithID(id) {
+        console.log("Try to delete Element with id: " + id);
+        let params = new URLSearchParams("command=delete");
+        params.append("_id", id);
+        let response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "text/plain"
+            },
+            body: params
+        });
+        let json = await response.json();
+        console.log("Answer:");
+        console.log(json);
+        retrieveData(); // Fuer reload
     }
 })(P3_5 || (P3_5 = {}));
 //# sourceMappingURL=showAllUsers.js.map
