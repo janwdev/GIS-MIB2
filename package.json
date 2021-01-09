@@ -10,7 +10,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "node P3/P3-4/server.js remote"
+    "start": "node P3/P3-5/scripts/server.js local"
   },
   "repository": {
     "type": "git",
