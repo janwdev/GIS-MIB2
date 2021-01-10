@@ -75,6 +75,7 @@ export namespace P_3_5Server {
                     let command: string | string[] = data.command;
                     let answer: string = "";
                     let s: string;
+                    let email: string;
                     switch (command) {
                         case "retrieve":
                             console.log("Command was retrieve");
@@ -84,10 +85,10 @@ export namespace P_3_5Server {
                         case "insert":
                             delete data.command; // Wichtig, sonst wird das Kommando mit eingefuegt
                             console.log("insert");
-                            let email: string = <string>data.email;
-                            if (email != undefined) {
+                            email = <string>data.email;
+                            if (email) {
                                 console.log(email);
-                                let exists: boolean = await accountExistAlready(email)
+                                let exists: boolean = await accountExistAlready(email);
                                 if (!exists) {
                                     storeData(data);
                                     console.log("Post-Data:");
@@ -110,6 +111,24 @@ export namespace P_3_5Server {
                             answer = JSON.stringify(JSON.parse(s));
                             break;
                         //TODO Login
+                        case "login":
+                            console.log("login");
+                            email = <string>data.email;
+                            let pw: string = <string>data.password;
+                            if (email && pw) {
+                                console.log(email);
+                                let rightCombo: boolean = await login(email, pw);
+                                if (rightCombo) {
+                                    s = '{ "status":' + 0 + ', "words":' + '"Login successful' + '"}';
+                                } else {
+                                    s = '{ "status":' + 1 + ', "words":' + '"Wrong Combination or no User with this Email' + '"}';
+                                }
+                            } else {
+                                s = '{ "status":' + 2 + ', "words":' + '"No Email or Password' + '"}';
+                            }
+                            console.log(s);
+                            answer = JSON.stringify(JSON.parse(s));
+                            break;
                         default:
                             console.log("Wrong command given");
                             console.log("Command: ", command);
@@ -130,6 +149,14 @@ export namespace P_3_5Server {
     async function accountExistAlready(email: string): Promise<boolean> {
         let exists: Mongo.CollationDocument = await collection.findOne({ email: email });
         if (exists != null) {
+            return true;
+        }
+        return false;
+    }
+
+    async function login(email: string, pw: string): Promise<boolean> {
+        let exists: Mongo.CollationDocument = await collection.findOne({ email: email, password: pw });
+        if (exists) {
             return true;
         }
         return false;
@@ -164,7 +191,7 @@ export namespace P_3_5Server {
         data.forEach(element => {
             let dataElement: UserDatabaseContent = JSON.parse(JSON.stringify(element)); //TODO typedef mit interface
             delete dataElement.password;
-            delete dataElement._id;
+            //delete dataElement._id;
             retData.push(dataElement);
         });
         // console.log(retData);

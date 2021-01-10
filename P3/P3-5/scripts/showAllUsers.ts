@@ -1,6 +1,7 @@
 namespace P3_5 {
-    let url: string = "http://localhost:8100";
-    //let url: string = "https://gis2020jw.herokuapp.com";
+    
+    // let url: string = "http://localhost:8100";
+    let url: string = "https://gis2020jw.herokuapp.com";
 
     let btRetrieve: HTMLButtonElement = <HTMLButtonElement>document.getElementById("retrieve");
     btRetrieve.addEventListener("click", retrieveData);
@@ -55,10 +56,10 @@ namespace P3_5 {
                 }
             }
             // Delete
-            //let tabCellDel: HTMLTableCellElement = tr.insertCell();
+            // let tabCellDel: HTMLTableCellElement = tr.insertCell();
             let btDel: HTMLButtonElement = document.createElement("button");
             btDel.textContent = "Delete";
-            //tabCellDel.appendChild(btDel);
+            // tabCellDel.appendChild(btDel);
             btDel.addEventListener("click", function (): void {
                 deleteDatabaseElementFromArray(i, array);
             });

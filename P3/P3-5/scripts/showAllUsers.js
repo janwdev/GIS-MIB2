@@ -1,8 +1,8 @@
 "use strict";
 var P3_5;
 (function (P3_5) {
-    let url = "http://localhost:8100";
-    //let url: string = "https://gis2020jw.herokuapp.com";
+    // let url: string = "http://localhost:8100";
+    let url = "https://gis2020jw.herokuapp.com";
     let btRetrieve = document.getElementById("retrieve");
     btRetrieve.addEventListener("click", retrieveData);
     let answerSection = document.getElementById("answerSection");
@@ -49,10 +49,10 @@ var P3_5;
                 }
             }
             // Delete
-            //let tabCellDel: HTMLTableCellElement = tr.insertCell();
+            // let tabCellDel: HTMLTableCellElement = tr.insertCell();
             let btDel = document.createElement("button");
             btDel.textContent = "Delete";
-            //tabCellDel.appendChild(btDel);
+            // tabCellDel.appendChild(btDel);
             btDel.addEventListener("click", function () {
                 deleteDatabaseElementFromArray(i, array);
             });

@@ -5,8 +5,8 @@ namespace P3_5 {
 
     let form: HTMLFormElement = <HTMLFormElement>document.getElementById("form");
 
-    let btSendPost: HTMLButtonElement = <HTMLButtonElement>document.getElementById("sendPost");
-    btSendPost.addEventListener("click", insertData);
+    let btLogin: HTMLButtonElement = <HTMLButtonElement>document.getElementById("login");
+    btLogin.addEventListener("click", login);
 
     let answerSec: HTMLDivElement = <HTMLDivElement>document.getElementById("answerSection");
 
@@ -14,10 +14,11 @@ namespace P3_5 {
         [type: string]: string | number;
     }
 
-    async function insertData(): Promise<void> {
+    async function login(): Promise<void> {
+        console.log("Login");
         let formdata: FormData = new FormData(form);
         let formstring: URLSearchParams = new URLSearchParams(<URLSearchParams>formdata);
-        formstring.append("command", "insert");
+        formstring.append("command", "login");
         let response: Response = await fetch(url, {
             method: "POST",
             headers: {
