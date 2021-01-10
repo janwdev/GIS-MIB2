@@ -5,8 +5,8 @@ import * as querystring from "querystring";
 export namespace P_3_5Server {
 
     let databaseUrl: string;
-    let databaseName: string = "Test"; // TODO
-    let collectionName: string = "Students"; // TODO
+    let databaseName: string = "P3-5"; // TODO
+    let collectionName: string = "Users"; // TODO
 
     let startArgs: string[] = process.argv.slice(2);
     console.log(startArgs);

@@ -7,8 +7,8 @@ const querystring = require("querystring");
 var P_3_5Server;
 (function (P_3_5Server) {
     let databaseUrl;
-    let databaseName = "Test"; // TODO
-    let collectionName = "Students"; // TODO
+    let databaseName = "P3-5"; // TODO
+    let collectionName = "Users"; // TODO
     let startArgs = process.argv.slice(2);
     console.log(startArgs);
     switch (startArgs[0]) {
