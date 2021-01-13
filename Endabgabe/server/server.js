@@ -14,7 +14,7 @@ var TwitterServer;
     let KEYCOMMANDGETALLUSERS = "showAllUsers";
     let KEYCOMMANDPOSTTWEET = "postTweet";
     let KEYCOMMANDGETTWEETTIMELINE = "getTweetTimeline";
-    let KEYCOMMANDSUSCRIBETOUSER = "suscribe";
+    let KEYCOMMANDSUSCRIBETOUSER = "subscribe";
     let dbUsers;
     let dbTweets;
     let databaseUrl;

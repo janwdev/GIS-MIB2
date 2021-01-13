@@ -13,7 +13,7 @@ export namespace TwitterServer {
     let KEYCOMMANDGETALLUSERS: string = "showAllUsers";
     let KEYCOMMANDPOSTTWEET: string = "postTweet";
     let KEYCOMMANDGETTWEETTIMELINE: string = "getTweetTimeline";
-    let KEYCOMMANDSUSCRIBETOUSER: string = "suscribe";
+    let KEYCOMMANDSUSCRIBETOUSER: string = "subscribe";
 
     let dbUsers: Mongo.Collection;
     let dbTweets: Mongo.Collection;

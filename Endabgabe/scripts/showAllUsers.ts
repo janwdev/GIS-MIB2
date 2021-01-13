@@ -93,7 +93,7 @@ namespace Twitter {
         let authCode: string = getAuthCode();
         if (authCode.length > 0) {
             let params: URLSearchParams = new URLSearchParams();
-            params.append("command", "suscribe");
+            params.append("command", "subscribe");
             params.append("_id", id);
             params.append("authKey", authCode);
             let response: Response = await fetch(url, {

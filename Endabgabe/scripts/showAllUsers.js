@@ -69,7 +69,7 @@ var Twitter;
         let authCode = Twitter.getAuthCode();
         if (authCode.length > 0) {
             let params = new URLSearchParams();
-            params.append("command", "suscribe");
+            params.append("command", "subscribe");
             params.append("_id", id);
             params.append("authKey", authCode);
             let response = await fetch(url, {
