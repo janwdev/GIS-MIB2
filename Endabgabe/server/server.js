@@ -15,6 +15,8 @@ var TwitterServer;
     let KEYCOMMANDPOSTTWEET = "postTweet";
     let KEYCOMMANDGETTWEETTIMELINE = "getTweetTimeline";
     let KEYCOMMANDSUSCRIBETOUSER = "subscribe";
+    let KEYCOMMANDUNSUSCRIBETOUSER = "unsubscribe";
+    let KEYCOMMANDSHOWUSERDETAIL = "showUserDetail";
     let dbUsers;
     let dbTweets;
     let databaseUrl;
@@ -126,6 +128,32 @@ var TwitterServer;
                             response = { status: -1, message: "Error, not all required params given" };
                         }
                     }
+                    else if (command == KEYCOMMANDSHOWUSERDETAIL) {
+                        if (data.email && data.authKey) {
+                            let authKey = data.authKey;
+                            let email = data.email;
+                            if (await authWithKey(authKey)) {
+                                let user = await findUserByEmail(email);
+                                if (user) {
+                                    delete user.password;
+                                    let users = [];
+                                    users.push(user);
+                                    let tweets = await getTweetsFromUser(user);
+                                    //Wenn keine Tweets in der Methode Dummy einfuegen
+                                    response = { status: 0, message: "Get User Details Successfull", users: users, tweets: tweets };
+                                }
+                                else {
+                                    response = { status: -1, message: "Something went Wrong,cant get User" };
+                                }
+                            }
+                            else {
+                                response = { status: -2, message: "Need to Login again" };
+                            }
+                        }
+                        else {
+                            response = { status: -2, message: "Not all Params given" };
+                        }
+                    }
                     else if (command == KEYCOMMANDSUSCRIBETOUSER) {
                         if (data.authKey && data._id) {
                             let authKey = data.authKey;
@@ -133,6 +161,23 @@ var TwitterServer;
                             let user = await authWithKey(authKey);
                             if (user != null) {
                                 await suscribe(user, idToSuscribe);
+                                response = { status: 0, message: "Finished" };
+                            }
+                            else {
+                                response = { status: -2, message: "Need to Login again" };
+                            }
+                        }
+                        else {
+                            response = { status: -1, message: "Error, not all required params given" };
+                        }
+                    }
+                    else if (command == KEYCOMMANDUNSUSCRIBETOUSER) {
+                        if (data.authKey && data._id) {
+                            let authKey = data.authKey;
+                            let idToUnSuscribe = data._id;
+                            let user = await authWithKey(authKey);
+                            if (user != null) {
+                                await unsuscribe(user, idToUnSuscribe);
                                 response = { status: 0, message: "Finished" };
                             }
                             else {
@@ -229,8 +274,8 @@ var TwitterServer;
     }
     //######Code from https://wanago.io/2018/12/24/typescript-express-registering-authenticating-jwt/ ######################
     function createToken(email) {
-        // let expiresIn: number = 60 * 60; // an hour
-        let expiresIn = 60; // 60 Sekunden
+        let expiresIn = 60 * 60; // an hour
+        // let expiresIn: number = 60; // 60 Sekunden
         let secret = process.env.JWT_SECRET;
         let dataStoredInToken = {
             email: email
@@ -270,15 +315,27 @@ var TwitterServer;
         dbUsers.insertOne(user);
     }
     async function getAllUsers(email) {
-        let users = await dbUsers.find({ email: { $ne: email } }).toArray();
-        users.forEach(user => {
+        let users = [];
+        let thisUser = await dbUsers.findOne({ email: email });
+        users.push(thisUser);
+        let otherUsers = await dbUsers.find({ email: { $ne: email } }).toArray();
+        otherUsers.forEach(user => {
             delete user.password;
+            users.push(user);
         });
         return users;
     }
     async function suscribe(user, idToSuscribe) {
         user.following.push(idToSuscribe);
         let following = user.following;
+        dbUsers.findOneAndUpdate({ email: user.email }, { $set: { following: following } });
+    }
+    async function unsuscribe(user, idToUnSuscribe) {
+        let following = user.following;
+        let index = following.indexOf(idToUnSuscribe);
+        if (index !== -1) {
+            following.splice(index, 1);
+        }
         dbUsers.findOneAndUpdate({ email: user.email }, { $set: { following: following } });
     }
     async function postTweet(authKey, tweetText) {
@@ -341,6 +398,34 @@ var TwitterServer;
         }
         return null;
     }
-    //TODO get Tweets User
+    async function getTweetsFromUser(user) {
+        let retArray = [];
+        let tweets = await dbTweets.find({ userID: user._id }).toArray();
+        for (let i = 0; i < tweets.length; i++) {
+            let answerTweed = {
+                text: tweets[i].text,
+                creationDate: tweets[i].creationDate,
+                userName: user.firstname + " " + user.lastname,
+                userEmail: user.email
+            };
+            if (user.pictureLink) {
+                answerTweed.userPicture = user.pictureLink;
+            }
+            if (tweets[i].media) {
+                answerTweed.media = tweets[i].media;
+            }
+            retArray.push(answerTweed);
+        }
+        if (retArray.length > 0) {
+            retArray.sort(function (a, b) {
+                return a.creationDate.getTime() - b.creationDate.getTime();
+            });
+        }
+        else {
+            let t = { creationDate: new Date(Date.now()), text: "This User hasn't Posted anything yet", userName: "Admin", userEmail: "Admin" };
+            retArray.push(t);
+        }
+        return retArray;
+    }
 })(TwitterServer = exports.TwitterServer || (exports.TwitterServer = {}));
 //# sourceMappingURL=server.js.map

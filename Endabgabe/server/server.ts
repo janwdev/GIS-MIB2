@@ -14,6 +14,8 @@ export namespace TwitterServer {
     let KEYCOMMANDPOSTTWEET: string = "postTweet";
     let KEYCOMMANDGETTWEETTIMELINE: string = "getTweetTimeline";
     let KEYCOMMANDSUSCRIBETOUSER: string = "subscribe";
+    let KEYCOMMANDUNSUSCRIBETOUSER: string = "unsubscribe";
+    let KEYCOMMANDSHOWUSERDETAIL: string = "showUserDetail";
 
     let dbUsers: Mongo.Collection;
     let dbTweets: Mongo.Collection;
@@ -148,6 +150,30 @@ export namespace TwitterServer {
                         }
                     }
 
+                    else if (command == KEYCOMMANDSHOWUSERDETAIL) {
+                        if (data.email && data.authKey) {
+                            let authKey: string = <string>data.authKey;
+                            let email: string = <string>data.email;
+                            if (await authWithKey(authKey)) {
+                                let user: User = await findUserByEmail(email);
+                                if (user) {
+                                    delete user.password;
+                                    let users: User[] = [];
+                                    users.push(user);
+                                    let tweets: TweetAnswer[] = await getTweetsFromUser(user);
+                                    //Wenn keine Tweets in der Methode Dummy einfuegen
+                                    response = { status: 0, message: "Get User Details Successfull", users: users, tweets: tweets };
+                                } else {
+                                    response = { status: -1, message: "Something went Wrong,cant get User" };
+                                }
+                            } else {
+                                response = { status: -2, message: "Need to Login again" };
+                            }
+                        } else {
+                            response = { status: -2, message: "Not all Params given" };
+                        }
+                    }
+
                     else if (command == KEYCOMMANDSUSCRIBETOUSER) {
                         if (data.authKey && data._id) {
                             let authKey: string = <string>data.authKey;
@@ -155,6 +181,22 @@ export namespace TwitterServer {
                             let user: User = await authWithKey(authKey);
                             if (user != null) {
                                 await suscribe(user, idToSuscribe);
+                                response = { status: 0, message: "Finished" };
+                            } else {
+                                response = { status: -2, message: "Need to Login again" };
+                            }
+                        } else {
+                            response = { status: -1, message: "Error, not all required params given" };
+                        }
+                    }
+
+                    else if (command == KEYCOMMANDUNSUSCRIBETOUSER) {
+                        if (data.authKey && data._id) {
+                            let authKey: string = <string>data.authKey;
+                            let idToUnSuscribe: string = <string>data._id;
+                            let user: User = await authWithKey(authKey);
+                            if (user != null) {
+                                await unsuscribe(user, idToUnSuscribe);
                                 response = { status: 0, message: "Finished" };
                             } else {
                                 response = { status: -2, message: "Need to Login again" };
@@ -272,8 +314,8 @@ export namespace TwitterServer {
 
     //######Code from https://wanago.io/2018/12/24/typescript-express-registering-authenticating-jwt/ ######################
     function createToken(email: string): TokenData {
-        // let expiresIn: number = 60 * 60; // an hour
-        let expiresIn: number = 60; // 60 Sekunden
+        let expiresIn: number = 60 * 60; // an hour
+        // let expiresIn: number = 60; // 60 Sekunden
         let secret: string = process.env.JWT_SECRET;
         let dataStoredInToken: DataStoredInToken = {
             email: email
@@ -318,9 +360,13 @@ export namespace TwitterServer {
     }
 
     async function getAllUsers(email: string): Promise<User[]> {
-        let users: User[] = await dbUsers.find({ email: { $ne: email } }).toArray();
-        users.forEach(user => {
+        let users: User[] = [];
+        let thisUser: User = await dbUsers.findOne({ email: email });
+        users.push(thisUser);
+        let otherUsers: User[] = await dbUsers.find({ email: { $ne: email } }).toArray();
+        otherUsers.forEach(user => {
             delete user.password;
+            users.push(user);
         });
         return users;
     }
@@ -328,7 +374,16 @@ export namespace TwitterServer {
     async function suscribe(user: User, idToSuscribe: string): Promise<void> {
         user.following.push(idToSuscribe);
         let following: string[] = user.following;
-        dbUsers.findOneAndUpdate({ email: user.email }, {$set: {following: following}});
+        dbUsers.findOneAndUpdate({ email: user.email }, { $set: { following: following } });
+    }
+
+    async function unsuscribe(user: User, idToUnSuscribe: string): Promise<void> {
+        let following: string[] = user.following;
+        let index: number = following.indexOf(idToUnSuscribe);
+        if (index !== -1) {
+            following.splice(index, 1);
+        }
+        dbUsers.findOneAndUpdate({ email: user.email }, { $set: { following: following } });
     }
 
 
@@ -411,5 +466,32 @@ export namespace TwitterServer {
         return null;
     }
 
-    //TODO get Tweets User
+    async function getTweetsFromUser(user: User): Promise<TweetAnswer[]> {
+        let retArray: TweetAnswer[] = [];
+        let tweets: Tweet[] = await dbTweets.find({ userID: user._id }).toArray();
+        for (let i: number = 0; i < tweets.length; i++) {
+            let answerTweed: TweetAnswer = {
+                text: tweets[i].text,
+                creationDate: tweets[i].creationDate,
+                userName: user.firstname + " " + user.lastname,
+                userEmail: user.email
+            };
+            if (user.pictureLink) {
+                answerTweed.userPicture = user.pictureLink;
+            }
+            if (tweets[i].media) {
+                answerTweed.media = tweets[i].media;
+            }
+            retArray.push(answerTweed);
+        }
+        if (retArray.length > 0) {
+            retArray.sort(function (a: TweetAnswer, b: TweetAnswer): number {
+                return a.creationDate.getTime() - b.creationDate.getTime();
+            });
+        } else {
+            let t: TweetAnswer = { creationDate: new Date(Date.now()), text: "This User hasn't Posted anything yet", userName: "Admin", userEmail: "Admin" };
+            retArray.push(t);
+        }
+        return retArray;
+    }
 }

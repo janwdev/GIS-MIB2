@@ -32,44 +32,62 @@ var Twitter;
             console.log("Need to Login again");
         }
     }
-    // TODO Mehr Elemente einfügen
     function createHTMLTableFromUserArray(array) {
-        let table = document.createElement("table");
-        let col = [];
-        col.push("Name");
-        col.push("Email");
-        col.push("Suscribe");
-        // Header
-        let tr = table.insertRow(0);
-        for (let i = 0; i < col.length; i++) {
-            let th = document.createElement("th");
-            th.textContent = col[i];
-            tr.appendChild(th);
+        if (array.length > 1) {
+            let table = document.createElement("table");
+            let col = [];
+            col.push("Name");
+            col.push("Email");
+            col.push("Suscribe");
+            // Header
+            let tr = table.insertRow(0);
+            for (let i = 0; i < col.length; i++) {
+                let th = document.createElement("th");
+                th.textContent = col[i];
+                tr.appendChild(th);
+            }
+            let thisUserFollowing = array[0].following;
+            for (let i = 1; i < array.length; i++) {
+                let user = array[i];
+                let tr = table.insertRow();
+                let tabCellName = tr.insertCell();
+                tabCellName.textContent = user.firstname + " " + user.lastname;
+                let tabCellEmail = tr.insertCell();
+                tabCellEmail.textContent = user.email;
+                let tabCellSuscribe = tr.insertCell();
+                let following = false;
+                for (let j = 0; j < thisUserFollowing.length; j++) {
+                    if (user._id == thisUserFollowing[j]) {
+                        following = true;
+                        break;
+                    }
+                }
+                if (following) {
+                    let btUnSuscribe = document.createElement("button");
+                    btUnSuscribe.textContent = "Unsuscribe";
+                    tabCellSuscribe.appendChild(btUnSuscribe);
+                    btUnSuscribe.addEventListener("click", function () {
+                        suscribeUnsuscribeToUserWithId(user._id, "unsubscribe");
+                    });
+                }
+                else {
+                    let btSuscribe = document.createElement("button");
+                    btSuscribe.textContent = "Suscribe";
+                    tabCellSuscribe.appendChild(btSuscribe);
+                    btSuscribe.addEventListener("click", function () {
+                        suscribeUnsuscribeToUserWithId(user._id, "subscribe");
+                    });
+                }
+            }
+            answerSection.appendChild(table);
         }
-        for (let i = 0; i < array.length; i++) {
-            let user = array[i];
-            let tr = table.insertRow();
-            let tabCellName = tr.insertCell();
-            tabCellName.textContent = user.firstname + " " + user.lastname;
-            let tabCellEmail = tr.insertCell();
-            tabCellEmail.textContent = user.email;
-            let tabCellSuscribe = tr.insertCell();
-            let btSuscribe = document.createElement("button");
-            btSuscribe.textContent = "Suscribe";
-            tabCellSuscribe.appendChild(btSuscribe);
-            btSuscribe.addEventListener("click", function () {
-                suscribeToUserWithId(user._id);
-            });
-            //TODO Suscribebtn
-        }
-        answerSection.appendChild(table);
     }
-    async function suscribeToUserWithId(id) {
+    async function suscribeUnsuscribeToUserWithId(id, command) {
         console.log("Try to suscribe to User with id: " + id);
         let authCode = Twitter.getAuthCode();
         if (authCode.length > 0) {
             let params = new URLSearchParams();
-            params.append("command", "subscribe");
+            params.append("command", command);
             params.append("_id", id);
             params.append("authKey", authCode);
             let response = await fetch(url, {
