@@ -1,6 +1,4 @@
 namespace Twitter {
-    let url: string = "http://localhost:8100";
-    // let url: string = "https://gis2020jw.herokuapp.com";
 
     let htmlName: HTMLParagraphElement = <HTMLParagraphElement>document.getElementById("name");
     let htmlEmail: HTMLParagraphElement = <HTMLParagraphElement>document.getElementById("email");
@@ -18,52 +16,11 @@ namespace Twitter {
         console.log("No email Param given");
     }
 
-    interface User {
-        _id: string;
-        firstname: string;
-        lastname: string;
-        studycourse: string;
-        semester: string;
-        email: string;
-        pictureLink?: string;
-        followers: string[];
-        following: string[];
-    }
-
-    interface Tweet {
-        text: string;
-        creationDate: Date;
-        media?: string;
-        userName: string;
-        userEmail: string;
-        userPicture?: string;
-    }
-
-    interface ResponseFromServer {
-        status: number;
-        message: string;
-        authCookieString?: string;
-        data?: string[];
-        tweets?: Tweet[];
-        users?: User[];
-    }
-
     async function showUserDetail(email: string): Promise<void> {
         console.log("Get User Details for Email: " + email);
-        let params: URLSearchParams = new URLSearchParams();
-        let authKey: string = getAuthCode();
-        if (authKey.length > 0) {
-            params.append("authKey", authKey);
-            params.append("command", "showUserDetail");
-            params.append("email", email);
-            let response: Response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "text/plain"
-                },
-                body: params
-            });
-            let responseFromServer: ResponseFromServer = await response.json();
+        let requestData: RequestToServerInterface = {command: "showUserDetail", email: email};
+        let responseFromServer: ResponseFromServer = await postToServer(requestData);
+        if (responseFromServer) {
             if (responseFromServer.status >= 0) {
                 if (responseFromServer.users && responseFromServer.users.length > 0) {
                     let user: User = responseFromServer.users[0];
@@ -103,7 +60,6 @@ namespace Twitter {
             //TODO weiterleitung
             console.log("Need to login again");
         }
-
     }
 
     function createTweetElement(tweet: Tweet): HTMLDivElement {

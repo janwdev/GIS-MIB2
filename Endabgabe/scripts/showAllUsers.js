@@ -1,31 +1,25 @@
 "use strict";
 var Twitter;
 (function (Twitter) {
-    let url = "http://localhost:8100";
-    // let url: string = "https://gis2020jw.herokuapp.com";
     showAllUsers();
     let answerSection = document.getElementById("answerSection");
     async function showAllUsers() {
-        let params = new URLSearchParams();
-        params.append("command", "showAllUsers");
         let authCode = Twitter.getAuthCode();
         if (authCode.length > 0) {
-            params.append("authKey", authCode);
-            let response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "text/plain"
-                },
-                body: params
-            });
-            let responseFromServer = await response.json();
-            let userArray = responseFromServer.users;
-            console.log("Answer:");
-            console.log(userArray);
-            while (answerSection.firstChild) {
-                answerSection.removeChild(answerSection.lastChild);
+            let requestData = { command: "showAllUsers" };
+            let responseFromServer = await Twitter.postToServer(requestData);
+            if (responseFromServer) {
+                let userArray = responseFromServer.users;
+                console.log("Answer:");
+                console.log(userArray);
+                while (answerSection.firstChild) {
+                    answerSection.removeChild(answerSection.lastChild);
+                }
+                createHTMLTableFromUserArray(userArray);
             }
-            createHTMLTableFromUserArray(userArray);
+            else {
+                console.log("No Response");
+            }
         }
         else {
             //TODO weiterleitung
@@ -86,20 +80,15 @@ var Twitter;
         console.log("Try to suscribe to User with id: " + id);
         let authCode = Twitter.getAuthCode();
         if (authCode.length > 0) {
-            let params = new URLSearchParams();
-            params.append("command", command);
-            params.append("_id", id);
-            params.append("authKey", authCode);
-            let response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "text/plain"
-                },
-                body: params
-            });
-            let json = await response.json();
-            console.log("Answer:");
-            console.log(json);
+            let requestData = { command: command, _id: id };
+            let responseFromServer = await Twitter.postToServer(requestData);
+            if (responseFromServer) {
+                console.log("Answer:");
+                console.log(responseFromServer);
+            }
+            else {
+                console.log("No Response");
+            }
         }
         else {
             //TODO weiterleitung

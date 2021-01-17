@@ -1,7 +1,4 @@
 namespace Twitter {
-
-    let url: string = "http://localhost:8100";
-    // let url: string = "https://gis2020jw.herokuapp.com";
     showAllUsers();
 
     let answerSection: HTMLDivElement = <HTMLDivElement>document.getElementById("answerSection");
@@ -27,26 +24,21 @@ namespace Twitter {
     }
 
     async function showAllUsers(): Promise<void> {
-        let params: URLSearchParams = new URLSearchParams();
-        params.append("command", "showAllUsers");
         let authCode: string = getAuthCode();
         if (authCode.length > 0) {
-            params.append("authKey", authCode);
-            let response: Response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "text/plain"
-                },
-                body: params
-            });
-            let responseFromServer: ResponseFromServer = await response.json();
-            let userArray: User[] = responseFromServer.users;
-            console.log("Answer:");
-            console.log(userArray);
-            while (answerSection.firstChild) {
-                answerSection.removeChild(answerSection.lastChild);
+            let requestData: RequestToServerInterface = { command: "showAllUsers" };
+            let responseFromServer: ResponseFromServer = await postToServer(requestData);
+            if (responseFromServer) {
+                let userArray: User[] = responseFromServer.users;
+                console.log("Answer:");
+                console.log(userArray);
+                while (answerSection.firstChild) {
+                    answerSection.removeChild(answerSection.lastChild);
+                }
+                createHTMLTableFromUserArray(userArray);
+            } else {
+                console.log("No Response");
             }
-            createHTMLTableFromUserArray(userArray);
         } else {
             //TODO weiterleitung
             console.log("Need to Login again");
@@ -108,22 +100,17 @@ namespace Twitter {
 
     async function suscribeUnsuscribeToUserWithId(id: string, command: string): Promise<void> {
         console.log("Try to suscribe to User with id: " + id);
+
         let authCode: string = getAuthCode();
         if (authCode.length > 0) {
-            let params: URLSearchParams = new URLSearchParams();
-            params.append("command", command);
-            params.append("_id", id);
-            params.append("authKey", authCode);
-            let response: Response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "text/plain"
-                },
-                body: params
-            });
-            let json: JSON = await response.json();
-            console.log("Answer:");
-            console.log(json);
+            let requestData: RequestToServerInterface = { command: command, _id: id };
+            let responseFromServer: ResponseFromServer = await postToServer(requestData);
+            if (responseFromServer) {
+                console.log("Answer:");
+                console.log(responseFromServer);
+            } else {
+                console.log("No Response");
+            }
         } else {
             //TODO weiterleitung
             console.log("Need to Login again");

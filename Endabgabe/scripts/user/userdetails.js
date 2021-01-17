@@ -1,8 +1,6 @@
 "use strict";
 var Twitter;
 (function (Twitter) {
-    let url = "http://localhost:8100";
-    // let url: string = "https://gis2020jw.herokuapp.com";
     let htmlName = document.getElementById("name");
     let htmlEmail = document.getElementById("email");
     let htmlStudyDetails = document.getElementById("studyDetails");
@@ -20,20 +18,9 @@ var Twitter;
     }
     async function showUserDetail(email) {
         console.log("Get User Details for Email: " + email);
-        let params = new URLSearchParams();
-        let authKey = Twitter.getAuthCode();
-        if (authKey.length > 0) {
-            params.append("authKey", authKey);
-            params.append("command", "showUserDetail");
-            params.append("email", email);
-            let response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "text/plain"
-                },
-                body: params
-            });
-            let responseFromServer = await response.json();
+        let requestData = { command: "showUserDetail", email: email };
+        let responseFromServer = await Twitter.postToServer(requestData);
+        if (responseFromServer) {
             if (responseFromServer.status >= 0) {
                 if (responseFromServer.users && responseFromServer.users.length > 0) {
                     let user = responseFromServer.users[0];

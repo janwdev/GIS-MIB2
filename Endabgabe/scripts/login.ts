@@ -1,8 +1,5 @@
 namespace Twitter {
 
-    let url: string = "http://localhost:8100";
-    //let url: string = "https://gis2020jw.herokuapp.com";
-
     let form: HTMLFormElement = <HTMLFormElement>document.getElementById("form");
 
     let btLogin: HTMLButtonElement = <HTMLButtonElement>document.getElementById("sendLogin");
@@ -18,34 +15,46 @@ namespace Twitter {
     }
 
     async function login(): Promise<void> {
+        // if (getAuthCode().length == 0) {
         console.log("Login");
         let formdata: FormData = new FormData(form);
-        let formstring: URLSearchParams = new URLSearchParams(<URLSearchParams>formdata);
-        formstring.append("command", "login");
-        let response: Response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "text/plain"
-            },
-            body: formstring
+        let request: RequestToServerInterface = {};
+        formdata.forEach(function (value: FormDataEntryValue, key: string): void {
+            //TODO if key == email schauen ob wirklich email eingegeben wurde
+            request[key] = value.toString();
         });
-        let answer: ResponseFromServer = await response.json();
-        if ("status" in answer) {
-            let status: number = <number>answer.status;
-            let message: string = <string>answer.message;
-            let p: HTMLParagraphElement = document.createElement("p");
-            p.innerText = message;
-            while (answerSec.firstChild) {
-                answerSec.removeChild(answerSec.lastChild);
+        request["command"] = "login";
+        let answer: ResponseFromServer = await postToServerWithoutAuth(request);
+        if (answer) {
+            if ("status" in answer) {
+                let status: number = <number>answer.status;
+                let message: string = <string>answer.message;
+                let p: HTMLParagraphElement = document.createElement("p");
+                p.innerText = message;
+                while (answerSec.firstChild) {
+                    answerSec.removeChild(answerSec.lastChild);
+                }
+                answerSec.appendChild(p);
+                if (status != 0) {
+                    p.style.color = "red";
+                } else {
+                    p.style.color = "green";
+                    let cookieString: string = answer.authCookieString;
+                    saveAuthCookie(cookieString);
+                }
             }
-            answerSec.appendChild(p);
-            if (status != 0) {
-                p.style.color = "red";
-            } else {
-                p.style.color = "green";
-                let cookieString: string = answer.authCookieString;
-                saveAuthCookie(cookieString);
-            }
+        } else {
+            console.log("No answer");
         }
+        // } else {
+        //     console.log("Already logged in");
+        //     let p: HTMLParagraphElement = document.createElement("p");
+        //     p.innerText = "Already logged in";
+        //     while (answerSec.firstChild) {
+        //         answerSec.removeChild(answerSec.lastChild);
+        //     }
+        //     answerSec.appendChild(p);
+        //     p.style.color = "red";
+        // }
     }
 }
