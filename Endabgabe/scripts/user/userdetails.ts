@@ -18,7 +18,7 @@ namespace Twitter {
 
     async function showUserDetail(email: string): Promise<void> {
         console.log("Get User Details for Email: " + email);
-        let requestData: RequestToServerInterface = {command: "showUserDetail", email: email};
+        let requestData: RequestToServerInterface = { command: "showUserDetail", email: email };
         let responseFromServer: ResponseFromServer = await postToServer(requestData);
         if (responseFromServer) {
             if (responseFromServer.status >= 0) {
@@ -39,7 +39,7 @@ namespace Twitter {
                     htmlFollowerSec.appendChild(htmlFollower);
                     let htmlFollowing: HTMLParagraphElement = document.createElement("p");
                     htmlFollowing.textContent = "Following: " + user.following.length.toString();
-                    htmlFollowerSec.appendChild(htmlFollowing);
+                    htmlFollowingSec.appendChild(htmlFollowing);
                     if (responseFromServer.tweets) {
                         if (responseFromServer.tweets.length > 0) {
                             for (let index: number = 0; index < responseFromServer.tweets.length; index++) {
@@ -48,6 +48,13 @@ namespace Twitter {
                                 htmlTweetSec.appendChild(tweetDiv);
                             }
                         }
+                    }
+
+                    if (query.get("email") == "me") {
+                        let linkEdit: HTMLAnchorElement = document.createElement("a");
+                        linkEdit.href = "edit.html";
+                        linkEdit.textContent = "Edit";
+                        htmlName.appendChild(linkEdit);
                     }
                 } else {
                     console.log("Error no User returned");
@@ -60,34 +67,5 @@ namespace Twitter {
             //TODO weiterleitung
             console.log("Need to login again");
         }
-    }
-
-    function createTweetElement(tweet: Tweet): HTMLDivElement {
-        let element: HTMLDivElement = document.createElement("div");
-        //TODO styling
-        let htmlUserName: HTMLParagraphElement = document.createElement("p");
-        htmlUserName.textContent = tweet.userName;
-        let htmlUserEmail: HTMLParagraphElement = document.createElement("p");
-        htmlUserEmail.textContent = tweet.userEmail;
-        let htmlUserImg: HTMLImageElement;
-        if (tweet.userPicture) {
-            htmlUserImg = document.createElement("img");
-            htmlUserImg.src = tweet.userPicture;
-        }
-        let htmlText: HTMLParagraphElement = document.createElement("p");
-        htmlText.textContent = tweet.text;
-        let htmlCreationDate: HTMLParagraphElement = document.createElement("p");
-        htmlCreationDate.textContent = new Date(tweet.creationDate).toString();
-
-        element.appendChild(htmlUserName);
-        element.appendChild(htmlUserEmail);
-        if (tweet.userPicture) {
-            element.appendChild(htmlUserImg);
-        }
-        element.appendChild(htmlText);
-        element.appendChild(htmlCreationDate);
-
-        //TODO media
-        return element;
     }
 }

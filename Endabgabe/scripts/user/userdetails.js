@@ -39,15 +39,21 @@ var Twitter;
                     htmlFollowerSec.appendChild(htmlFollower);
                     let htmlFollowing = document.createElement("p");
                     htmlFollowing.textContent = "Following: " + user.following.length.toString();
-                    htmlFollowerSec.appendChild(htmlFollowing);
+                    htmlFollowingSec.appendChild(htmlFollowing);
                     if (responseFromServer.tweets) {
                         if (responseFromServer.tweets.length > 0) {
                             for (let index = 0; index < responseFromServer.tweets.length; index++) {
                                 const tweet = responseFromServer.tweets[index];
-                                let tweetDiv = createTweetElement(tweet);
+                                let tweetDiv = Twitter.createTweetElement(tweet);
                                 htmlTweetSec.appendChild(tweetDiv);
                             }
                         }
+                    }
+                    if (query.get("email") == "me") {
+                        let linkEdit = document.createElement("a");
+                        linkEdit.href = "edit.html";
+                        linkEdit.textContent = "Edit";
+                        htmlName.appendChild(linkEdit);
                     }
                 }
                 else {
@@ -63,32 +69,6 @@ var Twitter;
             //TODO weiterleitung
             console.log("Need to login again");
         }
-    }
-    function createTweetElement(tweet) {
-        let element = document.createElement("div");
-        //TODO styling
-        let htmlUserName = document.createElement("p");
-        htmlUserName.textContent = tweet.userName;
-        let htmlUserEmail = document.createElement("p");
-        htmlUserEmail.textContent = tweet.userEmail;
-        let htmlUserImg;
-        if (tweet.userPicture) {
-            htmlUserImg = document.createElement("img");
-            htmlUserImg.src = tweet.userPicture;
-        }
-        let htmlText = document.createElement("p");
-        htmlText.textContent = tweet.text;
-        let htmlCreationDate = document.createElement("p");
-        htmlCreationDate.textContent = new Date(tweet.creationDate).toString();
-        element.appendChild(htmlUserName);
-        element.appendChild(htmlUserEmail);
-        if (tweet.userPicture) {
-            element.appendChild(htmlUserImg);
-        }
-        element.appendChild(htmlText);
-        element.appendChild(htmlCreationDate);
-        //TODO media
-        return element;
     }
 })(Twitter || (Twitter = {}));
 //# sourceMappingURL=userdetails.js.map

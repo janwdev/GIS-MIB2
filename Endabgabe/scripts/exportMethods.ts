@@ -97,4 +97,33 @@ namespace Twitter {
         }
         return "";
     }
+
+    export function createTweetElement(tweet: Tweet): HTMLDivElement {
+        let element: HTMLDivElement = document.createElement("div");
+        //TODO styling
+        let htmlUserName: HTMLParagraphElement = document.createElement("p");
+        htmlUserName.textContent = tweet.userName;
+        let htmlUserEmail: HTMLParagraphElement = document.createElement("p");
+        htmlUserEmail.textContent = tweet.userEmail;
+        let htmlUserImg: HTMLImageElement;
+        if (tweet.userPicture) {
+            htmlUserImg = document.createElement("img");
+            htmlUserImg.src = tweet.userPicture;
+        }
+        let htmlText: HTMLParagraphElement = document.createElement("p");
+        htmlText.textContent = tweet.text;
+        let htmlCreationDate: HTMLParagraphElement = document.createElement("p");
+        htmlCreationDate.textContent = new Date(tweet.creationDate).toString();
+
+        element.appendChild(htmlUserName);
+        element.appendChild(htmlUserEmail);
+        if (tweet.userPicture) {
+            element.appendChild(htmlUserImg);
+        }
+        element.appendChild(htmlText);
+        element.appendChild(htmlCreationDate);
+
+        //TODO media
+        return element;
+    }
 }

@@ -132,7 +132,11 @@ var TwitterServer;
                         if (data.email && data.authKey) {
                             let authKey = data.authKey;
                             let email = data.email;
-                            if (await authWithKey(authKey)) {
+                            let requestingUser = await authWithKey(authKey);
+                            if (requestingUser) {
+                                if (email == "me") {
+                                    email = requestingUser.email;
+                                }
                                 let user = await findUserByEmail(email);
                                 if (user) {
                                     delete user.password;
@@ -390,7 +394,6 @@ var TwitterServer;
                 };
                 followingUsersTweets.push(adminTweet);
             }
-            console.log(followingUsersTweets);
             return followingUsersTweets;
         }
         else {

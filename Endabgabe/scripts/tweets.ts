@@ -1,8 +1,5 @@
 namespace Twitter {
 
-    let url: string = "http://localhost:8100";
-    //let url: string = "https://gis2020jw.herokuapp.com";
-
     let oldestDateS: string = "2017-05-01"; //TODO aus Oberflaeche holen
 
     let inputForm: HTMLFormElement = <HTMLFormElement>document.getElementById("inputForm");
@@ -14,23 +11,15 @@ namespace Twitter {
     btGetTweetTimeline.addEventListener("click", getTweetTimeline);
 
     let answerSec: HTMLDivElement = <HTMLDivElement>document.getElementById("answerSection");
-
-    interface Tweet {
-        text: string;
-        creationDate: Date;
-        media?: string;
-        userName: string;
-        userEmail: string;
-        userPicture?: string;
-    }
+    let tweetTimeline: HTMLDivElement = <HTMLDivElement>document.getElementById("tweetTimeline");
 
     async function getTweetTimeline(): Promise<void> {
         let tweets: Tweet[] = await getTweetTimelineFromServer();
         if (tweets != null) {
             for (let i: number = 0; i < tweets.length; i++) {
-                const tweet: Tweet = tweets[i];
-                //TODO
-                console.log(tweet);
+                let tweet: Tweet = tweets[i];
+                let htmlTweet: HTMLDivElement = createTweetElement(tweet);
+                tweetTimeline.appendChild(htmlTweet);
             }
         } else {
             //TODO
@@ -40,21 +29,10 @@ namespace Twitter {
 
     async function getTweetTimelineFromServer(): Promise<Tweet[]> {
         console.log("Get Tweet Timeline");
-        let authCode: string = getAuthCode();
-        if (authCode.length > 0) {
-            let params: URLSearchParams = new URLSearchParams();
-            params.append("command", "getTweetTimeline");
-            params.append("authKey", authCode);
-            let oldestDateString: string = new Date(oldestDateS).toDateString();
-            params.append("oldestDate", oldestDateString);
-            let response: Response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "text/plain"
-                },
-                body: params
-            });
-            let answer: ServerResponse = await response.json();
+        let oldestDateString: string = new Date(oldestDateS).toDateString();
+        let data: RequestToServerInterface = { command: "getTweetTimeline", oldestDate: oldestDateString };
+        let answer: ResponseFromServer = await postToServer(data);
+        if (answer != null) {
             if (answer.tweets) {
                 return answer.tweets;
             } else {
@@ -67,30 +45,17 @@ namespace Twitter {
         return null;
     }
 
-    interface ServerResponse {
-        status: number;
-        message: string;
-        authCookieString?: string;
-        data?: string[];
-        tweets?: Tweet[];
-    }
-
     async function sendTweet(): Promise<void> {
         console.log("send Tweet");
         let formdata: FormData = new FormData(inputForm);
-        let formstring: URLSearchParams = new URLSearchParams(<URLSearchParams>formdata);
-        let authCode: string = getAuthCode();
-        if (authCode.length > 0) {
-            formstring.append("command", "postTweet");
-            formstring.append("authKey", authCode);
-            let response: Response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "text/plain"
-                },
-                body: formstring
-            });
-            let answer: ServerResponse = await response.json();
+        let request: RequestToServerInterface = {};
+        formdata.forEach(function (value: FormDataEntryValue, key: string): void {
+            //TODO if key == email schauen ob wirklich email eingegeben wurde
+            request[key] = value.toString();
+        });
+        request["command"] = "postTweet";
+        let answer: ResponseFromServer = await postToServer(request);
+        if (answer != null) {
             if ("status" in answer) {
                 let status: number = <number>answer.status;
                 let message: string = <string>answer.message;

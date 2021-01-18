@@ -3,26 +3,6 @@ namespace Twitter {
 
     let answerSection: HTMLDivElement = <HTMLDivElement>document.getElementById("answerSection");
 
-    interface User {
-        _id: string;
-        firstname: string;
-        lastname: string;
-        studycourse: string;
-        semester: string;
-        email: string;
-        pictureLink?: string;
-        followers: string[];
-        following: string[];
-    }
-
-    interface ResponseFromServer {
-        status: number;
-        message: string;
-        authCookieString?: string;
-        data?: string[];
-        users?: User[];
-    }
-
     async function showAllUsers(): Promise<void> {
         let authCode: string = getAuthCode();
         if (authCode.length > 0) {

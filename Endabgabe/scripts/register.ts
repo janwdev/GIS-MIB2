@@ -7,13 +7,6 @@ namespace Twitter {
 
     let answerSec: HTMLDivElement = <HTMLDivElement>document.getElementById("answerSection");
 
-    interface ResponseFromServer {
-        status: number;
-        message: string;
-        authCookieString?: string;
-        data?: string[];
-    }
-
     async function register(): Promise<void> {
         let formdata: FormData = new FormData(form);
         let request: RequestToServerInterface = {};

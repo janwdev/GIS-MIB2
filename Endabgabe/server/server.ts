@@ -154,7 +154,11 @@ export namespace TwitterServer {
                         if (data.email && data.authKey) {
                             let authKey: string = <string>data.authKey;
                             let email: string = <string>data.email;
-                            if (await authWithKey(authKey)) {
+                            let requestingUser: User = await authWithKey(authKey);
+                            if (requestingUser) {
+                                if (email == "me") {
+                                    email = requestingUser.email;
+                                }
                                 let user: User = await findUserByEmail(email);
                                 if (user) {
                                     delete user.password;
@@ -457,7 +461,6 @@ export namespace TwitterServer {
                 };
                 followingUsersTweets.push(adminTweet);
             }
-            console.log(followingUsersTweets);
             return followingUsersTweets;
         } else {
             console.log("Error user not exist");

@@ -1,8 +1,6 @@
 "use strict";
 var Twitter;
 (function (Twitter) {
-    let url = "http://localhost:8100";
-    //let url: string = "https://gis2020jw.herokuapp.com";
     let oldestDateS = "2017-05-01"; //TODO aus Oberflaeche holen
     let inputForm = document.getElementById("inputForm");
     let btSendTweet = document.getElementById("sendTweet");
@@ -10,13 +8,14 @@ var Twitter;
     let btGetTweetTimeline = document.getElementById("getTweetTimeline");
     btGetTweetTimeline.addEventListener("click", getTweetTimeline);
     let answerSec = document.getElementById("answerSection");
+    let tweetTimeline = document.getElementById("tweetTimeline");
     async function getTweetTimeline() {
         let tweets = await getTweetTimelineFromServer();
         if (tweets != null) {
             for (let i = 0; i < tweets.length; i++) {
-                const tweet = tweets[i];
-                //TODO
-                console.log(tweet);
+                let tweet = tweets[i];
+                let htmlTweet = Twitter.createTweetElement(tweet);
+                tweetTimeline.appendChild(htmlTweet);
             }
         }
         else {
@@ -26,21 +25,10 @@ var Twitter;
     }
     async function getTweetTimelineFromServer() {
         console.log("Get Tweet Timeline");
-        let authCode = Twitter.getAuthCode();
-        if (authCode.length > 0) {
-            let params = new URLSearchParams();
-            params.append("command", "getTweetTimeline");
-            params.append("authKey", authCode);
-            let oldestDateString = new Date(oldestDateS).toDateString();
-            params.append("oldestDate", oldestDateString);
-            let response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "text/plain"
-                },
-                body: params
-            });
-            let answer = await response.json();
+        let oldestDateString = new Date(oldestDateS).toDateString();
+        let data = { command: "getTweetTimeline", oldestDate: oldestDateString };
+        let answer = await Twitter.postToServer(data);
+        if (answer != null) {
             if (answer.tweets) {
                 return answer.tweets;
             }
@@ -57,19 +45,14 @@ var Twitter;
     async function sendTweet() {
         console.log("send Tweet");
         let formdata = new FormData(inputForm);
-        let formstring = new URLSearchParams(formdata);
-        let authCode = Twitter.getAuthCode();
-        if (authCode.length > 0) {
-            formstring.append("command", "postTweet");
-            formstring.append("authKey", authCode);
-            let response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "text/plain"
-                },
-                body: formstring
-            });
-            let answer = await response.json();
+        let request = {};
+        formdata.forEach(function (value, key) {
+            //TODO if key == email schauen ob wirklich email eingegeben wurde
+            request[key] = value.toString();
+        });
+        request["command"] = "postTweet";
+        let answer = await Twitter.postToServer(request);
+        if (answer != null) {
             if ("status" in answer) {
                 let status = answer.status;
                 let message = answer.message;
