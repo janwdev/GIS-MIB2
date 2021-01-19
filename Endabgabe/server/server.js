@@ -17,6 +17,7 @@ var TwitterServer;
     let KEYCOMMANDSUSCRIBETOUSER = "subscribe";
     let KEYCOMMANDUNSUSCRIBETOUSER = "unsubscribe";
     let KEYCOMMANDSHOWUSERDETAIL = "showUserDetail";
+    let KEYCOMMANDEDITUSER = "editUser";
     let dbUsers;
     let dbTweets;
     let databaseUrl;
@@ -112,6 +113,36 @@ var TwitterServer;
                             response = { status: -1, message: "Error, not all required params given" };
                         }
                     }
+                    else if (command == KEYCOMMANDEDITUSER) {
+                        if (data.authKey) {
+                            let authKey = data.authKey;
+                            let user = await authWithKey(authKey);
+                            if (user != null) {
+                                if (data.lastname && data.firstname && data.email && data.studycourse && data.semester) {
+                                    let tokenData = await editUser(user, data);
+                                    if (tokenData && tokenData != null) {
+                                        response = {
+                                            status: 0,
+                                            message: "Account edited successful",
+                                            authCookieString: createAuthCookie(tokenData)
+                                        };
+                                    }
+                                    else {
+                                        response = { status: -3, message: "Update went wrong" };
+                                    }
+                                }
+                                else {
+                                    response = { status: -1, message: "Error, not all required params given" };
+                                }
+                            }
+                            else {
+                                response = { status: -2, message: "Need to Login again" };
+                            }
+                        }
+                        else {
+                            response = { status: -1, message: "Error, not all required params given" };
+                        }
+                    }
                     else if (command == KEYCOMMANDGETALLUSERS) {
                         if (data.authKey) {
                             let authKey = data.authKey;
@@ -129,12 +160,15 @@ var TwitterServer;
                         }
                     }
                     else if (command == KEYCOMMANDSHOWUSERDETAIL) {
-                        if (data.email && data.authKey) {
+                        if (data.authKey) {
                             let authKey = data.authKey;
-                            let email = data.email;
+                            let email;
                             let requestingUser = await authWithKey(authKey);
                             if (requestingUser) {
-                                if (email == "me") {
+                                if (data.email) {
+                                    email = data.email;
+                                }
+                                else {
                                     email = requestingUser.email;
                                 }
                                 let user = await findUserByEmail(email);
@@ -143,7 +177,6 @@ var TwitterServer;
                                     let users = [];
                                     users.push(user);
                                     let tweets = await getTweetsFromUser(user);
-                                    //Wenn keine Tweets in der Methode Dummy einfuegen
                                     response = { status: 0, message: "Get User Details Successfull", users: users, tweets: tweets };
                                 }
                                 else {
@@ -276,6 +309,19 @@ var TwitterServer;
         }
         return null;
     }
+    async function editUser(user, data) {
+        let lastname = data.lastname;
+        let firstname = data.firstname;
+        let email = data.email;
+        let studycourse = data.studycourse;
+        let semester = data.semester;
+        let updated = await dbUsers.findOneAndUpdate({ email: user.email }, { $set: { lastname: lastname, firstname: firstname, email: email, studycourse: studycourse, semester: semester } }, { returnOriginal: false });
+        if (updated.ok == 1) {
+            let updatedUser = updated.value;
+            return createToken(updatedUser.email);
+        }
+        return null;
+    }
     //######Code from https://wanago.io/2018/12/24/typescript-express-registering-authenticating-jwt/ ######################
     function createToken(email) {
         let expiresIn = 60 * 60; // an hour
@@ -286,7 +332,7 @@ var TwitterServer;
         };
         return {
             expiresIn,
-            token: jwt.sign(dataStoredInToken, secret, { expiresIn }),
+            token: jwt.sign(dataStoredInToken, secret, { expiresIn })
         };
     }
     //######Code from https://wanago.io/2018/12/24/typescript-express-registering-authenticating-jwt/ ######################

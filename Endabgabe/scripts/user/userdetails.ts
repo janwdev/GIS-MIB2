@@ -12,13 +12,19 @@ namespace Twitter {
     if (query.has("email")) {
         showUserDetail(query.get("email"));
     } else {
-        //TODO weiterleitung auf alle Benutzer Seite
         console.log("No email Param given");
+        showUserDetail(null);
     }
 
     async function showUserDetail(email: string): Promise<void> {
-        console.log("Get User Details for Email: " + email);
-        let requestData: RequestToServerInterface = { command: "showUserDetail", email: email };
+        let requestData: RequestToServerInterface;
+        if (email != null) {
+            requestData = { command: "showUserDetail", email: email };
+            console.log("Get User Details for Email: " + email);
+        } else {
+            console.log("Show details for logged in user");
+            requestData = { command: "showUserDetail" };
+        }
         let responseFromServer: ResponseFromServer = await postToServer(requestData);
         if (responseFromServer) {
             if (responseFromServer.status >= 0) {
@@ -50,7 +56,7 @@ namespace Twitter {
                         }
                     }
 
-                    if (query.get("email") == "me") {
+                    if (query.get("email") == "me" || query.get("email") == null) {
                         let linkEdit: HTMLAnchorElement = document.createElement("a");
                         linkEdit.href = "edit.html";
                         linkEdit.textContent = "Edit";

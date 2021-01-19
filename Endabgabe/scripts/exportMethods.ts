@@ -53,6 +53,9 @@ namespace Twitter {
             });
             let responseFromServer: ResponseFromServer = await response.json();
             return responseFromServer;
+        } else {
+            console.log("Need to Login again");
+            //TODO weiterleitung
         }
         return null;
     }
@@ -79,6 +82,12 @@ namespace Twitter {
 
     export function getAuthCode(): string {
         return getCookie("Authorization");
+    }
+
+    //######Code from https://www.w3schools.com/js/js_cookies.asp ######################
+    export function deleteAuthCookie(): void {
+        document.cookie = "Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        //TODO auf Login weiterleiten
     }
 
     //######Code from https://www.w3schools.com/js/js_cookies.asp ######################

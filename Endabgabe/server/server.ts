@@ -16,6 +16,7 @@ export namespace TwitterServer {
     let KEYCOMMANDSUSCRIBETOUSER: string = "subscribe";
     let KEYCOMMANDUNSUSCRIBETOUSER: string = "unsubscribe";
     let KEYCOMMANDSHOWUSERDETAIL: string = "showUserDetail";
+    let KEYCOMMANDEDITUSER: string = "editUser";
 
     let dbUsers: Mongo.Collection;
     let dbTweets: Mongo.Collection;
@@ -135,6 +136,34 @@ export namespace TwitterServer {
                         }
                     }
 
+                    else if (command == KEYCOMMANDEDITUSER) {
+                        if (data.authKey) {
+                            let authKey: string = <string>data.authKey;
+                            let user: User = await authWithKey(authKey);
+                            if (user != null) {
+                                if (data.lastname && data.firstname && data.email && data.studycourse && data.semester) {
+                                    let tokenData: TokenData = await editUser(user, data);
+                                    if (tokenData && tokenData != null) {
+                                        response = {
+                                            status: 0,
+                                            message: "Account edited successful",
+                                            authCookieString: createAuthCookie(tokenData)
+                                        };
+                                    } else {
+                                        response = { status: -3, message: "Update went wrong" };
+                                    }
+                                }
+                                else {
+                                    response = { status: -1, message: "Error, not all required params given" };
+                                }
+                            } else {
+                                response = { status: -2, message: "Need to Login again" };
+                            }
+                        } else {
+                            response = { status: -1, message: "Error, not all required params given" };
+                        }
+                    }
+
                     else if (command == KEYCOMMANDGETALLUSERS) {
                         if (data.authKey) {
                             let authKey: string = <string>data.authKey;
@@ -151,12 +180,14 @@ export namespace TwitterServer {
                     }
 
                     else if (command == KEYCOMMANDSHOWUSERDETAIL) {
-                        if (data.email && data.authKey) {
+                        if (data.authKey) {
                             let authKey: string = <string>data.authKey;
-                            let email: string = <string>data.email;
+                            let email: string;
                             let requestingUser: User = await authWithKey(authKey);
                             if (requestingUser) {
-                                if (email == "me") {
+                                if (data.email) {
+                                    email = <string>data.email;
+                                } else {
                                     email = requestingUser.email;
                                 }
                                 let user: User = await findUserByEmail(email);
@@ -165,7 +196,6 @@ export namespace TwitterServer {
                                     let users: User[] = [];
                                     users.push(user);
                                     let tweets: TweetAnswer[] = await getTweetsFromUser(user);
-                                    //Wenn keine Tweets in der Methode Dummy einfuegen
                                     response = { status: 0, message: "Get User Details Successfull", users: users, tweets: tweets };
                                 } else {
                                     response = { status: -1, message: "Something went Wrong,cant get User" };
@@ -315,6 +345,25 @@ export namespace TwitterServer {
         return null;
     }
 
+    async function editUser(user: User, data: RequestData): Promise<TokenData> {
+        let lastname: string = <string>data.lastname;
+        let firstname: string = <string>data.firstname;
+        let email: string = <string>data.email;
+        let studycourse: string = <string>data.studycourse;
+        let semester: string = <string>data.semester;
+        let updated: Mongo.FindAndModifyWriteOpResultObject<User> = await dbUsers.findOneAndUpdate(
+            { email: user.email },
+            { $set: { lastname: lastname, firstname: firstname, email: email, studycourse: studycourse, semester: semester } },
+            { returnOriginal: false }
+        );
+
+        if (updated.ok == 1) {
+            let updatedUser: User = updated.value;
+            return createToken(updatedUser.email);
+        }
+        return null;
+    }
+
 
     //######Code from https://wanago.io/2018/12/24/typescript-express-registering-authenticating-jwt/ ######################
     function createToken(email: string): TokenData {
@@ -326,7 +375,7 @@ export namespace TwitterServer {
         };
         return {
             expiresIn,
-            token: jwt.sign(dataStoredInToken, secret, { expiresIn }),
+            token: jwt.sign(dataStoredInToken, secret, { expiresIn })
         };
     }
 

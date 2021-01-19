@@ -11,6 +11,9 @@ var Twitter;
     let tweetTimeline = document.getElementById("tweetTimeline");
     async function getTweetTimeline() {
         let tweets = await getTweetTimelineFromServer();
+        while (tweetTimeline.firstChild) {
+            tweetTimeline.removeChild(tweetTimeline.lastChild);
+        }
         if (tweets != null) {
             for (let i = 0; i < tweets.length; i++) {
                 let tweet = tweets[i];

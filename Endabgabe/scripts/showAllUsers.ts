@@ -15,7 +15,10 @@ namespace Twitter {
                 while (answerSection.firstChild) {
                     answerSection.removeChild(answerSection.lastChild);
                 }
-                createHTMLTableFromUserArray(userArray);
+                if (userArray) {
+                    createHTMLTableFromUserArray(userArray);
+                }
+
             } else {
                 console.log("No Response");
             }

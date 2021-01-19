@@ -15,6 +15,9 @@ namespace Twitter {
 
     async function getTweetTimeline(): Promise<void> {
         let tweets: Tweet[] = await getTweetTimelineFromServer();
+        while (tweetTimeline.firstChild) {
+            tweetTimeline.removeChild(tweetTimeline.lastChild);
+        }
         if (tweets != null) {
             for (let i: number = 0; i < tweets.length; i++) {
                 let tweet: Tweet = tweets[i];

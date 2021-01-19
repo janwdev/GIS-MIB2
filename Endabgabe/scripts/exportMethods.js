@@ -20,6 +20,10 @@ var Twitter;
             let responseFromServer = await response.json();
             return responseFromServer;
         }
+        else {
+            console.log("Need to Login again");
+            //TODO weiterleitung
+        }
         return null;
     }
     Twitter.postToServer = postToServer;
@@ -48,6 +52,12 @@ var Twitter;
         return getCookie("Authorization");
     }
     Twitter.getAuthCode = getAuthCode;
+    //######Code from https://www.w3schools.com/js/js_cookies.asp ######################
+    function deleteAuthCookie() {
+        document.cookie = "Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        //TODO auf Login weiterleiten
+    }
+    Twitter.deleteAuthCookie = deleteAuthCookie;
     //######Code from https://www.w3schools.com/js/js_cookies.asp ######################
     function getCookie(cname) {
         let name = cname + "=";

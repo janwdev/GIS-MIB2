@@ -13,12 +13,19 @@ var Twitter;
         showUserDetail(query.get("email"));
     }
     else {
-        //TODO weiterleitung auf alle Benutzer Seite
         console.log("No email Param given");
+        showUserDetail(null);
     }
     async function showUserDetail(email) {
-        console.log("Get User Details for Email: " + email);
-        let requestData = { command: "showUserDetail", email: email };
+        let requestData;
+        if (email != null) {
+            requestData = { command: "showUserDetail", email: email };
+            console.log("Get User Details for Email: " + email);
+        }
+        else {
+            console.log("Show details for logged in user");
+            requestData = { command: "showUserDetail" };
+        }
         let responseFromServer = await Twitter.postToServer(requestData);
         if (responseFromServer) {
             if (responseFromServer.status >= 0) {
@@ -49,7 +56,7 @@ var Twitter;
                             }
                         }
                     }
-                    if (query.get("email") == "me") {
+                    if (query.get("email") == "me" || query.get("email") == null) {
                         let linkEdit = document.createElement("a");
                         linkEdit.href = "edit.html";
                         linkEdit.textContent = "Edit";
