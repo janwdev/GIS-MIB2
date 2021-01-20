@@ -15,7 +15,7 @@
     "@types/jsonwebtoken": "^8.5.0"
   },
   "scripts": {
-    "start": "node Endabgabe/server/server.js local"
+    "start": "node Endabgabe/server/server.js remote"
   },
   "repository": {
     "type": "git",

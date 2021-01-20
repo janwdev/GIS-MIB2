@@ -69,7 +69,6 @@ var TwitterServer;
         console.log("Database connection", dbUsers != undefined);
     }
     function handleRequest(_request, _response) {
-        console.log("I hear voices!"); // Konsolenausgabe
         _response.setHeader("Access-Control-Allow-Origin", "*");
         if (_request.method == "POST") {
             let body = "";
@@ -81,271 +80,279 @@ var TwitterServer;
                 let response;
                 if (data.command) {
                     let command = data.command;
-                    if (command == KEYCOMMANDREGISTER) {
-                        if (data.email && data.password && data.firstname && data.lastname && data.studycourse && data.semester) {
-                            let tokenData = await registration(data);
-                            if (tokenData) {
-                                response = {
-                                    status: 0,
-                                    message: "Account created successful",
-                                    authCookieString: createAuthCookie(tokenData)
-                                };
+                    console.log("Command: " + command);
+                    if (dbUsers && dbTweets) {
+                        if (command == KEYCOMMANDREGISTER) {
+                            if (data.email && data.password && data.firstname && data.lastname && data.studycourse && data.semester) {
+                                let tokenData = await registration(data);
+                                if (tokenData) {
+                                    response = {
+                                        status: 0,
+                                        message: "Account created successful",
+                                        authCookieString: createAuthCookie(tokenData)
+                                    };
+                                }
+                                else {
+                                    response = { status: -1, message: "Email already exists" };
+                                }
                             }
                             else {
-                                response = { status: -1, message: "Email already exists" };
+                                response = { status: -1, message: "Error, not all required params given" };
                             }
                         }
-                        else {
-                            response = { status: -1, message: "Error, not all required params given" };
-                        }
-                    }
-                    else if (command == KEYCOMMANDLOGIN) {
-                        if (data.email && data.password) {
-                            let tokenData = await login(data);
-                            if (tokenData) {
-                                response = {
-                                    status: 0,
-                                    message: "Login successful",
-                                    authCookieString: createAuthCookie(tokenData)
-                                };
+                        else if (command == KEYCOMMANDLOGIN) {
+                            if (data.email && data.password) {
+                                let tokenData = await login(data);
+                                if (tokenData) {
+                                    response = {
+                                        status: 0,
+                                        message: "Login successful",
+                                        authCookieString: createAuthCookie(tokenData)
+                                    };
+                                }
+                                else {
+                                    response = { status: -1, message: "Login went wrong" };
+                                }
                             }
                             else {
-                                response = { status: -1, message: "Login went wrong" };
+                                response = { status: -1, message: "Error, not all required params given" };
                             }
                         }
-                        else {
-                            response = { status: -1, message: "Error, not all required params given" };
-                        }
-                    }
-                    else if (command == KEYCOMMANDDELETEUSER) {
-                        if (data.authKey) {
-                            let authKey = data.authKey;
-                            let user = await authWithKey(authKey);
-                            if (user != null) {
-                                if (await deleteUser(user)) {
-                                    console.log("Deleted User with Email: " + user.email + " and ID: " + user._id);
-                                    response = { status: 0, message: "Delete Successfull" };
+                        else if (command == KEYCOMMANDDELETEUSER) {
+                            if (data.authKey) {
+                                let authKey = data.authKey;
+                                let user = await authWithKey(authKey);
+                                if (user != null) {
+                                    if (await deleteUser(user)) {
+                                        console.log("Deleted User with Email: " + user.email + " and ID: " + user._id);
+                                        response = { status: 0, message: "Delete Successfull" };
+                                    }
+                                    else {
+                                        response = { status: -1, message: "Delete went wrong" };
+                                    }
                                 }
                                 else {
                                     response = { status: -1, message: "Delete went wrong" };
                                 }
                             }
                             else {
-                                response = { status: -1, message: "Delete went wrong" };
+                                response = { status: -1, message: "Error, not all required params given" };
                             }
                         }
-                        else {
-                            response = { status: -1, message: "Error, not all required params given" };
-                        }
-                    }
-                    else if (command == KEYCOMMANDEDITUSER) {
-                        if (data.authKey) {
-                            let authKey = data.authKey;
-                            let user = await authWithKey(authKey);
-                            if (user != null) {
-                                if (data.lastname && data.firstname && data.email && data.studycourse && data.semester) {
-                                    let tokenData = await editUser(user, data);
-                                    if (tokenData && tokenData != null) {
-                                        response = {
-                                            status: 0,
-                                            message: "Account edited successful",
-                                            authCookieString: createAuthCookie(tokenData)
-                                        };
+                        else if (command == KEYCOMMANDEDITUSER) {
+                            if (data.authKey) {
+                                let authKey = data.authKey;
+                                let user = await authWithKey(authKey);
+                                if (user != null) {
+                                    if (data.lastname && data.firstname && data.email && data.studycourse && data.semester) {
+                                        let tokenData = await editUser(user, data);
+                                        if (tokenData && tokenData != null) {
+                                            response = {
+                                                status: 0,
+                                                message: "Account edited successful",
+                                                authCookieString: createAuthCookie(tokenData)
+                                            };
+                                        }
+                                        else {
+                                            response = { status: -3, message: "Update went wrong" };
+                                        }
                                     }
                                     else {
-                                        response = { status: -3, message: "Update went wrong" };
+                                        response = { status: -1, message: "Error, not all required params given" };
                                     }
                                 }
                                 else {
-                                    response = { status: -1, message: "Error, not all required params given" };
+                                    response = { status: -2, message: "Need to Login again" };
                                 }
                             }
                             else {
-                                response = { status: -2, message: "Need to Login again" };
+                                response = { status: -1, message: "Error, not all required params given" };
                             }
                         }
-                        else {
-                            response = { status: -1, message: "Error, not all required params given" };
-                        }
-                    }
-                    else if (command == KEYCOMMANDEDITUSERPW) {
-                        if (data.authKey) {
-                            let authKey = data.authKey;
-                            let user = await authWithKey(authKey);
-                            if (user != null) {
-                                if (data.emailPW && data.oldPW && data.newPW) {
-                                    let oldPW = data.oldPW;
-                                    let newPW = data.newPW;
-                                    if (await editUserPW(user, oldPW, newPW)) {
-                                        response = {
-                                            status: 0,
-                                            message: "Account edited successful"
-                                        };
+                        else if (command == KEYCOMMANDEDITUSERPW) {
+                            if (data.authKey) {
+                                let authKey = data.authKey;
+                                let user = await authWithKey(authKey);
+                                if (user != null) {
+                                    if (data.emailPW && data.oldPW && data.newPW) {
+                                        let oldPW = data.oldPW;
+                                        let newPW = data.newPW;
+                                        if (await editUserPW(user, oldPW, newPW)) {
+                                            response = {
+                                                status: 0,
+                                                message: "Account edited successful"
+                                            };
+                                        }
+                                        else {
+                                            response = { status: -3, message: "Update went wrong" };
+                                        }
                                     }
                                     else {
-                                        response = { status: -3, message: "Update went wrong" };
+                                        response = { status: -1, message: "Error, not all required params given" };
                                     }
                                 }
                                 else {
-                                    response = { status: -1, message: "Error, not all required params given" };
+                                    response = { status: -2, message: "Need to Login again" };
                                 }
                             }
                             else {
-                                response = { status: -2, message: "Need to Login again" };
+                                response = { status: -1, message: "Error, not all required params given" };
                             }
                         }
-                        else {
-                            response = { status: -1, message: "Error, not all required params given" };
-                        }
-                    }
-                    else if (command == KEYCOMMANDGETALLUSERS) {
-                        if (data.authKey) {
-                            let authKey = data.authKey;
-                            let user = await authWithKey(authKey);
-                            if (user != null) {
-                                let allUsers = await getAllUsers(user.email);
-                                response = { status: 0, message: "All Users given", users: allUsers };
-                            }
-                            else {
-                                response = { status: -2, message: "Need to Login again" };
-                            }
-                        }
-                        else {
-                            response = { status: -1, message: "Error, not all required params given" };
-                        }
-                    }
-                    else if (command == KEYCOMMANDSHOWUSERDETAIL) {
-                        if (data.authKey) {
-                            let authKey = data.authKey;
-                            let email;
-                            let requestingUser = await authWithKey(authKey);
-                            if (requestingUser) {
-                                if (data.email) {
-                                    email = data.email;
+                        else if (command == KEYCOMMANDGETALLUSERS) {
+                            if (data.authKey) {
+                                let authKey = data.authKey;
+                                let user = await authWithKey(authKey);
+                                if (user != null) {
+                                    let allUsers = await getAllUsers(user.email);
+                                    response = { status: 0, message: "All Users given", users: allUsers };
                                 }
                                 else {
-                                    email = requestingUser.email;
-                                }
-                                let user = await findUserByEmail(email);
-                                if (user) {
-                                    delete user.password;
-                                    let users = [];
-                                    users.push(user);
-                                    let tweets = await getTweetsFromUser(user);
-                                    response = { status: 0, message: "Get User Details Successfull", users: users, tweets: tweets };
-                                }
-                                else {
-                                    response = { status: -1, message: "Something went Wrong,cant get User" };
+                                    response = { status: -2, message: "Need to Login again" };
                                 }
                             }
                             else {
-                                response = { status: -2, message: "Need to Login again" };
+                                response = { status: -1, message: "Error, not all required params given" };
                             }
                         }
-                        else {
-                            response = { status: -2, message: "Not all Params given" };
-                        }
-                    }
-                    else if (command == KEYCOMMANDSUSCRIBETOUSER) {
-                        if (data.authKey && data._id) {
-                            let authKey = data.authKey;
-                            let idToSuscribe = data._id;
-                            let user = await authWithKey(authKey);
-                            if (user != null) {
-                                await suscribe(user, idToSuscribe);
-                                response = { status: 0, message: "Finished" };
-                            }
-                            else {
-                                response = { status: -2, message: "Need to Login again" };
-                            }
-                        }
-                        else {
-                            response = { status: -1, message: "Error, not all required params given" };
-                        }
-                    }
-                    else if (command == KEYCOMMANDUNSUSCRIBETOUSER) {
-                        if (data.authKey && data._id) {
-                            let authKey = data.authKey;
-                            let idToUnSuscribe = data._id;
-                            let user = await authWithKey(authKey);
-                            if (user != null) {
-                                await unsuscribe(user, idToUnSuscribe);
-                                response = { status: 0, message: "Finished" };
-                            }
-                            else {
-                                response = { status: -2, message: "Need to Login again" };
-                            }
-                        }
-                        else {
-                            response = { status: -1, message: "Error, not all required params given" };
-                        }
-                    }
-                    else if (command == KEYCOMMANDPOSTTWEET) {
-                        if (data.authKey && data.tweet) {
-                            let authKey = data.authKey;
-                            let tweet = data.tweet;
-                            let suc = await postTweet(authKey, tweet);
-                            if (suc == 0) {
-                                response = { status: 0, message: "Posted successful" };
-                            }
-                            else if (suc == -1) {
-                                response = { status: -1, message: "Need to Login again" };
-                            }
-                            else {
-                                response = { status: -2, message: "Post went wrong" };
-                            }
-                        }
-                        else {
-                            response = { status: -3, message: "Error, not all required params given" };
-                        }
-                    }
-                    else if (command == KEYCOMMANDDELETETWEET) {
-                        if (data.authKey && data.tweetID) {
-                            let authKey = data.authKey;
-                            let tweetID = data.tweetID;
-                            let suc = await deleteTweet(authKey, tweetID);
-                            if (suc == 0) {
-                                response = { status: 0, message: "Posted successful" };
-                            }
-                            else if (suc == -1) {
-                                response = { status: -1, message: "Need to Login again" };
-                            }
-                            else {
-                                response = { status: -2, message: "Delete went wrong" };
-                            }
-                        }
-                        else {
-                            response = { status: -3, message: "Error, not all required params given" };
-                        }
-                    }
-                    else if (command == KEYCOMMANDGETTWEETTIMELINE) {
-                        if (data.authKey && data.oldestDate) {
-                            let authKey = data.authKey;
-                            let oldestDateString = data.oldestDate;
-                            let oldestDate = new Date(Date.parse(oldestDateString));
-                            if (authWithKey(authKey) != null) {
-                                let tweets = await getTweetTimeline(authKey, oldestDate);
-                                if (tweets != null) {
-                                    response = { status: 0, message: "Get latest Tweets successful", tweets: tweets };
+                        else if (command == KEYCOMMANDSHOWUSERDETAIL) {
+                            if (data.authKey) {
+                                let authKey = data.authKey;
+                                let email;
+                                let requestingUser = await authWithKey(authKey);
+                                if (requestingUser) {
+                                    if (data.email) {
+                                        email = data.email;
+                                    }
+                                    else {
+                                        email = requestingUser.email;
+                                    }
+                                    let user = await findUserByEmail(email);
+                                    if (user) {
+                                        delete user.password;
+                                        let users = [];
+                                        users.push(user);
+                                        let tweets = await getTweetsFromUser(user);
+                                        response = { status: 0, message: "Get User Details Successfull", users: users, tweets: tweets };
+                                    }
+                                    else {
+                                        response = { status: -1, message: "Something went Wrong,cant get User" };
+                                    }
                                 }
                                 else {
-                                    response = { status: -2, message: "Something went wrong" };
+                                    response = { status: -2, message: "Need to Login again" };
                                 }
                             }
                             else {
-                                response = { status: -1, message: "Need to Login again" };
+                                response = { status: -2, message: "Not all Params given" };
+                            }
+                        }
+                        else if (command == KEYCOMMANDSUSCRIBETOUSER) {
+                            if (data.authKey && data._id) {
+                                let authKey = data.authKey;
+                                let idToSuscribe = data._id;
+                                let user = await authWithKey(authKey);
+                                if (user != null) {
+                                    await suscribe(user, idToSuscribe);
+                                    response = { status: 0, message: "Finished" };
+                                }
+                                else {
+                                    response = { status: -2, message: "Need to Login again" };
+                                }
+                            }
+                            else {
+                                response = { status: -1, message: "Error, not all required params given" };
+                            }
+                        }
+                        else if (command == KEYCOMMANDUNSUSCRIBETOUSER) {
+                            if (data.authKey && data._id) {
+                                let authKey = data.authKey;
+                                let idToUnSuscribe = data._id;
+                                let user = await authWithKey(authKey);
+                                if (user != null) {
+                                    await unsuscribe(user, idToUnSuscribe);
+                                    response = { status: 0, message: "Finished" };
+                                }
+                                else {
+                                    response = { status: -2, message: "Need to Login again" };
+                                }
+                            }
+                            else {
+                                response = { status: -1, message: "Error, not all required params given" };
+                            }
+                        }
+                        else if (command == KEYCOMMANDPOSTTWEET) {
+                            if (data.authKey && data.tweet) {
+                                let authKey = data.authKey;
+                                let tweet = data.tweet;
+                                let suc = await postTweet(authKey, tweet);
+                                if (suc == 0) {
+                                    response = { status: 0, message: "Posted successful" };
+                                }
+                                else if (suc == -1) {
+                                    response = { status: -1, message: "Need to Login again" };
+                                }
+                                else {
+                                    response = { status: -2, message: "Post went wrong" };
+                                }
+                            }
+                            else {
+                                response = { status: -3, message: "Error, not all required params given" };
+                            }
+                        }
+                        else if (command == KEYCOMMANDDELETETWEET) {
+                            if (data.authKey && data.tweetID) {
+                                let authKey = data.authKey;
+                                let tweetID = data.tweetID;
+                                let suc = await deleteTweet(authKey, tweetID);
+                                if (suc == 0) {
+                                    response = { status: 0, message: "Posted successful" };
+                                }
+                                else if (suc == -1) {
+                                    response = { status: -1, message: "Need to Login again" };
+                                }
+                                else {
+                                    response = { status: -2, message: "Delete went wrong" };
+                                }
+                            }
+                            else {
+                                response = { status: -3, message: "Error, not all required params given" };
+                            }
+                        }
+                        else if (command == KEYCOMMANDGETTWEETTIMELINE) {
+                            if (data.authKey && data.oldestDate) {
+                                let authKey = data.authKey;
+                                let oldestDateString = data.oldestDate;
+                                let oldestDate = new Date(Date.parse(oldestDateString));
+                                if (authWithKey(authKey) != null) {
+                                    let tweets = await getTweetTimeline(authKey, oldestDate);
+                                    if (tweets != null) {
+                                        response = { status: 0, message: "Get latest Tweets successful", tweets: tweets };
+                                    }
+                                    else {
+                                        response = { status: -2, message: "Something went wrong" };
+                                    }
+                                }
+                                else {
+                                    response = { status: -1, message: "Need to Login again" };
+                                }
+                            }
+                            else {
+                                response = { status: -3, message: "Error, not all required params given" };
                             }
                         }
                         else {
-                            response = { status: -3, message: "Error, not all required params given" };
+                            response = { status: -1, message: "Wrong Command given" };
                         }
                     }
                     else {
-                        response = { status: -1, message: "Wrong Command given" };
+                        response = { status: -1, message: "DBConnection not Ready" };
+                        console.log("DBConnection not Ready");
                     }
                 }
                 else {
                     response = { status: -1, message: "Error, no Command given" };
+                    console.log("Error, no Command given");
                 }
                 _response.setHeader("content-type", "application/json"); // Antwort als JSON
                 _response.write(JSON.stringify(response));
