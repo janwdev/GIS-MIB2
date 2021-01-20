@@ -4,27 +4,21 @@ namespace Twitter {
     let answerSection: HTMLDivElement = <HTMLDivElement>document.getElementById("answerSection");
 
     async function showAllUsers(): Promise<void> {
-        let authCode: string = getAuthCode();
-        if (authCode.length > 0) {
-            let requestData: RequestToServerInterface = { command: "showAllUsers" };
-            let responseFromServer: ResponseFromServer = await postToServer(requestData);
-            if (responseFromServer) {
-                let userArray: User[] = responseFromServer.users;
-                console.log("Answer:");
-                console.log(userArray);
-                while (answerSection.firstChild) {
-                    answerSection.removeChild(answerSection.lastChild);
-                }
-                if (userArray) {
-                    createHTMLTableFromUserArray(userArray);
-                }
-
-            } else {
-                console.log("No Response");
+        let requestData: RequestToServerInterface = { command: "showAllUsers" };
+        let responseFromServer: ResponseFromServer = await postToServer(requestData);
+        if (responseFromServer) {
+            let userArray: User[] = responseFromServer.users;
+            console.log("Answer:");
+            console.log(userArray);
+            while (answerSection.firstChild) {
+                answerSection.removeChild(answerSection.lastChild);
             }
+            if (userArray) {
+                createHTMLTableFromUserArray(userArray);
+            }
+
         } else {
-            //TODO weiterleitung
-            console.log("Need to Login again");
+            console.log("No Response");
         }
     }
 
@@ -49,7 +43,10 @@ namespace Twitter {
                 let user: User = array[i];
                 let tr: HTMLTableRowElement = table.insertRow();
                 let tabCellName: HTMLTableCellElement = tr.insertCell();
-                tabCellName.textContent = user.firstname + " " + user.lastname;
+                let htmlName: HTMLAnchorElement = document.createElement("a");
+                htmlName.textContent = user.firstname + " " + user.lastname;
+                htmlName.href = "userdetails.html?email=" + user.email;
+                tabCellName.appendChild(htmlName);
                 let tabCellEmail: HTMLTableCellElement = tr.insertCell();
                 tabCellEmail.textContent = user.email;
                 let tabCellSuscribe: HTMLTableCellElement = tr.insertCell();
@@ -83,21 +80,13 @@ namespace Twitter {
 
     async function suscribeUnsuscribeToUserWithId(id: string, command: string): Promise<void> {
         console.log("Try to suscribe to User with id: " + id);
-
-        let authCode: string = getAuthCode();
-        if (authCode.length > 0) {
-            let requestData: RequestToServerInterface = { command: command, _id: id };
-            let responseFromServer: ResponseFromServer = await postToServer(requestData);
-            if (responseFromServer) {
-                console.log("Answer:");
-                console.log(responseFromServer);
-            } else {
-                console.log("No Response");
-            }
+        let requestData: RequestToServerInterface = { command: command, _id: id };
+        let responseFromServer: ResponseFromServer = await postToServer(requestData);
+        if (responseFromServer) {
+            console.log("Answer:");
+            console.log(responseFromServer);
         } else {
-            //TODO weiterleitung
-            console.log("Need to Login again");
+            console.log("No Response");
         }
-
     }
 }

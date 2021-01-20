@@ -17,6 +17,7 @@ export namespace TwitterServer {
     let KEYCOMMANDUNSUSCRIBETOUSER: string = "unsubscribe";
     let KEYCOMMANDSHOWUSERDETAIL: string = "showUserDetail";
     let KEYCOMMANDEDITUSER: string = "editUser";
+    let KEYCOMMANDEDITUSERPW: string = "editUserPW";
 
     let dbUsers: Mongo.Collection;
     let dbTweets: Mongo.Collection;
@@ -148,6 +149,34 @@ export namespace TwitterServer {
                                             status: 0,
                                             message: "Account edited successful",
                                             authCookieString: createAuthCookie(tokenData)
+                                        };
+                                    } else {
+                                        response = { status: -3, message: "Update went wrong" };
+                                    }
+                                }
+                                else {
+                                    response = { status: -1, message: "Error, not all required params given" };
+                                }
+                            } else {
+                                response = { status: -2, message: "Need to Login again" };
+                            }
+                        } else {
+                            response = { status: -1, message: "Error, not all required params given" };
+                        }
+                    }
+
+                    else if (command == KEYCOMMANDEDITUSERPW) {
+                        if (data.authKey) {
+                            let authKey: string = <string>data.authKey;
+                            let user: User = await authWithKey(authKey);
+                            if (user != null) {
+                                if (data.emailPW && data.oldPW && data.newPW) {
+                                    let oldPW: string = <string>data.oldPW;
+                                    let newPW: string = <string>data.newPW;
+                                    if (await editUserPW(user, oldPW, newPW)) {
+                                        response = {
+                                            status: 0,
+                                            message: "Account edited successful",
                                         };
                                     } else {
                                         response = { status: -3, message: "Update went wrong" };
@@ -362,6 +391,21 @@ export namespace TwitterServer {
             return createToken(updatedUser.email);
         }
         return null;
+    }
+
+    async function editUserPW(user: User, oldPW: string, newPW: string): Promise<boolean> {
+        if (await bcrypt.compare(oldPW, user.password)) {
+            const hashedPassword: string = await bcrypt.hash(newPW, 10);
+            let updated: Mongo.FindAndModifyWriteOpResultObject<User> = await dbUsers.findOneAndUpdate(
+                { email: user.email },
+                { $set: { password: hashedPassword } },
+                { returnOriginal: false }
+            );
+            if (updated.ok == 1) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

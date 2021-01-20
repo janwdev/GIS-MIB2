@@ -6,24 +6,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="scripts/exportMethods.js" defer></script>
     <script src="scripts/edit.js" defer></script>
+    <link rel="stylesheet" href="styles/general.css">
+    <link rel="stylesheet" href="styles/navbar.css">
     <title>Edit</title>
 </head>
 
 <body>
-    <form id="form">
+    <header class="header">
+        <input type="checkbox" id="hamburg">
+        <label for="hamburg" class="hamburg">
+            <span class="line"></span>
+            <span class="line"></span>
+            <span class="line"></span>
+        </label>
+        <nav class="topmenu">
+            <ul class="menulist">
+                <li><a href="subscribe.html">Subscribe</a></li>
+                <li><a href="userdetails.html">Profile</a></li>
+            </ul>
+        </nav>
+        <h1><a href="index.html">Home</a></h1>
+    </header>
+    <main>
         <div>
-            <input name="lastname" type="text" placeholder="LastName">
-            <input name="firstname" type="text" placeholder="Firstname">
-            <input name="email" type="text" placeholder="Email">
-            <input name="studycourse" type="text" placeholder="Studycourse">
-            <input name="semester" type="text" placeholder="Semester">
+            <form id="form">
+                <div>
+                    <input name="lastname" type="text" placeholder="LastName">
+                    <input name="firstname" type="text" placeholder="Firstname">
+                    <input name="email" type="text" placeholder="Email">
+                    <input name="studycourse" type="text" placeholder="Studycourse">
+                    <input name="semester" type="text" placeholder="Semester">
+                    <button type="button" id="sendEdit">Edit</button>
+                </div>
+            </form>
         </div>
         <div>
-            <button type="button" id="sendEdit">Edit</button>
+            <form id="editPWForm">
+                <input type="text" name="emailPW" placeholder="email">
+                <input type="password" name="oldPW" placeholder="Old PW">
+                <input type="password" name="newPW" placeholder="New Password">
+                <input type="password" name="newPW2" placeholder="Confirm Password">
+                <button type="button" id="editPassword">Edit Password</button>
+            </form>
         </div>
-    </form>
 
-    <div id="answerSection"></div>
+        <div id="answerSection"></div>
+    </main>
+
 </body>
 
 </html>

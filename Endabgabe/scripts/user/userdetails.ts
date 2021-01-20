@@ -61,6 +61,13 @@ namespace Twitter {
                         linkEdit.href = "edit.html";
                         linkEdit.textContent = "Edit";
                         htmlName.appendChild(linkEdit);
+
+                        let btLogout: HTMLButtonElement = document.createElement("button");
+                        btLogout.textContent = "Logout";
+                        btLogout.addEventListener("click", function(): void{
+                            deleteAuthCookie(true);
+                        });
+                        htmlName.appendChild(btLogout);
                     }
                 } else {
                     console.log("Error no User returned");
@@ -70,7 +77,7 @@ namespace Twitter {
                 //TODO
             }
         } else {
-            //TODO weiterleitung
+            redirectToLogin();
             console.log("Need to login again");
         }
     }

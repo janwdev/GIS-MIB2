@@ -1,0 +1,148 @@
+main {
+    margin: auto;
+    margin-top: 90px;
+}
+
+header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    right: 0;
+    background: #333;
+    z-index: 1000;
+}
+
+header h1 a {
+    color: white;
+    padding-left: 20px;
+    text-decoration: none;
+}
+
+header h1 a:visited {
+    color: white;
+    padding-left: 20px;
+    text-decoration: none;
+}
+
+/* Nav- Menu*/
+
+.topmenu {
+    height: auto;
+    /*Menu ausblenden*/
+    max-height: 0;
+    overflow: hidden;
+    /*Animation HamburgerMenu Kreuz*/
+    transition: rotate 0.5s;
+}
+
+.menulist {
+    list-style-type: none;
+    text-align: center;
+}
+
+.menulist li>a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding-top: 50px;
+    text-decoration: none;
+}
+
+/*HamburgerMenu Icon*/
+
+.hamburg {
+    display: block;
+    float: right;
+    width: 75px;
+    height: 72px;
+    position: relative;
+    border-radius: 4px;
+}
+
+#hamburg {
+    display: none
+}
+
+/*Hamburger Linien*/
+
+.line {
+    position: absolute;
+    left: 10px;
+    height: 4px;
+    width: 55px;
+    background: #fff;
+    border-radius: 2px;
+    display: block;
+    transition: 0.5s;
+    transform-origin: center;
+}
+
+.line:nth-child(1) {
+    top: 24px;
+}
+
+.line:nth-child(2) {
+    top: 36px;
+}
+
+.line:nth-child(3) {
+    top: 48px;
+}
+
+#hamburg:checked+.hamburg .line:nth-child(1) {
+    transform: translateY(12px) rotate(-45deg);
+}
+
+#hamburg:checked+.hamburg .line:nth-child(2) {
+    opacity: 0;
+}
+
+#hamburg:checked+.hamburg .line:nth-child(3) {
+    transform: translateY(-12px) rotate(45deg);
+}
+
+/*Verberge Header Text wenn Navigation ausgeklappt*/
+
+#hamburg:checked~#header-text {
+    visibility: hidden;
+    height: 0px;
+}
+
+/*Navigation ausklappen*/
+
+#hamburg:checked+.hamburg+.topmenu {
+    max-height: 100%;
+}
+
+/* PC */
+
+@media (min-width: 1025px) {
+    header {
+        max-height: 80px;
+        background-color: #333;
+    }
+    /*Navigationsmenu*/
+    .hamburg {
+        visibility: hidden;
+        max-width: 0px;
+        width: 0px;
+        max-height: 0px;
+        height: 0px;
+    }
+    .topmenu {
+        display: inline;
+    }
+    .menulist {
+        display: block;
+        padding-right: 10px;
+    }
+    .menulist li {
+        float: right;
+    }
+    .menulist li>a {
+        padding: 14px 16px;
+    }
+    .menulist li>a:hover {
+        background-color: #111;
+    }
+}

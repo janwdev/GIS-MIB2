@@ -1,17 +1,36 @@
 namespace Twitter {
 
-    let oldestDateS: string = "2017-05-01"; //TODO aus Oberflaeche holen
+    let oldestDateS: string = "2021-01-01";
 
     let inputForm: HTMLFormElement = <HTMLFormElement>document.getElementById("inputForm");
 
     let btSendTweet: HTMLButtonElement = <HTMLButtonElement>document.getElementById("sendTweet");
     btSendTweet.addEventListener("click", sendTweet);
 
-    let btGetTweetTimeline: HTMLButtonElement = <HTMLButtonElement>document.getElementById("getTweetTimeline");
-    btGetTweetTimeline.addEventListener("click", getTweetTimeline);
-
     let answerSec: HTMLDivElement = <HTMLDivElement>document.getElementById("answerSection");
     let tweetTimeline: HTMLDivElement = <HTMLDivElement>document.getElementById("tweetTimeline");
+
+    getTweetTimeline();
+
+    //###### Datepicker from https://github.com/NomisIV/js-datepicker
+    let dpSettings: DatepickerSettings = {
+        last_date: new Date(),
+        initial_date: new Date(oldestDateS),
+        enabled_days: (d) => {
+            return d.getDay() > 0 && d.getDay() < 6;
+        },
+        format: (d) => {
+            return d.toDateString();
+        }
+    };
+    let dateInput: HTMLInputElement = <HTMLInputElement>document.getElementById("date-input");
+    let d: Datepicker = new Datepicker(dateInput, dpSettings);
+
+    dateInput.addEventListener("change", function (): void {
+        oldestDateS = d.getDate().toISOString();
+        getTweetTimeline();
+    });
+    //#############################################################
 
     async function getTweetTimeline(): Promise<void> {
         let tweets: Tweet[] = await getTweetTimelineFromServer();
@@ -41,9 +60,6 @@ namespace Twitter {
             } else {
                 console.log(answer.message);
             }
-        } else {
-            //TODO weiterleitung
-            console.log("Need to Login again");
         }
         return null;
     }
@@ -75,8 +91,7 @@ namespace Twitter {
                 }
             }
         } else {
-            //TODO weiterleitung
-            console.log("Need to login again");
+            console.log("Something went wrong, maybe need to login again");
             let p: HTMLParagraphElement = document.createElement("p");
             p.innerText = "Need to login again";
             p.style.color = "red";

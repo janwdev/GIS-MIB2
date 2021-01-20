@@ -4,24 +4,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="scripts/datepicker.js"></script>
     <script src="scripts/exportMethods.js" defer></script>
     <script src="scripts/tweets.js" defer></script>
+    <link rel="stylesheet" href="styles/datepicker.css">
+    <link rel="stylesheet" href="styles/general.css">
+    <link rel="stylesheet" href="styles/navbar.css">
     <title>Tweet</title>
 </head>
 
 <body>
-    <form id="inputForm">
-        <div>
+    <header class="header">
+        <input type="checkbox" id="hamburg">
+        <label for="hamburg" class="hamburg">
+            <span class="line"></span>
+            <span class="line"></span>
+            <span class="line"></span>
+        </label>
+        <nav class="topmenu">
+            <ul class="menulist">
+                <li><a href="subscribe.html">Subscribe</a></li>
+                <li><a href="userdetails.html">Profile</a></li>
+            </ul>
+        </nav>
+        <h1><a href="index.html">Home</a></h1>
+    </header>
+    <main>
+        <form id="inputForm">
             <input id="tweet" name="tweet" type="text" placeholder="Tweet">
-        </div>
-        <div>
             <button type="button" id="sendTweet">Send</button>
-            <button type="button" id="getTweetTimeline">Get Timeline</button>
-        </div>
-    </form>
+        </form>
 
-    <div id="answerSection"></div>
-    <div id="tweetTimeline"></div>
+        <div id="answerSection"></div>
+        <h1>Timeline:</h1>
+        <div>
+            <p>First Date for Tweets:</p>
+            <input type="text" id="date-input" autocomplete="off">
+        </div>
+        <div id="tweetTimeline"></div>
+    </main>
+
 </body>
 
 </html>

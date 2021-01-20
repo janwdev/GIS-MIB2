@@ -4,28 +4,21 @@ var Twitter;
     showAllUsers();
     let answerSection = document.getElementById("answerSection");
     async function showAllUsers() {
-        let authCode = Twitter.getAuthCode();
-        if (authCode.length > 0) {
-            let requestData = { command: "showAllUsers" };
-            let responseFromServer = await Twitter.postToServer(requestData);
-            if (responseFromServer) {
-                let userArray = responseFromServer.users;
-                console.log("Answer:");
-                console.log(userArray);
-                while (answerSection.firstChild) {
-                    answerSection.removeChild(answerSection.lastChild);
-                }
-                if (userArray) {
-                    createHTMLTableFromUserArray(userArray);
-                }
+        let requestData = { command: "showAllUsers" };
+        let responseFromServer = await Twitter.postToServer(requestData);
+        if (responseFromServer) {
+            let userArray = responseFromServer.users;
+            console.log("Answer:");
+            console.log(userArray);
+            while (answerSection.firstChild) {
+                answerSection.removeChild(answerSection.lastChild);
             }
-            else {
-                console.log("No Response");
+            if (userArray) {
+                createHTMLTableFromUserArray(userArray);
             }
         }
         else {
-            //TODO weiterleitung
-            console.log("Need to Login again");
+            console.log("No Response");
         }
     }
     function createHTMLTableFromUserArray(array) {
@@ -47,7 +40,10 @@ var Twitter;
                 let user = array[i];
                 let tr = table.insertRow();
                 let tabCellName = tr.insertCell();
-                tabCellName.textContent = user.firstname + " " + user.lastname;
+                let htmlName = document.createElement("a");
+                htmlName.textContent = user.firstname + " " + user.lastname;
+                htmlName.href = "userdetails.html?email=" + user.email;
+                tabCellName.appendChild(htmlName);
                 let tabCellEmail = tr.insertCell();
                 tabCellEmail.textContent = user.email;
                 let tabCellSuscribe = tr.insertCell();
@@ -80,21 +76,14 @@ var Twitter;
     }
     async function suscribeUnsuscribeToUserWithId(id, command) {
         console.log("Try to suscribe to User with id: " + id);
-        let authCode = Twitter.getAuthCode();
-        if (authCode.length > 0) {
-            let requestData = { command: command, _id: id };
-            let responseFromServer = await Twitter.postToServer(requestData);
-            if (responseFromServer) {
-                console.log("Answer:");
-                console.log(responseFromServer);
-            }
-            else {
-                console.log("No Response");
-            }
+        let requestData = { command: command, _id: id };
+        let responseFromServer = await Twitter.postToServer(requestData);
+        if (responseFromServer) {
+            console.log("Answer:");
+            console.log(responseFromServer);
         }
         else {
-            //TODO weiterleitung
-            console.log("Need to Login again");
+            console.log("No Response");
         }
     }
 })(Twitter || (Twitter = {}));

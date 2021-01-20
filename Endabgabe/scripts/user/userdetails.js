@@ -61,6 +61,12 @@ var Twitter;
                         linkEdit.href = "edit.html";
                         linkEdit.textContent = "Edit";
                         htmlName.appendChild(linkEdit);
+                        let btLogout = document.createElement("button");
+                        btLogout.textContent = "Logout";
+                        btLogout.addEventListener("click", function () {
+                            Twitter.deleteAuthCookie(true);
+                        });
+                        htmlName.appendChild(btLogout);
                     }
                 }
                 else {
@@ -73,7 +79,7 @@ var Twitter;
             }
         }
         else {
-            //TODO weiterleitung
+            Twitter.redirectToLogin();
             console.log("Need to login again");
         }
     }

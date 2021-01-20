@@ -1,14 +1,31 @@
 "use strict";
 var Twitter;
 (function (Twitter) {
-    let oldestDateS = "2017-05-01"; //TODO aus Oberflaeche holen
+    let oldestDateS = "2021-01-01";
     let inputForm = document.getElementById("inputForm");
     let btSendTweet = document.getElementById("sendTweet");
     btSendTweet.addEventListener("click", sendTweet);
-    let btGetTweetTimeline = document.getElementById("getTweetTimeline");
-    btGetTweetTimeline.addEventListener("click", getTweetTimeline);
     let answerSec = document.getElementById("answerSection");
     let tweetTimeline = document.getElementById("tweetTimeline");
+    getTweetTimeline();
+    //###### Datepicker from https://github.com/NomisIV/js-datepicker
+    let dpSettings = {
+        last_date: new Date(),
+        initial_date: new Date(oldestDateS),
+        enabled_days: (d) => {
+            return d.getDay() > 0 && d.getDay() < 6;
+        },
+        format: (d) => {
+            return d.toDateString();
+        }
+    };
+    let dateInput = document.getElementById("date-input");
+    let d = new Twitter.Datepicker(dateInput, dpSettings);
+    dateInput.addEventListener("change", function () {
+        oldestDateS = d.getDate().toISOString();
+        getTweetTimeline();
+    });
+    //#############################################################
     async function getTweetTimeline() {
         let tweets = await getTweetTimelineFromServer();
         while (tweetTimeline.firstChild) {
@@ -38,10 +55,6 @@ var Twitter;
             else {
                 console.log(answer.message);
             }
-        }
-        else {
-            //TODO weiterleitung
-            console.log("Need to Login again");
         }
         return null;
     }
@@ -74,8 +87,7 @@ var Twitter;
             }
         }
         else {
-            //TODO weiterleitung
-            console.log("Need to login again");
+            console.log("Something went wrong, maybe need to login again");
             let p = document.createElement("p");
             p.innerText = "Need to login again";
             p.style.color = "red";

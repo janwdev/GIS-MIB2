@@ -2,6 +2,8 @@
 var Twitter;
 (function (Twitter) {
     Twitter.url = "http://localhost:8100";
+    //  let url: string = "https://gis2020jw.herokuapp.com";
+    let KEYLASTLOCATION = "lastLocation";
     async function postToServer(requestData) {
         let params = new URLSearchParams();
         let authKey = getAuthCode();
@@ -22,7 +24,7 @@ var Twitter;
         }
         else {
             console.log("Need to Login again");
-            //TODO weiterleitung
+            redirectToLogin();
         }
         return null;
     }
@@ -43,9 +45,34 @@ var Twitter;
         return responseFromServer;
     }
     Twitter.postToServerWithoutAuth = postToServerWithoutAuth;
+    function redirectToLogin() {
+        let actLoc = window.location.href;
+        sessionStorage.setItem(KEYLASTLOCATION, actLoc);
+        window.location.replace("login.html");
+    }
+    Twitter.redirectToLogin = redirectToLogin;
+    function redirectToLastLocation() {
+        let lastLoc = sessionStorage.getItem(KEYLASTLOCATION);
+        if (lastLoc) {
+            if (lastLoc.length > 0) {
+                window.location.replace(lastLoc);
+                return;
+            }
+        }
+        let authCode = getAuthCode();
+        if (authCode != null && authCode.length > 0) {
+            window.location.replace("tweet.html");
+        }
+        else {
+            sessionStorage.removeItem(KEYLASTLOCATION);
+            window.location.replace("login.html");
+        }
+    }
+    Twitter.redirectToLastLocation = redirectToLastLocation;
     function saveAuthCookie(authCookieString) {
         document.cookie = authCookieString + "; path=/; SameSite=Lax";
         console.log("Saved");
+        redirectToLastLocation();
     }
     Twitter.saveAuthCookie = saveAuthCookie;
     function getAuthCode() {
@@ -53,9 +80,11 @@ var Twitter;
     }
     Twitter.getAuthCode = getAuthCode;
     //######Code from https://www.w3schools.com/js/js_cookies.asp ######################
-    function deleteAuthCookie() {
+    function deleteAuthCookie(shouldRedirect) {
         document.cookie = "Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        //TODO auf Login weiterleiten
+        if (shouldRedirect) {
+            redirectToLogin();
+        }
     }
     Twitter.deleteAuthCookie = deleteAuthCookie;
     //######Code from https://www.w3schools.com/js/js_cookies.asp ######################
@@ -77,8 +106,9 @@ var Twitter;
     function createTweetElement(tweet) {
         let element = document.createElement("div");
         //TODO styling
-        let htmlUserName = document.createElement("p");
+        let htmlUserName = document.createElement("a");
         htmlUserName.textContent = tweet.userName;
+        htmlUserName.href = "userdetails.html?email=" + tweet.userEmail;
         let htmlUserEmail = document.createElement("p");
         htmlUserEmail.textContent = tweet.userEmail;
         let htmlUserImg;
@@ -89,7 +119,7 @@ var Twitter;
         let htmlText = document.createElement("p");
         htmlText.textContent = tweet.text;
         let htmlCreationDate = document.createElement("p");
-        htmlCreationDate.textContent = new Date(tweet.creationDate).toString();
+        htmlCreationDate.textContent = new Date(tweet.creationDate).toDateString();
         element.appendChild(htmlUserName);
         element.appendChild(htmlUserEmail);
         if (tweet.userPicture) {

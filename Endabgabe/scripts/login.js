@@ -5,6 +5,13 @@ var Twitter;
     let btLogin = document.getElementById("sendLogin");
     btLogin.addEventListener("click", login);
     let answerSec = document.getElementById("answerSection");
+    redirectIfLoggedIn();
+    function redirectIfLoggedIn() {
+        let authKey = Twitter.getAuthCode();
+        if (authKey != null && authKey.length > 0) {
+            window.location.replace("tweet.html");
+        }
+    }
     async function login() {
         // if (getAuthCode().length == 0) {
         console.log("Login");

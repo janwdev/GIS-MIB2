@@ -5,6 +5,13 @@ var Twitter;
     let btSendRegister = document.getElementById("sendRegister");
     btSendRegister.addEventListener("click", register);
     let answerSec = document.getElementById("answerSection");
+    redirectIfLoggedIn();
+    function redirectIfLoggedIn() {
+        let authKey = Twitter.getAuthCode();
+        if (authKey != null && authKey.length > 0) {
+            window.location.replace("tweet.html");
+        }
+    }
     async function register() {
         let formdata = new FormData(form);
         let request = {};

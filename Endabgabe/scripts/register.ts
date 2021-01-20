@@ -7,6 +7,15 @@ namespace Twitter {
 
     let answerSec: HTMLDivElement = <HTMLDivElement>document.getElementById("answerSection");
 
+    redirectIfLoggedIn();
+
+    function redirectIfLoggedIn(): void {
+        let authKey: string = getAuthCode();
+        if (authKey != null && authKey.length > 0) {
+            window.location.replace("tweet.html");
+        }
+    }
+
     async function register(): Promise<void> {
         let formdata: FormData = new FormData(form);
         let request: RequestToServerInterface = {};
