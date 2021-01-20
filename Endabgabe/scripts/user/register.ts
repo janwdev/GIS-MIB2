@@ -33,6 +33,7 @@ namespace Twitter {
                 p.innerText = message;
                 if (status == 0) {
                     saveAuthCookie(answer.authCookieString);
+                    sessionStorage.setItem("email", request["email"]);
                 }
                 while (answerSec.firstChild) {
                     answerSec.removeChild(answerSec.lastChild);

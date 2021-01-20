@@ -423,7 +423,7 @@ var TwitterServer;
             let idToChange = user.followers[i];
             await dbUsers.updateOne({ _id: new Mongo.ObjectID(idToChange) }, { $pull: { following: id } });
         }
-        let result1 = await dbTweets.deleteMany({ userID: id });
+        let result1 = await dbTweets.deleteMany({ userID: new Mongo.ObjectID(id) });
         if (result1.result.ok == 1) {
             let result2 = await dbUsers.deleteOne({ email: user.email });
             if (result2.result.ok == 1) {

@@ -464,7 +464,7 @@ export namespace TwitterServer {
             await dbUsers.updateOne({ _id: new Mongo.ObjectID(idToChange) }, { $pull: { following: id } });
         }
 
-        let result1: Mongo.DeleteWriteOpResultObject = await dbTweets.deleteMany({ userID: id });
+        let result1: Mongo.DeleteWriteOpResultObject = await dbTweets.deleteMany({ userID: new Mongo.ObjectID(id) });
         if (result1.result.ok == 1) {
             let result2: Mongo.DeleteWriteOpResultObject = await dbUsers.deleteOne({ email: user.email });
             if (result2.result.ok == 1) {
