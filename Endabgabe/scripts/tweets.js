@@ -83,6 +83,9 @@ var Twitter;
                 }
                 else {
                     p.style.color = "green";
+                    let input = document.getElementById("tweet");
+                    input.value = "";
+                    getTweetTimeline();
                 }
             }
         }

@@ -88,6 +88,9 @@ namespace Twitter {
                     p.style.color = "red";
                 } else {
                     p.style.color = "green";
+                    let input: HTMLInputElement = <HTMLInputElement>document.getElementById("tweet");
+                    input.value = "";
+                    getTweetTimeline();
                 }
             }
         } else {
