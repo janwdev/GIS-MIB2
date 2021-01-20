@@ -43,6 +43,7 @@ namespace Twitter {
                     p.style.color = "green";
                     let cookieString: string = answer.authCookieString;
                     saveAuthCookie(cookieString);
+                    sessionStorage.setItem("email", request["email"]);
                 }
             }
         } else {

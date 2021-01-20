@@ -30,6 +30,7 @@ namespace Twitter {
     }
 
     export interface Tweet {
+        _id?: string;
         text: string;
         creationDate: Date;
         media?: string;
@@ -140,7 +141,9 @@ namespace Twitter {
         //TODO styling
         let htmlUserName: HTMLAnchorElement = document.createElement("a");
         htmlUserName.textContent = tweet.userName;
-        htmlUserName.href = "userdetails.html?email=" + tweet.userEmail;
+        if (tweet.userName != "Admin") {
+            htmlUserName.href = "userdetails.html?email=" + tweet.userEmail;
+        }
         let htmlUserEmail: HTMLParagraphElement = document.createElement("p");
         htmlUserEmail.textContent = tweet.userEmail;
         let htmlUserImg: HTMLImageElement;
@@ -161,7 +164,34 @@ namespace Twitter {
         element.appendChild(htmlText);
         element.appendChild(htmlCreationDate);
 
+        if (sessionStorage.getItem("email") == tweet.userEmail) {
+            let btDelete: HTMLButtonElement = document.createElement("button");
+            btDelete.textContent = "Delete";
+            btDelete.addEventListener("click", async function (): Promise<void> {
+                await deleteTweet(tweet._id);
+                window.location.reload();
+            });
+            element.appendChild(btDelete);
+            //TODO Edit
+        }
+
+
         //TODO media
         return element;
+    }
+
+    async function deleteTweet(id: string): Promise<void | boolean> {
+        //TODO
+        let request: RequestToServerInterface = { command: "deleteTweet", tweetID: id };
+        let answer: ResponseFromServer = await postToServer(request);
+        if (answer != null) {
+            if (answer.status) {
+                // let status: number = <number>answer.status;
+                let message: string = <string>answer.message;
+                console.log(message);
+            }
+        } else {
+            console.log("Something went wrong, maybe need to login again");
+        }
     }
 }

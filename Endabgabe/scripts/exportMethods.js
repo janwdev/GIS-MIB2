@@ -108,7 +108,9 @@ var Twitter;
         //TODO styling
         let htmlUserName = document.createElement("a");
         htmlUserName.textContent = tweet.userName;
-        htmlUserName.href = "userdetails.html?email=" + tweet.userEmail;
+        if (tweet.userName != "Admin") {
+            htmlUserName.href = "userdetails.html?email=" + tweet.userEmail;
+        }
         let htmlUserEmail = document.createElement("p");
         htmlUserEmail.textContent = tweet.userEmail;
         let htmlUserImg;
@@ -127,9 +129,34 @@ var Twitter;
         }
         element.appendChild(htmlText);
         element.appendChild(htmlCreationDate);
+        if (sessionStorage.getItem("email") == tweet.userEmail) {
+            let btDelete = document.createElement("button");
+            btDelete.textContent = "Delete";
+            btDelete.addEventListener("click", async function () {
+                await deleteTweet(tweet._id);
+                window.location.reload();
+            });
+            element.appendChild(btDelete);
+            //TODO Edit
+        }
         //TODO media
         return element;
     }
     Twitter.createTweetElement = createTweetElement;
+    async function deleteTweet(id) {
+        //TODO
+        let request = { command: "deleteTweet", tweetID: id };
+        let answer = await postToServer(request);
+        if (answer != null) {
+            if (answer.status) {
+                // let status: number = <number>answer.status;
+                let message = answer.message;
+                console.log(message);
+            }
+        }
+        else {
+            console.log("Something went wrong, maybe need to login again");
+        }
+    }
 })(Twitter || (Twitter = {}));
 //# sourceMappingURL=exportMethods.js.map

@@ -40,6 +40,7 @@ var Twitter;
                     p.style.color = "green";
                     let cookieString = answer.authCookieString;
                     Twitter.saveAuthCookie(cookieString);
+                    sessionStorage.setItem("email", request["email"]);
                 }
             }
         }

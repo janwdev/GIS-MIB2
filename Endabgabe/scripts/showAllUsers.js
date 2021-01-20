@@ -85,6 +85,7 @@ var Twitter;
         else {
             console.log("No Response");
         }
+        showAllUsers();
     }
 })(Twitter || (Twitter = {}));
 //# sourceMappingURL=showAllUsers.js.map

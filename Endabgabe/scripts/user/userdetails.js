@@ -6,6 +6,7 @@ var Twitter;
     let htmlStudyDetails = document.getElementById("studyDetails");
     let htmlFollowerSec = document.getElementById("followerSec");
     let htmlFollowingSec = document.getElementById("followingSec");
+    let htmlControllSec = document.getElementById("controllSec");
     let htmlProfPicSec = document.getElementById("profPicSec");
     let htmlTweetSec = document.getElementById("tweetSec");
     let query = new URLSearchParams(window.location.search);
@@ -60,13 +61,18 @@ var Twitter;
                         let linkEdit = document.createElement("a");
                         linkEdit.href = "edit.html";
                         linkEdit.textContent = "Edit";
-                        htmlName.appendChild(linkEdit);
+                        htmlControllSec.appendChild(linkEdit);
                         let btLogout = document.createElement("button");
                         btLogout.textContent = "Logout";
                         btLogout.addEventListener("click", function () {
                             Twitter.deleteAuthCookie(true);
                         });
-                        htmlName.appendChild(btLogout);
+                        htmlControllSec.appendChild(btLogout);
+                        let btDelete = document.createElement("button");
+                        btDelete.textContent = "Delete User";
+                        btDelete.addEventListener("click", deleteThisUser);
+                        htmlControllSec.appendChild(btDelete);
+                        // TODO Delete User
                     }
                 }
                 else {
@@ -81,6 +87,18 @@ var Twitter;
         else {
             Twitter.redirectToLogin();
             console.log("Need to login again");
+        }
+    }
+    async function deleteThisUser() {
+        let requestData = { command: "deleteUser" };
+        let responseFromServer = await Twitter.postToServer(requestData);
+        if (responseFromServer) {
+            if (responseFromServer.status >= 0) {
+                Twitter.deleteAuthCookie(true);
+            }
+            else {
+                console.log("Error: " + responseFromServer.message);
+            }
         }
     }
 })(Twitter || (Twitter = {}));

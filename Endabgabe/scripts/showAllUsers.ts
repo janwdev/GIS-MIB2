@@ -88,5 +88,6 @@ namespace Twitter {
         } else {
             console.log("No Response");
         }
+        showAllUsers();
     }
 }

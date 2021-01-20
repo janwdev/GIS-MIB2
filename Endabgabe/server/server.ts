@@ -18,6 +18,8 @@ export namespace TwitterServer {
     let KEYCOMMANDSHOWUSERDETAIL: string = "showUserDetail";
     let KEYCOMMANDEDITUSER: string = "editUser";
     let KEYCOMMANDEDITUSERPW: string = "editUserPW";
+    let KEYCOMMANDDELETETWEET: string = "deleteTweet";
+    let KEYCOMMANDDELETEUSER: string = "deleteUser";
 
     let dbUsers: Mongo.Collection;
     let dbTweets: Mongo.Collection;
@@ -36,6 +38,7 @@ export namespace TwitterServer {
             console.log("running local");
             break;
         case "remote":
+            // TODO Anpassen
             let userName: string = "user";
             let pw: string = "onlineUser";
             databaseUrl = "mongodb+srv://" + userName + ":" + pw + "@gismib2.wulcs.mongodb.net/" + databaseName + "?retryWrites=true&w=majority";
@@ -137,6 +140,25 @@ export namespace TwitterServer {
                         }
                     }
 
+                    else if (command == KEYCOMMANDDELETEUSER) {
+                        if (data.authKey) {
+                            let authKey: string = <string>data.authKey;
+                            let user: User = await authWithKey(authKey);
+                            if (user != null) {
+                                if (await deleteUser(user)) {
+                                    console.log("Deleted User with Email: " + user.email + " and ID: " + user._id);
+                                    response = { status: 0, message: "Delete Successfull" };
+                                } else {
+                                    response = { status: -1, message: "Delete went wrong" };
+                                }
+                            } else {
+                                response = { status: -1, message: "Delete went wrong" };
+                            }
+                        } else {
+                            response = { status: -1, message: "Error, not all required params given" };
+                        }
+                    }
+
                     else if (command == KEYCOMMANDEDITUSER) {
                         if (data.authKey) {
                             let authKey: string = <string>data.authKey;
@@ -176,7 +198,7 @@ export namespace TwitterServer {
                                     if (await editUserPW(user, oldPW, newPW)) {
                                         response = {
                                             status: 0,
-                                            message: "Account edited successful",
+                                            message: "Account edited successful"
                                         };
                                     } else {
                                         response = { status: -3, message: "Update went wrong" };
@@ -286,6 +308,23 @@ export namespace TwitterServer {
                         }
                     }
 
+                    else if (command == KEYCOMMANDDELETETWEET) {
+                        if (data.authKey && data.tweetID) {
+                            let authKey: string = <string>data.authKey;
+                            let tweetID: string = <string>data.tweetID;
+                            let suc: number = await deleteTweet(authKey, tweetID);
+                            if (suc == 0) {
+                                response = { status: 0, message: "Posted successful" };
+                            } else if (suc == -1) {
+                                response = { status: -1, message: "Need to Login again" };
+                            } else {
+                                response = { status: -2, message: "Delete went wrong" };
+                            }
+                        } else {
+                            response = { status: -3, message: "Error, not all required params given" };
+                        }
+                    }
+
                     else if (command == KEYCOMMANDGETTWEETTIMELINE) {
                         if (data.authKey && data.oldestDate) {
                             let authKey: string = <string>data.authKey;
@@ -347,8 +386,13 @@ export namespace TwitterServer {
         let password: string = <string>data.password;
         if (email && password) {
             let user: User = await dbUsers.findOne({ email: data.email });
-            if (await bcrypt.compare(password, user.password)) {
-                return createToken(email);
+            if (user) {
+                if (await bcrypt.compare(password, user.password)) {
+                    console.log("User: " + user.email + " logged in");
+                    return createToken(email);
+                } else {
+                    console.log("Wrong Login from User: " + user.email);
+                }
             }
         }
         return null;
@@ -367,6 +411,7 @@ export namespace TwitterServer {
                 if (firstname && lastname && studycourse && semester) {
                     let user: User = { firstname: firstname, lastname: lastname, studycourse: studycourse, semester: semester, email: email, password: hashedPassword, followers: [], following: [] };
                     await addUserToDB(user);
+                    console.log("Registration for User: " + user.email);
                     return createToken(user.email);
                 }
             }
@@ -402,6 +447,27 @@ export namespace TwitterServer {
                 { returnOriginal: false }
             );
             if (updated.ok == 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    async function deleteUser(user: User): Promise<boolean> {
+        let id: string = user._id + "";
+        for (let i: number = 0; i < user.following.length; i++) {
+            let idToChange: string = user.following[i];
+            await dbUsers.updateOne({ _id: new Mongo.ObjectID(idToChange) }, { $pull: { followers: id } });
+        }
+        for (let i: number = 0; i < user.followers.length; i++) {
+            let idToChange: string = user.followers[i];
+            await dbUsers.updateOne({ _id: new Mongo.ObjectID(idToChange) }, { $pull: { following: id } });
+        }
+
+        let result1: Mongo.DeleteWriteOpResultObject = await dbTweets.deleteMany({ userID: id });
+        if (result1.result.ok == 1) {
+            let result2: Mongo.DeleteWriteOpResultObject = await dbUsers.deleteOne({ email: user.email });
+            if (result2.result.ok == 1) {
                 return true;
             }
         }
@@ -468,19 +534,41 @@ export namespace TwitterServer {
         return users;
     }
 
-    async function suscribe(user: User, idToSuscribe: string): Promise<void> {
-        user.following.push(idToSuscribe);
+    async function suscribe(user: User, idToSubscribe: string): Promise<void> {
+        let userToFollow: User = await dbUsers.findOne({ _id: new Mongo.ObjectID(idToSubscribe) });
+        let userIDToSubscribe: string = userToFollow._id + "";
+
+        user.following.push(userIDToSubscribe);
         let following: string[] = user.following;
         dbUsers.findOneAndUpdate({ email: user.email }, { $set: { following: following } });
+
+        userToFollow.followers.push(user._id + "");
+        let followers: string[] = userToFollow.followers;
+        dbUsers.findOneAndUpdate({ email: userToFollow.email }, { $set: { followers: followers } });
     }
 
     async function unsuscribe(user: User, idToUnSuscribe: string): Promise<void> {
-        let following: string[] = user.following;
-        let index: number = following.indexOf(idToUnSuscribe);
-        if (index !== -1) {
-            following.splice(index, 1);
+        let userToUnFollow: User = await dbUsers.findOne({ _id: new Mongo.ObjectID(idToUnSuscribe) });
+        if (userToUnFollow) {
+            let userID: string = user._id + "";
+            let userIdToUnSuscribe: string = userToUnFollow._id + "";
+
+            let following: string[] = user.following;
+            let index: number = following.indexOf(userIdToUnSuscribe);
+            if (index !== -1) {
+                following.splice(index, 1);
+            }
+            await dbUsers.findOneAndUpdate({ _id: new Mongo.ObjectID(userID) }, { $set: { following: following } });
+
+            let followers: string[] = userToUnFollow.followers;
+            let indexFollowers: number = followers.indexOf(userID);
+            if (indexFollowers !== -1) {
+                followers.splice(indexFollowers, 1);
+            }
+            await dbUsers.findOneAndUpdate({ _id: new Mongo.ObjectID(userIdToUnSuscribe) }, { $set: { followers: followers } });
+        } else {
+            console.log("User not found to Unsuscribe");
         }
-        dbUsers.findOneAndUpdate({ email: user.email }, { $set: { following: following } });
     }
 
 
@@ -493,6 +581,7 @@ export namespace TwitterServer {
     }
 
     interface TweetAnswer {
+        _id?: string;
         text: string;
         creationDate: Date;
         media?: string;
@@ -512,6 +601,30 @@ export namespace TwitterServer {
         return -1;
     }
 
+    async function deleteTweet(authKey: string, tweetID: string): Promise<number> {
+        let user: User = await authWithKey(authKey);
+        if (user != null) {
+            let tweet: Tweet = await dbTweets.findOne({ _id: new Mongo.ObjectID(tweetID) });
+            if (tweet) {
+                let tweetUserID: string = "" + tweet.userID;
+                let userUserID: string = "" + user._id;
+                if (tweetUserID && userUserID) {
+                    if (tweetUserID == userUserID) {
+                        let result: Mongo.DeleteWriteOpResultObject = await dbTweets.deleteOne({ _id: new Mongo.ObjectID(tweetID) });
+                        if (result.deletedCount > 0) {
+                            console.log("User " + user.email + " deleted a tweet: " + tweetID);
+                            return 0;
+                        }
+                    }
+                }
+            } else {
+                console.log("No tweed found with id: " + tweetID);
+            }
+            return -2;
+        }
+        return -1;
+    }
+
     async function getTweetTimeline(authKey: string, oldestDate: Date): Promise<TweetAnswer[]> {
         let user: User = await authWithKey(authKey);
         if (user != null) {
@@ -522,6 +635,7 @@ export namespace TwitterServer {
                     let tweets: Tweet[] = await dbTweets.find({ userID: followingUser._id, creationDate: { $gt: oldestDate } }).toArray();
                     for (let j: number = 0; j < tweets.length; j++) {
                         let answerTweed: TweetAnswer = {
+                            _id: tweets[j]._id,
                             text: tweets[j].text,
                             creationDate: tweets[j].creationDate,
                             userName: followingUser.firstname + " " + followingUser.lastname,
@@ -567,6 +681,7 @@ export namespace TwitterServer {
         let tweets: Tweet[] = await dbTweets.find({ userID: user._id }).toArray();
         for (let i: number = 0; i < tweets.length; i++) {
             let answerTweed: TweetAnswer = {
+                _id: tweets[i]._id,
                 text: tweets[i].text,
                 creationDate: tweets[i].creationDate,
                 userName: user.firstname + " " + user.lastname,

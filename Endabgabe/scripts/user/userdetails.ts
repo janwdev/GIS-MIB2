@@ -5,6 +5,7 @@ namespace Twitter {
     let htmlStudyDetails: HTMLParagraphElement = <HTMLParagraphElement>document.getElementById("studyDetails");
     let htmlFollowerSec: HTMLDivElement = <HTMLDivElement>document.getElementById("followerSec");
     let htmlFollowingSec: HTMLDivElement = <HTMLDivElement>document.getElementById("followingSec");
+    let htmlControllSec: HTMLDivElement = <HTMLDivElement>document.getElementById("controllSec");
     let htmlProfPicSec: HTMLDivElement = <HTMLDivElement>document.getElementById("profPicSec");
     let htmlTweetSec: HTMLDivElement = <HTMLDivElement>document.getElementById("tweetSec");
 
@@ -60,14 +61,20 @@ namespace Twitter {
                         let linkEdit: HTMLAnchorElement = document.createElement("a");
                         linkEdit.href = "edit.html";
                         linkEdit.textContent = "Edit";
-                        htmlName.appendChild(linkEdit);
+                        htmlControllSec.appendChild(linkEdit);
 
                         let btLogout: HTMLButtonElement = document.createElement("button");
                         btLogout.textContent = "Logout";
-                        btLogout.addEventListener("click", function(): void{
+                        btLogout.addEventListener("click", function (): void {
                             deleteAuthCookie(true);
                         });
-                        htmlName.appendChild(btLogout);
+                        htmlControllSec.appendChild(btLogout);
+
+                        let btDelete: HTMLButtonElement = document.createElement("button");
+                        btDelete.textContent = "Delete User";
+                        btDelete.addEventListener("click", deleteThisUser);
+                        htmlControllSec.appendChild(btDelete);
+                        // TODO Delete User
                     }
                 } else {
                     console.log("Error no User returned");
@@ -79,6 +86,18 @@ namespace Twitter {
         } else {
             redirectToLogin();
             console.log("Need to login again");
+        }
+    }
+
+    async function deleteThisUser(): Promise<void> {
+        let requestData: RequestToServerInterface = { command: "deleteUser" };
+        let responseFromServer: ResponseFromServer = await postToServer(requestData);
+        if (responseFromServer) {
+            if (responseFromServer.status >= 0) {
+                deleteAuthCookie(true);
+            } else {
+                console.log("Error: " + responseFromServer.message);
+            }
         }
     }
 }
