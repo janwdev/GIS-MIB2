@@ -383,6 +383,8 @@ var TwitterServer;
                 if (firstname && lastname && studycourse && semester) {
                     let user = { firstname: firstname, lastname: lastname, studycourse: studycourse, semester: semester, email: email, password: hashedPassword, followers: [], following: [] };
                     await addUserToDB(user);
+                    let dbUser = await findUserByEmail(email);
+                    suscribe(dbUser, dbUser._id);
                     console.log("Registration for User: " + user.email);
                     return createToken(user.email);
                 }

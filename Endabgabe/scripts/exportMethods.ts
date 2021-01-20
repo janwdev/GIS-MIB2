@@ -171,6 +171,7 @@ namespace Twitter {
                 await deleteTweet(tweet._id);
                 window.location.reload();
             });
+            htmlUserName.href = "userdetails.html";
             element.appendChild(btDelete);
             //TODO Edit
         }

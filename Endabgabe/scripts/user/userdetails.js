@@ -43,10 +43,10 @@ var Twitter;
                     htmlStudyDetails.textContent = "StudyCourse: " + user.studycourse + ", Semester: " + user.semester;
                     //TODO durch Links ersetzen
                     let htmlFollower = document.createElement("p");
-                    htmlFollower.textContent = "Follower: " + user.followers.length.toString();
+                    htmlFollower.textContent = "Follower: " + (user.followers.length - 1).toString();
                     htmlFollowerSec.appendChild(htmlFollower);
                     let htmlFollowing = document.createElement("p");
-                    htmlFollowing.textContent = "Following: " + user.following.length.toString();
+                    htmlFollowing.textContent = "Following: " + (user.following.length - 1).toString();
                     htmlFollowingSec.appendChild(htmlFollowing);
                     if (responseFromServer.tweets) {
                         if (responseFromServer.tweets.length > 0) {
