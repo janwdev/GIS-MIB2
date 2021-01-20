@@ -1,33 +1,35 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="scripts/exportMethods.js" defer></script>
-    <script src="scripts/register.js" defer></script>
+    <script src="scripts/user/register.js" defer></script>
     <link rel="stylesheet" href="styles/general.css">
     <title>Register</title>
 </head>
 
 <body>
-    <form id="form">
-        <div>
-            <input name="lastname" type="text" placeholder="LastName">
-            <input name="firstname" type="text" placeholder="Firstname">
-            <input name="email" type="text" placeholder="Email">
-            <input name="password" type="password" placeholder="Password">
-            <input name="studycourse" type="text" placeholder="Studycourse">
-            <input name="semester" type="text" placeholder="Semester">
-        </div>
-        <div>
-            <button type="button" id="sendRegister">Register</button>
-        </div>
-    </form>
+    <main>
+        <form id="form">
+            <div>
+                <input name="lastname" type="text" placeholder="LastName">
+                <input name="firstname" type="text" placeholder="Firstname">
+                <input name="email" type="text" placeholder="Email">
+                <input name="password" type="password" placeholder="Password">
+                <input name="studycourse" type="text" placeholder="Studycourse">
+                <input name="semester" type="text" placeholder="Semester">
+            </div>
+            <div>
+                <button type="button" id="sendRegister">Register</button>
+            </div>
+        </form>
 
-    <a href="login.html">Login</a>
+        <a href="login.html">Login</a>
 
-    <div id="answerSection"></div>
+        <div id="answerSection"></div>
+    </main>
 </body>
 
 </html>

@@ -38,7 +38,7 @@ namespace Twitter {
                     }
                     htmlName.textContent = user.firstname + " " + user.lastname;
                     htmlEmail.textContent = user.email;
-                    htmlStudyDetails.textContent = "Studiengang: " + user.studycourse + ", Semester: " + user.semester;
+                    htmlStudyDetails.textContent = "StudyCourse: " + user.studycourse + ", Semester: " + user.semester;
                     //TODO durch Links ersetzen
                     let htmlFollower: HTMLParagraphElement = document.createElement("p");
                     htmlFollower.textContent = "Follower: " + user.followers.length.toString();

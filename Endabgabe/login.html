@@ -1,28 +1,30 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="scripts/exportMethods.js" defer></script>
-    <script src="scripts/login.js" defer></script>
+    <script src="scripts/user/login.js" defer></script>
     <link rel="stylesheet" href="styles/general.css">
     <title>Login</title>
 </head>
 
 <body>
-    <form id="form">
-        <div>
-            <input name="email" type="text" placeholder="Email">
-            <input name="password" type="password" placeholder="Password">
-        </div>
-        <div>
-            <button type="button" id="sendLogin">Login</button>
-        </div>
-    </form>
-    <a href="register.html">Register</a>
+    <main>
+        <form id="form">
+            <div>
+                <input name="email" type="text" placeholder="Email">
+                <input name="password" type="password" placeholder="Password">
+            </div>
+            <div>
+                <button type="button" id="sendLogin">Login</button>
+            </div>
+        </form>
+        <a href="register.html">Register</a>
 
-    <div id="answerSection"></div>
+        <div id="answerSection"></div>
+    </main>
 </body>
 
 </html>
