@@ -1,8 +1,8 @@
 "use strict";
 var Twitter;
 (function (Twitter) {
-    // export let url: string = "http://localhost:8100";
-    Twitter.url = "https://gis2020jw.herokuapp.com";
+    Twitter.url = "http://localhost:8100";
+    // export let url: string = "https://gis2020jw.herokuapp.com";
     let KEYLASTLOCATION = "lastLocation";
     async function postToServer(requestData) {
         let params = new URLSearchParams();
