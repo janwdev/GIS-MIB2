@@ -16,6 +16,7 @@ namespace Twitter {
     let dpSettings: DatepickerSettings = {
         last_date: new Date(),
         initial_date: new Date(oldestDateS),
+        first_date: new Date(oldestDateS),
         enabled_days: (d) => {
             return d.getDay() > 0 && d.getDay() < 6;
         },
@@ -44,8 +45,11 @@ namespace Twitter {
                 tweetTimeline.appendChild(htmlTweet);
             }
         } else {
-            //TODO
-            console.log("Error getting tweets, maybe need to login again");
+            while (answerSec.firstChild) {
+                answerSec.removeChild(answerSec.lastChild);
+            }
+            let alert: HTMLDivElement = createAlertElement("Error getting tweets, maybe need to login again", KEYALERTERROR);
+            answerSec.appendChild(alert);
         }
     }
 
@@ -59,6 +63,11 @@ namespace Twitter {
                 let tweets: Tweet[] = answer.tweets.reverse();
                 return tweets;
             } else {
+                while (answerSec.firstChild) {
+                    answerSec.removeChild(answerSec.lastChild);
+                }
+                let alert: HTMLDivElement = createAlertElement(answer.message, KEYALERTERROR);
+                answerSec.appendChild(alert);
                 console.log(answer.message);
             }
         }
@@ -79,30 +88,27 @@ namespace Twitter {
             if ("status" in answer) {
                 let status: number = <number>answer.status;
                 let message: string = <string>answer.message;
-                let p: HTMLParagraphElement = document.createElement("p");
-                p.innerText = message;
                 while (answerSec.firstChild) {
                     answerSec.removeChild(answerSec.lastChild);
                 }
-                answerSec.appendChild(p);
                 if (status != 0) {
-                    p.style.color = "red";
+                    let alert: HTMLDivElement = createAlertElement(message, KEYALERTERROR);
+                    answerSec.appendChild(alert);
                 } else {
-                    p.style.color = "green";
+                    let alert: HTMLDivElement = createAlertElement(message, KEYALERTOK);
+                    answerSec.appendChild(alert);
                     let input: HTMLInputElement = <HTMLInputElement>document.getElementById("tweet");
                     input.value = "";
                     getTweetTimeline();
                 }
             }
         } else {
-            console.log("Something went wrong, maybe need to login again");
-            let p: HTMLParagraphElement = document.createElement("p");
-            p.innerText = "Need to login again";
-            p.style.color = "red";
             while (answerSec.firstChild) {
                 answerSec.removeChild(answerSec.lastChild);
             }
-            answerSec.appendChild(p);
+            let alert: HTMLDivElement = createAlertElement("Something went wrong, maybe need to login again", KEYALERTERROR);
+            answerSec.appendChild(alert);
+            console.log("Something went wrong, maybe need to login again");
         }
     }
 }

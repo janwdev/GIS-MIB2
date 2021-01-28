@@ -7,7 +7,6 @@ namespace Twitter {
     let inputLastName: HTMLInputElement = <HTMLInputElement>document.getElementsByName("lastname")[0];
     let inputFirstName: HTMLInputElement = <HTMLInputElement>document.getElementsByName("firstname")[0];
     let inputEmail: HTMLInputElement = <HTMLInputElement>document.getElementsByName("email")[0];
-    //Password muss anders geändert werden
     let inputStudyCourse: HTMLInputElement = <HTMLInputElement>document.getElementsByName("studycourse")[0];
     let inputSemester: HTMLInputElement = <HTMLInputElement>document.getElementsByName("semester")[0];
 
@@ -62,7 +61,6 @@ namespace Twitter {
         let formdata: FormData = new FormData(form);
         let request: RequestToServerInterface = {};
         formdata.forEach(function (value: FormDataEntryValue, key: string): void {
-            //TODO if key == email schauen ob wirklich email eingegeben wurde
             request[key] = value.toString();
         });
         if (request.lastname && request.firstname && request.email && request.studycourse && request.semester) {
@@ -73,17 +71,16 @@ namespace Twitter {
                     if ("status" in answer) {
                         let status: number = answer.status;
                         let message: string = answer.message;
-                        let p: HTMLParagraphElement = document.createElement("p");
-                        p.innerText = message;
                         while (answerSec.firstChild) {
                             answerSec.removeChild(answerSec.lastChild);
                         }
-                        answerSec.appendChild(p);
                         if (status < 0) {
-                            p.style.color = "red";
+                            let alert: HTMLDivElement = createAlertElement(message, KEYALERTERROR);
+                            answerSec.appendChild(alert);
                             fillFormWithActData();
                         } else {
-                            p.style.color = "green";
+                            let alert: HTMLDivElement = createAlertElement(message, KEYALERTOK);
+                            answerSec.appendChild(alert);
                             removeValuesFromInput();
                             deleteAuthCookie(false);
                             if (answer.authCookieString) {
@@ -96,23 +93,19 @@ namespace Twitter {
                     console.log("No answer");
                 }
             } else {
-                let p: HTMLParagraphElement = document.createElement("p");
-                p.innerText = "Wrong Email";
                 while (answerSec.firstChild) {
                     answerSec.removeChild(answerSec.lastChild);
                 }
-                answerSec.appendChild(p);
-                p.style.color = "red";
+                let alert: HTMLDivElement = createAlertElement("Wrong Email", KEYALERTERROR);
+                answerSec.appendChild(alert);
             }
 
         } else {
-            let p: HTMLParagraphElement = document.createElement("p");
-            p.innerText = "Need to Fill out all Fields";
             while (answerSec.firstChild) {
                 answerSec.removeChild(answerSec.lastChild);
             }
-            answerSec.appendChild(p);
-            p.style.color = "red";
+            let alert: HTMLDivElement = createAlertElement("Need to Fill out all Fields", KEYALERTERROR);
+            answerSec.appendChild(alert);
         }
     }
 
@@ -120,7 +113,6 @@ namespace Twitter {
         let formdata: FormData = new FormData(formPWEdit);
         let request: RequestToServerInterface = {};
         formdata.forEach(function (value: FormDataEntryValue, key: string): void {
-            //TODO if key == email schauen ob wirklich email eingegeben wurde
             request[key] = value.toString();
         });
         if (request.emailPW && request.oldPW && request.newPW && request.newPW2) {
@@ -132,17 +124,16 @@ namespace Twitter {
                         if ("status" in answer) {
                             let status: number = answer.status;
                             let message: string = answer.message;
-                            let p: HTMLParagraphElement = document.createElement("p");
-                            p.innerText = message;
                             while (answerSec.firstChild) {
                                 answerSec.removeChild(answerSec.lastChild);
                             }
-                            answerSec.appendChild(p);
                             if (status < 0) {
-                                p.style.color = "red";
+                                let alert: HTMLDivElement = createAlertElement(message, KEYALERTERROR);
+                                answerSec.appendChild(alert);
                                 fillFormWithActData();
                             } else {
-                                p.style.color = "green";
+                                let alert: HTMLDivElement = createAlertElement(message, KEYALERTOK);
+                                answerSec.appendChild(alert);
                                 deleteAuthCookie(true);
                             }
                         }
@@ -150,32 +141,26 @@ namespace Twitter {
                         console.log("No answer");
                     }
                 } else {
-                    let p: HTMLParagraphElement = document.createElement("p");
-                    p.innerText = "Passwords need to be the same";
                     while (answerSec.firstChild) {
                         answerSec.removeChild(answerSec.lastChild);
                     }
-                    answerSec.appendChild(p);
-                    p.style.color = "red";
+                    let alert: HTMLDivElement = createAlertElement("Passwords need to be the same", KEYALERTERROR);
+                    answerSec.appendChild(alert);
                 }
             } else {
-                let p: HTMLParagraphElement = document.createElement("p");
-                p.innerText = "Wrong Email";
                 while (answerSec.firstChild) {
                     answerSec.removeChild(answerSec.lastChild);
                 }
-                answerSec.appendChild(p);
-                p.style.color = "red";
+                let alert: HTMLDivElement = createAlertElement("Wrong Email", KEYALERTERROR);
+                answerSec.appendChild(alert);
             }
 
         } else {
-            let p: HTMLParagraphElement = document.createElement("p");
-            p.innerText = "Need to Fill out all Fields";
             while (answerSec.firstChild) {
                 answerSec.removeChild(answerSec.lastChild);
             }
-            answerSec.appendChild(p);
-            p.style.color = "red";
+            let alert: HTMLDivElement = createAlertElement("Need to Fill out all Fields", KEYALERTERROR);
+            answerSec.appendChild(alert);
         }
     }
 }

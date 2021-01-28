@@ -13,7 +13,10 @@ namespace Twitter {
     function showMessageIfWasRedirected(): void {
         let message: string = sessionStorage.getItem(KEYLOGINREDIRECTMESSAGE);
         if (message) {
-            let alert: HTMLDivElement = createAlertElement(message, true);
+            while (answerSec.firstChild) {
+                answerSec.removeChild(answerSec.lastChild);
+            }
+            let alert: HTMLDivElement = createAlertElement(message, KEYALERTWARNING);
             answerSec.appendChild(alert);
         }
     }
@@ -26,12 +29,10 @@ namespace Twitter {
     }
 
     async function login(): Promise<void> {
-        // if (getAuthCode().length == 0) {
         console.log("Login");
         let formdata: FormData = new FormData(form);
         let request: RequestToServerInterface = {};
         formdata.forEach(function (value: FormDataEntryValue, key: string): void {
-            //TODO if key == email schauen ob wirklich email eingegeben wurde
             request[key] = value.toString();
         });
         request["command"] = "login";
@@ -44,10 +45,10 @@ namespace Twitter {
                     answerSec.removeChild(answerSec.lastChild);
                 }
                 if (status != 0) {
-                    let alert: HTMLDivElement = createAlertElement(message, true);
+                    let alert: HTMLDivElement = createAlertElement(message, KEYALERTERROR);
                     answerSec.appendChild(alert);
                 } else {
-                    let alert: HTMLDivElement = createAlertElement(message, false);
+                    let alert: HTMLDivElement = createAlertElement(message, KEYALERTOK);
                     answerSec.appendChild(alert);
                     let cookieString: string = answer.authCookieString;
                     saveAuthCookie(cookieString);
@@ -55,17 +56,11 @@ namespace Twitter {
                 }
             }
         } else {
-            console.log("No answer");
+            while (answerSec.firstChild) {
+                answerSec.removeChild(answerSec.lastChild);
+            }
+            let alert: HTMLDivElement = createAlertElement("No Answer", KEYALERTWARNING);
+            answerSec.appendChild(alert);
         }
-        // } else {
-        //     console.log("Already logged in");
-        //     let p: HTMLParagraphElement = document.createElement("p");
-        //     p.innerText = "Already logged in";
-        //     while (answerSec.firstChild) {
-        //         answerSec.removeChild(answerSec.lastChild);
-        //     }
-        //     answerSec.appendChild(p);
-        //     p.style.color = "red";
-        // }
     }
 }

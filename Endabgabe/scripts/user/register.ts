@@ -20,7 +20,6 @@ namespace Twitter {
         let formdata: FormData = new FormData(form);
         let request: RequestToServerInterface = {};
         formdata.forEach(function (value: FormDataEntryValue, key: string): void {
-            //TODO if key == email schauen ob wirklich email eingegeben wurde
             request[key] = value.toString();
         });
         request["command"] = "register";
@@ -37,10 +36,10 @@ namespace Twitter {
                     answerSec.removeChild(answerSec.lastChild);
                 }
                 if (status < 0) {
-                    let alert: HTMLDivElement = createAlertElement(message, true);
+                    let alert: HTMLDivElement = createAlertElement(message, KEYALERTERROR);
                     answerSec.appendChild(alert);
                 } else {
-                    let alert: HTMLDivElement = createAlertElement(message, false);
+                    let alert: HTMLDivElement = createAlertElement(message, KEYALERTOK);
                     answerSec.appendChild(alert);
                 }
             }

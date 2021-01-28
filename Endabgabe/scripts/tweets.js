@@ -12,6 +12,7 @@ var Twitter;
     let dpSettings = {
         last_date: new Date(),
         initial_date: new Date(oldestDateS),
+        first_date: new Date(oldestDateS),
         enabled_days: (d) => {
             return d.getDay() > 0 && d.getDay() < 6;
         },
@@ -39,8 +40,11 @@ var Twitter;
             }
         }
         else {
-            //TODO
-            console.log("Error getting tweets, maybe need to login again");
+            while (answerSec.firstChild) {
+                answerSec.removeChild(answerSec.lastChild);
+            }
+            let alert = Twitter.createAlertElement("Error getting tweets, maybe need to login again", Twitter.KEYALERTERROR);
+            answerSec.appendChild(alert);
         }
     }
     async function getTweetTimelineFromServer() {
@@ -54,6 +58,11 @@ var Twitter;
                 return tweets;
             }
             else {
+                while (answerSec.firstChild) {
+                    answerSec.removeChild(answerSec.lastChild);
+                }
+                let alert = Twitter.createAlertElement(answer.message, Twitter.KEYALERTERROR);
+                answerSec.appendChild(alert);
                 console.log(answer.message);
             }
         }
@@ -73,17 +82,16 @@ var Twitter;
             if ("status" in answer) {
                 let status = answer.status;
                 let message = answer.message;
-                let p = document.createElement("p");
-                p.innerText = message;
                 while (answerSec.firstChild) {
                     answerSec.removeChild(answerSec.lastChild);
                 }
-                answerSec.appendChild(p);
                 if (status != 0) {
-                    p.style.color = "red";
+                    let alert = Twitter.createAlertElement(message, Twitter.KEYALERTERROR);
+                    answerSec.appendChild(alert);
                 }
                 else {
-                    p.style.color = "green";
+                    let alert = Twitter.createAlertElement(message, Twitter.KEYALERTOK);
+                    answerSec.appendChild(alert);
                     let input = document.getElementById("tweet");
                     input.value = "";
                     getTweetTimeline();
@@ -91,14 +99,12 @@ var Twitter;
             }
         }
         else {
-            console.log("Something went wrong, maybe need to login again");
-            let p = document.createElement("p");
-            p.innerText = "Need to login again";
-            p.style.color = "red";
             while (answerSec.firstChild) {
                 answerSec.removeChild(answerSec.lastChild);
             }
-            answerSec.appendChild(p);
+            let alert = Twitter.createAlertElement("Something went wrong, maybe need to login again", Twitter.KEYALERTERROR);
+            answerSec.appendChild(alert);
+            console.log("Something went wrong, maybe need to login again");
         }
     }
 })(Twitter || (Twitter = {}));

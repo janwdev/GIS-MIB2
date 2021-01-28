@@ -7,7 +7,6 @@ var Twitter;
     let inputLastName = document.getElementsByName("lastname")[0];
     let inputFirstName = document.getElementsByName("firstname")[0];
     let inputEmail = document.getElementsByName("email")[0];
-    //Password muss anders geändert werden
     let inputStudyCourse = document.getElementsByName("studycourse")[0];
     let inputSemester = document.getElementsByName("semester")[0];
     let formPWEdit = document.getElementById("editPWForm");
@@ -56,7 +55,6 @@ var Twitter;
         let formdata = new FormData(form);
         let request = {};
         formdata.forEach(function (value, key) {
-            //TODO if key == email schauen ob wirklich email eingegeben wurde
             request[key] = value.toString();
         });
         if (request.lastname && request.firstname && request.email && request.studycourse && request.semester) {
@@ -67,18 +65,17 @@ var Twitter;
                     if ("status" in answer) {
                         let status = answer.status;
                         let message = answer.message;
-                        let p = document.createElement("p");
-                        p.innerText = message;
                         while (answerSec.firstChild) {
                             answerSec.removeChild(answerSec.lastChild);
                         }
-                        answerSec.appendChild(p);
                         if (status < 0) {
-                            p.style.color = "red";
+                            let alert = Twitter.createAlertElement(message, Twitter.KEYALERTERROR);
+                            answerSec.appendChild(alert);
                             fillFormWithActData();
                         }
                         else {
-                            p.style.color = "green";
+                            let alert = Twitter.createAlertElement(message, Twitter.KEYALERTOK);
+                            answerSec.appendChild(alert);
                             removeValuesFromInput();
                             Twitter.deleteAuthCookie(false);
                             if (answer.authCookieString) {
@@ -93,30 +90,25 @@ var Twitter;
                 }
             }
             else {
-                let p = document.createElement("p");
-                p.innerText = "Wrong Email";
                 while (answerSec.firstChild) {
                     answerSec.removeChild(answerSec.lastChild);
                 }
-                answerSec.appendChild(p);
-                p.style.color = "red";
+                let alert = Twitter.createAlertElement("Wrong Email", Twitter.KEYALERTERROR);
+                answerSec.appendChild(alert);
             }
         }
         else {
-            let p = document.createElement("p");
-            p.innerText = "Need to Fill out all Fields";
             while (answerSec.firstChild) {
                 answerSec.removeChild(answerSec.lastChild);
             }
-            answerSec.appendChild(p);
-            p.style.color = "red";
+            let alert = Twitter.createAlertElement("Need to Fill out all Fields", Twitter.KEYALERTERROR);
+            answerSec.appendChild(alert);
         }
     }
     async function editPW() {
         let formdata = new FormData(formPWEdit);
         let request = {};
         formdata.forEach(function (value, key) {
-            //TODO if key == email schauen ob wirklich email eingegeben wurde
             request[key] = value.toString();
         });
         if (request.emailPW && request.oldPW && request.newPW && request.newPW2) {
@@ -128,18 +120,17 @@ var Twitter;
                         if ("status" in answer) {
                             let status = answer.status;
                             let message = answer.message;
-                            let p = document.createElement("p");
-                            p.innerText = message;
                             while (answerSec.firstChild) {
                                 answerSec.removeChild(answerSec.lastChild);
                             }
-                            answerSec.appendChild(p);
                             if (status < 0) {
-                                p.style.color = "red";
+                                let alert = Twitter.createAlertElement(message, Twitter.KEYALERTERROR);
+                                answerSec.appendChild(alert);
                                 fillFormWithActData();
                             }
                             else {
-                                p.style.color = "green";
+                                let alert = Twitter.createAlertElement(message, Twitter.KEYALERTOK);
+                                answerSec.appendChild(alert);
                                 Twitter.deleteAuthCookie(true);
                             }
                         }
@@ -149,33 +140,27 @@ var Twitter;
                     }
                 }
                 else {
-                    let p = document.createElement("p");
-                    p.innerText = "Passwords need to be the same";
                     while (answerSec.firstChild) {
                         answerSec.removeChild(answerSec.lastChild);
                     }
-                    answerSec.appendChild(p);
-                    p.style.color = "red";
+                    let alert = Twitter.createAlertElement("Passwords need to be the same", Twitter.KEYALERTERROR);
+                    answerSec.appendChild(alert);
                 }
             }
             else {
-                let p = document.createElement("p");
-                p.innerText = "Wrong Email";
                 while (answerSec.firstChild) {
                     answerSec.removeChild(answerSec.lastChild);
                 }
-                answerSec.appendChild(p);
-                p.style.color = "red";
+                let alert = Twitter.createAlertElement("Wrong Email", Twitter.KEYALERTERROR);
+                answerSec.appendChild(alert);
             }
         }
         else {
-            let p = document.createElement("p");
-            p.innerText = "Need to Fill out all Fields";
             while (answerSec.firstChild) {
                 answerSec.removeChild(answerSec.lastChild);
             }
-            answerSec.appendChild(p);
-            p.style.color = "red";
+            let alert = Twitter.createAlertElement("Need to Fill out all Fields", Twitter.KEYALERTERROR);
+            answerSec.appendChild(alert);
         }
     }
 })(Twitter || (Twitter = {}));

@@ -18,7 +18,11 @@ namespace Twitter {
             }
 
         } else {
-            console.log("No Response");
+            while (answerSection.firstChild) {
+                answerSection.removeChild(answerSection.lastChild);
+            }
+            let alert: HTMLDivElement = createAlertElement("No Answer", KEYALERTWARNING);
+            answerSection.appendChild(alert);
         }
     }
 
@@ -87,6 +91,11 @@ namespace Twitter {
             console.log(responseFromServer);
         } else {
             console.log("No Response");
+            while (answerSection.firstChild) {
+                answerSection.removeChild(answerSection.lastChild);
+            }
+            let alert: HTMLDivElement = createAlertElement("No Answer", KEYALERTWARNING);
+            answerSection.appendChild(alert);
         }
         showAllUsers();
     }

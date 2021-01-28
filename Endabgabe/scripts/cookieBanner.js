@@ -9,4 +9,4 @@ function closeCookies() {
     cookieBanner.classList.toggle("fadeOut");
     localStorage.setItem("cookies", "accepted");
 }
-//# sourceMappingURL=cookies.js.map
+//# sourceMappingURL=cookieBanner.js.map

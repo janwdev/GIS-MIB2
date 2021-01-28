@@ -3,7 +3,11 @@ namespace Twitter {
     // export let url: string = "https://twitterclonegis.herokuapp.com";
 
     let KEYLASTLOCATION: string = "lastLocation";
-    export let KEYLOGINREDIRECTMESSAGE: string = "loginRedirectMessage"; 
+    export let KEYLOGINREDIRECTMESSAGE: string = "loginRedirectMessage";
+
+    export let KEYALERTERROR: number = 0;
+    export let KEYALERTWARNING: number = 1;
+    export let KEYALERTOK: number = 2;
 
     export interface RequestToServerInterface {
         [type: string]: string;
@@ -164,18 +168,20 @@ namespace Twitter {
         return res.test(email);
     }
 
-    export function createAlertElement(message: string, alertBad: boolean): HTMLDivElement {
+    export function createAlertElement(message: string, alertStatus: number): HTMLDivElement {
         let alert: HTMLDivElement = document.createElement("div");
-        if (alertBad)
+        if (alertStatus == KEYALERTERROR)
             alert.className = "alert-bad";
-        else
+        else if (alertStatus == KEYALERTWARNING)
+            alert.className = "alert-warning";
+        else if (alertStatus == KEYALERTOK)
             alert.className = "alert-good";
         let closeBtn: HTMLSpanElement = document.createElement("span");
         closeBtn.addEventListener("click", function (): void {
             alert.style.display = "none";
         });
         closeBtn.textContent = "X";
-        closeBtn.className = "closebtn";
+        closeBtn.className = "alert-closebtn";
         let text: HTMLSpanElement = document.createElement("span");
         text.textContent = message;
         alert.appendChild(text);

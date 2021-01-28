@@ -16,7 +16,6 @@ var Twitter;
         let formdata = new FormData(form);
         let request = {};
         formdata.forEach(function (value, key) {
-            //TODO if key == email schauen ob wirklich email eingegeben wurde
             request[key] = value.toString();
         });
         request["command"] = "register";
@@ -33,11 +32,11 @@ var Twitter;
                     answerSec.removeChild(answerSec.lastChild);
                 }
                 if (status < 0) {
-                    let alert = Twitter.createAlertElement(message, true);
+                    let alert = Twitter.createAlertElement(message, Twitter.KEYALERTERROR);
                     answerSec.appendChild(alert);
                 }
                 else {
-                    let alert = Twitter.createAlertElement(message, false);
+                    let alert = Twitter.createAlertElement(message, Twitter.KEYALERTOK);
                     answerSec.appendChild(alert);
                 }
             }

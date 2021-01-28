@@ -1,6 +1,7 @@
 "use strict";
 var Twitter;
 (function (Twitter) {
+    let answerSec = document.getElementById("answerSection");
     let htmlName = document.getElementById("name");
     let htmlEmail = document.getElementById("email");
     let htmlStudyDetails = document.getElementById("studyDetails");
@@ -72,16 +73,22 @@ var Twitter;
                         btDelete.textContent = "Delete User";
                         btDelete.addEventListener("click", deleteThisUser);
                         htmlControllSec.appendChild(btDelete);
-                        // TODO Delete User
                     }
                 }
                 else {
-                    console.log("Error no User returned");
+                    while (answerSec.firstChild) {
+                        answerSec.removeChild(answerSec.lastChild);
+                    }
+                    let alert = Twitter.createAlertElement("Error no User returned", Twitter.KEYALERTERROR);
+                    answerSec.appendChild(alert);
                 }
             }
             else {
-                console.log("Error: " + responseFromServer.message);
-                //TODO
+                while (answerSec.firstChild) {
+                    answerSec.removeChild(answerSec.lastChild);
+                }
+                let alert = Twitter.createAlertElement("Error: " + responseFromServer.message, Twitter.KEYALERTERROR);
+                answerSec.appendChild(alert);
             }
         }
         else {
@@ -97,7 +104,11 @@ var Twitter;
                 Twitter.deleteAuthCookie(true);
             }
             else {
-                console.log("Error: " + responseFromServer.message);
+                while (answerSec.firstChild) {
+                    answerSec.removeChild(answerSec.lastChild);
+                }
+                let alert = Twitter.createAlertElement("Error: " + responseFromServer.message, Twitter.KEYALERTERROR);
+                answerSec.appendChild(alert);
             }
         }
     }

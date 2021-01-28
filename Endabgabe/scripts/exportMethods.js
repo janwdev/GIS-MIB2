@@ -5,6 +5,9 @@ var Twitter;
     // export let url: string = "https://twitterclonegis.herokuapp.com";
     let KEYLASTLOCATION = "lastLocation";
     Twitter.KEYLOGINREDIRECTMESSAGE = "loginRedirectMessage";
+    Twitter.KEYALERTERROR = 0;
+    Twitter.KEYALERTWARNING = 1;
+    Twitter.KEYALERTOK = 2;
     async function ping() {
         let params = new URLSearchParams({ command: "ping" });
         await fetch(Twitter.url, {
@@ -132,18 +135,20 @@ var Twitter;
         return res.test(email);
     }
     Twitter.validateEmail = validateEmail;
-    function createAlertElement(message, alertBad) {
+    function createAlertElement(message, alertStatus) {
         let alert = document.createElement("div");
-        if (alertBad)
+        if (alertStatus == Twitter.KEYALERTERROR)
             alert.className = "alert-bad";
-        else
+        else if (alertStatus == Twitter.KEYALERTWARNING)
+            alert.className = "alert-warning";
+        else if (alertStatus == Twitter.KEYALERTOK)
             alert.className = "alert-good";
         let closeBtn = document.createElement("span");
         closeBtn.addEventListener("click", function () {
             alert.style.display = "none";
         });
         closeBtn.textContent = "X";
-        closeBtn.className = "closebtn";
+        closeBtn.className = "alert-closebtn";
         let text = document.createElement("span");
         text.textContent = message;
         alert.appendChild(text);

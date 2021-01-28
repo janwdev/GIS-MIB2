@@ -10,7 +10,10 @@ var Twitter;
     function showMessageIfWasRedirected() {
         let message = sessionStorage.getItem(Twitter.KEYLOGINREDIRECTMESSAGE);
         if (message) {
-            let alert = Twitter.createAlertElement(message, true);
+            while (answerSec.firstChild) {
+                answerSec.removeChild(answerSec.lastChild);
+            }
+            let alert = Twitter.createAlertElement(message, Twitter.KEYALERTWARNING);
             answerSec.appendChild(alert);
         }
     }
@@ -21,12 +24,10 @@ var Twitter;
         }
     }
     async function login() {
-        // if (getAuthCode().length == 0) {
         console.log("Login");
         let formdata = new FormData(form);
         let request = {};
         formdata.forEach(function (value, key) {
-            //TODO if key == email schauen ob wirklich email eingegeben wurde
             request[key] = value.toString();
         });
         request["command"] = "login";
@@ -39,11 +40,11 @@ var Twitter;
                     answerSec.removeChild(answerSec.lastChild);
                 }
                 if (status != 0) {
-                    let alert = Twitter.createAlertElement(message, true);
+                    let alert = Twitter.createAlertElement(message, Twitter.KEYALERTERROR);
                     answerSec.appendChild(alert);
                 }
                 else {
-                    let alert = Twitter.createAlertElement(message, false);
+                    let alert = Twitter.createAlertElement(message, Twitter.KEYALERTOK);
                     answerSec.appendChild(alert);
                     let cookieString = answer.authCookieString;
                     Twitter.saveAuthCookie(cookieString);
@@ -52,18 +53,12 @@ var Twitter;
             }
         }
         else {
-            console.log("No answer");
+            while (answerSec.firstChild) {
+                answerSec.removeChild(answerSec.lastChild);
+            }
+            let alert = Twitter.createAlertElement("No Answer", Twitter.KEYALERTWARNING);
+            answerSec.appendChild(alert);
         }
-        // } else {
-        //     console.log("Already logged in");
-        //     let p: HTMLParagraphElement = document.createElement("p");
-        //     p.innerText = "Already logged in";
-        //     while (answerSec.firstChild) {
-        //         answerSec.removeChild(answerSec.lastChild);
-        //     }
-        //     answerSec.appendChild(p);
-        //     p.style.color = "red";
-        // }
     }
 })(Twitter || (Twitter = {}));
 //# sourceMappingURL=login.js.map

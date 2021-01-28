@@ -18,7 +18,11 @@ var Twitter;
             }
         }
         else {
-            console.log("No Response");
+            while (answerSection.firstChild) {
+                answerSection.removeChild(answerSection.lastChild);
+            }
+            let alert = Twitter.createAlertElement("No Answer", Twitter.KEYALERTWARNING);
+            answerSection.appendChild(alert);
         }
     }
     function createHTMLTableFromUserArray(array) {
@@ -84,6 +88,11 @@ var Twitter;
         }
         else {
             console.log("No Response");
+            while (answerSection.firstChild) {
+                answerSection.removeChild(answerSection.lastChild);
+            }
+            let alert = Twitter.createAlertElement("No Answer", Twitter.KEYALERTWARNING);
+            answerSection.appendChild(alert);
         }
         showAllUsers();
     }

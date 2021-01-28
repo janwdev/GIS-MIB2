@@ -1,5 +1,7 @@
 namespace Twitter {
 
+    let answerSec: HTMLDivElement = <HTMLDivElement>document.getElementById("answerSection");
+
     let htmlName: HTMLParagraphElement = <HTMLParagraphElement>document.getElementById("name");
     let htmlEmail: HTMLParagraphElement = <HTMLParagraphElement>document.getElementById("email");
     let htmlStudyDetails: HTMLParagraphElement = <HTMLParagraphElement>document.getElementById("studyDetails");
@@ -74,14 +76,20 @@ namespace Twitter {
                         btDelete.textContent = "Delete User";
                         btDelete.addEventListener("click", deleteThisUser);
                         htmlControllSec.appendChild(btDelete);
-                        // TODO Delete User
                     }
                 } else {
-                    console.log("Error no User returned");
+                    while (answerSec.firstChild) {
+                        answerSec.removeChild(answerSec.lastChild);
+                    }
+                    let alert: HTMLDivElement = createAlertElement("Error no User returned", KEYALERTERROR);
+                    answerSec.appendChild(alert);
                 }
             } else {
-                console.log("Error: " + responseFromServer.message);
-                //TODO
+                while (answerSec.firstChild) {
+                    answerSec.removeChild(answerSec.lastChild);
+                }
+                let alert: HTMLDivElement = createAlertElement("Error: " + responseFromServer.message, KEYALERTERROR);
+                answerSec.appendChild(alert);
             }
         } else {
             redirectToLogin();
@@ -96,7 +104,11 @@ namespace Twitter {
             if (responseFromServer.status >= 0) {
                 deleteAuthCookie(true);
             } else {
-                console.log("Error: " + responseFromServer.message);
+                while (answerSec.firstChild) {
+                    answerSec.removeChild(answerSec.lastChild);
+                }
+                let alert: HTMLDivElement = createAlertElement("Error: " + responseFromServer.message, KEYALERTERROR);
+                answerSec.appendChild(alert);
             }
         }
     }
