@@ -50,7 +50,8 @@ var Twitter;
         let answer = await Twitter.postToServer(data);
         if (answer != null) {
             if (answer.tweets) {
-                return answer.tweets;
+                let tweets = answer.tweets.reverse();
+                return tweets;
             }
             else {
                 console.log(answer.message);

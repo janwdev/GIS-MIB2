@@ -8,6 +8,15 @@ namespace Twitter {
     let answerSec: HTMLDivElement = <HTMLDivElement>document.getElementById("answerSection");
 
     redirectIfLoggedIn();
+    showMessageIfWasRedirected();
+
+    function showMessageIfWasRedirected(): void {
+        let message: string = sessionStorage.getItem(KEYLOGINREDIRECTMESSAGE);
+        if (message) {
+            let alert: HTMLDivElement = createAlertElement(message, true);
+            answerSec.appendChild(alert);
+        }
+    }
 
     function redirectIfLoggedIn(): void {
         let authKey: string = getAuthCode();
@@ -31,16 +40,15 @@ namespace Twitter {
             if ("status" in answer) {
                 let status: number = <number>answer.status;
                 let message: string = <string>answer.message;
-                let p: HTMLParagraphElement = document.createElement("p");
-                p.innerText = message;
                 while (answerSec.firstChild) {
                     answerSec.removeChild(answerSec.lastChild);
                 }
-                answerSec.appendChild(p);
                 if (status != 0) {
-                    p.style.color = "red";
+                    let alert: HTMLDivElement = createAlertElement(message, true);
+                    answerSec.appendChild(alert);
                 } else {
-                    p.style.color = "green";
+                    let alert: HTMLDivElement = createAlertElement(message, false);
+                    answerSec.appendChild(alert);
                     let cookieString: string = answer.authCookieString;
                     saveAuthCookie(cookieString);
                     sessionStorage.setItem("email", request["email"]);

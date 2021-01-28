@@ -6,6 +6,14 @@ var Twitter;
     btLogin.addEventListener("click", login);
     let answerSec = document.getElementById("answerSection");
     redirectIfLoggedIn();
+    showMessageIfWasRedirected();
+    function showMessageIfWasRedirected() {
+        let message = sessionStorage.getItem(Twitter.KEYLOGINREDIRECTMESSAGE);
+        if (message) {
+            let alert = Twitter.createAlertElement(message, true);
+            answerSec.appendChild(alert);
+        }
+    }
     function redirectIfLoggedIn() {
         let authKey = Twitter.getAuthCode();
         if (authKey != null && authKey.length > 0) {
@@ -27,17 +35,16 @@ var Twitter;
             if ("status" in answer) {
                 let status = answer.status;
                 let message = answer.message;
-                let p = document.createElement("p");
-                p.innerText = message;
                 while (answerSec.firstChild) {
                     answerSec.removeChild(answerSec.lastChild);
                 }
-                answerSec.appendChild(p);
                 if (status != 0) {
-                    p.style.color = "red";
+                    let alert = Twitter.createAlertElement(message, true);
+                    answerSec.appendChild(alert);
                 }
                 else {
-                    p.style.color = "green";
+                    let alert = Twitter.createAlertElement(message, false);
+                    answerSec.appendChild(alert);
                     let cookieString = answer.authCookieString;
                     Twitter.saveAuthCookie(cookieString);
                     sessionStorage.setItem("email", request["email"]);

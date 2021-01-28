@@ -1,8 +1,9 @@
 namespace Twitter {
-    // export let url: string = "http://localhost:8100";
-    export let url: string = "https://twitterclonegis.herokuapp.com";
+    export let url: string = "http://localhost:8100";
+    // export let url: string = "https://twitterclonegis.herokuapp.com";
 
     let KEYLASTLOCATION: string = "lastLocation";
+    export let KEYLOGINREDIRECTMESSAGE: string = "loginRedirectMessage"; 
 
     export interface RequestToServerInterface {
         [type: string]: string;
@@ -39,7 +40,23 @@ namespace Twitter {
         userPicture?: string;
     }
 
+    export async function ping(): Promise<void> {
+        let params: URLSearchParams = new URLSearchParams({ command: "ping" });
+        await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "text/plain"
+            },
+            body: params
+        });
+    }
+
     export async function postToServer(requestData: RequestToServerInterface): Promise<ResponseFromServer> {
+        if (requestData.email) {
+            if (!validateEmail(requestData.email)) {
+                return { status: -1, message: "Email is not valid" };
+            }
+        }
         let params: URLSearchParams = new URLSearchParams();
         let authKey: string = getAuthCode();
         if (authKey.length > 0) {
@@ -63,6 +80,11 @@ namespace Twitter {
         return null;
     }
     export async function postToServerWithoutAuth(requestData: RequestToServerInterface): Promise<ResponseFromServer> {
+        if (requestData.email) {
+            if (!validateEmail(requestData.email)) {
+                return { status: -1, message: "Email is not valid" };
+            }
+        }
         let params: URLSearchParams = new URLSearchParams();
         Object.keys(requestData).forEach((key: string) => {
             params.append(key, requestData[key]);
@@ -81,6 +103,7 @@ namespace Twitter {
     export function redirectToLogin(): void {
         let actLoc: string = window.location.href;
         sessionStorage.setItem(KEYLASTLOCATION, actLoc);
+        sessionStorage.setItem(KEYLOGINREDIRECTMESSAGE, "Need to Login again!");
         window.location.replace("login.html");
     }
 
@@ -134,6 +157,30 @@ namespace Twitter {
             }
         }
         return "";
+    }
+    //######Code from https://www.w3docs.com/snippets/javascript/how-to-validate-an-e-mail-using-javascript.html ######################
+    export function validateEmail(email: string): boolean {
+        let res: RegExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        return res.test(email);
+    }
+
+    export function createAlertElement(message: string, alertBad: boolean): HTMLDivElement {
+        let alert: HTMLDivElement = document.createElement("div");
+        if (alertBad)
+            alert.className = "alert-bad";
+        else
+            alert.className = "alert-good";
+        let closeBtn: HTMLSpanElement = document.createElement("span");
+        closeBtn.addEventListener("click", function (): void {
+            alert.style.display = "none";
+        });
+        closeBtn.textContent = "X";
+        closeBtn.className = "closebtn";
+        let text: HTMLSpanElement = document.createElement("span");
+        text.textContent = message;
+        alert.appendChild(text);
+        alert.appendChild(closeBtn);
+        return alert;
     }
 
     export function createTweetElement(tweet: Tweet): HTMLDivElement {

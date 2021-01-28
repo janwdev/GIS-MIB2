@@ -25,8 +25,6 @@ var Twitter;
             if ("status" in answer) {
                 let status = answer.status;
                 let message = answer.message;
-                let p = document.createElement("p");
-                p.innerText = message;
                 if (status == 0) {
                     Twitter.saveAuthCookie(answer.authCookieString);
                     sessionStorage.setItem("email", request["email"]);
@@ -34,12 +32,13 @@ var Twitter;
                 while (answerSec.firstChild) {
                     answerSec.removeChild(answerSec.lastChild);
                 }
-                answerSec.appendChild(p);
                 if (status < 0) {
-                    p.style.color = "red";
+                    let alert = Twitter.createAlertElement(message, true);
+                    answerSec.appendChild(alert);
                 }
                 else {
-                    p.style.color = "green";
+                    let alert = Twitter.createAlertElement(message, false);
+                    answerSec.appendChild(alert);
                 }
             }
         }

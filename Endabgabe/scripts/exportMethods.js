@@ -1,10 +1,27 @@
 "use strict";
 var Twitter;
 (function (Twitter) {
-    // export let url: string = "http://localhost:8100";
-    Twitter.url = "https://twitterclonegis.herokuapp.com";
+    Twitter.url = "http://localhost:8100";
+    // export let url: string = "https://twitterclonegis.herokuapp.com";
     let KEYLASTLOCATION = "lastLocation";
+    Twitter.KEYLOGINREDIRECTMESSAGE = "loginRedirectMessage";
+    async function ping() {
+        let params = new URLSearchParams({ command: "ping" });
+        await fetch(Twitter.url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "text/plain"
+            },
+            body: params
+        });
+    }
+    Twitter.ping = ping;
     async function postToServer(requestData) {
+        if (requestData.email) {
+            if (!validateEmail(requestData.email)) {
+                return { status: -1, message: "Email is not valid" };
+            }
+        }
         let params = new URLSearchParams();
         let authKey = getAuthCode();
         if (authKey.length > 0) {
@@ -30,6 +47,11 @@ var Twitter;
     }
     Twitter.postToServer = postToServer;
     async function postToServerWithoutAuth(requestData) {
+        if (requestData.email) {
+            if (!validateEmail(requestData.email)) {
+                return { status: -1, message: "Email is not valid" };
+            }
+        }
         let params = new URLSearchParams();
         Object.keys(requestData).forEach((key) => {
             params.append(key, requestData[key]);
@@ -48,6 +70,7 @@ var Twitter;
     function redirectToLogin() {
         let actLoc = window.location.href;
         sessionStorage.setItem(KEYLASTLOCATION, actLoc);
+        sessionStorage.setItem(Twitter.KEYLOGINREDIRECTMESSAGE, "Need to Login again!");
         window.location.replace("login.html");
     }
     Twitter.redirectToLogin = redirectToLogin;
@@ -103,6 +126,31 @@ var Twitter;
         }
         return "";
     }
+    //######Code from https://www.w3docs.com/snippets/javascript/how-to-validate-an-e-mail-using-javascript.html ######################
+    function validateEmail(email) {
+        let res = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        return res.test(email);
+    }
+    Twitter.validateEmail = validateEmail;
+    function createAlertElement(message, alertBad) {
+        let alert = document.createElement("div");
+        if (alertBad)
+            alert.className = "alert-bad";
+        else
+            alert.className = "alert-good";
+        let closeBtn = document.createElement("span");
+        closeBtn.addEventListener("click", function () {
+            alert.style.display = "none";
+        });
+        closeBtn.textContent = "X";
+        closeBtn.className = "closebtn";
+        let text = document.createElement("span");
+        text.textContent = message;
+        alert.appendChild(text);
+        alert.appendChild(closeBtn);
+        return alert;
+    }
+    Twitter.createAlertElement = createAlertElement;
     function createTweetElement(tweet) {
         let element = document.createElement("div");
         //TODO styling

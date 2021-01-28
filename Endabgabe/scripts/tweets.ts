@@ -56,7 +56,8 @@ namespace Twitter {
         let answer: ResponseFromServer = await postToServer(data);
         if (answer != null) {
             if (answer.tweets) {
-                return answer.tweets;
+                let tweets: Tweet[] = answer.tweets.reverse();
+                return tweets;
             } else {
                 console.log(answer.message);
             }

@@ -4,14 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="scripts/cookies.js" defer></script>
     <script src="scripts/exportMethods.js" defer></script>
     <script src="scripts/user/login.js" defer></script>
     <link rel="stylesheet" href="styles/general.css">
+    <link rel="stylesheet" href="styles/cookiebanner.css">
+    <link rel="stylesheet" href="styles/alert.css">
     <title>Login</title>
 </head>
 
 <body>
     <main>
+        <!-- ### https://codepen.io/DeolaJ/pen/vPOGwv -->
+        <div id="cookie-banner">
+            <div>
+                <p>This Website uses Cookies to store your login on the device. By using our services you agree to this.</p>
+                <p>We only use cookies for this usage and never share any data with other parties. More information can be found <a href="">here</a>.</p>
+            </div>
+            <button id="close">&times;</button>
+        </div>
+        <!-- ### -->
         <form id="form">
             <div>
                 <input name="email" type="text" placeholder="Email">

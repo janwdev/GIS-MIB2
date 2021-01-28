@@ -29,8 +29,6 @@ namespace Twitter {
             if ("status" in answer) {
                 let status: number = answer.status;
                 let message: string = answer.message;
-                let p: HTMLParagraphElement = document.createElement("p");
-                p.innerText = message;
                 if (status == 0) {
                     saveAuthCookie(answer.authCookieString);
                     sessionStorage.setItem("email", request["email"]);
@@ -38,11 +36,12 @@ namespace Twitter {
                 while (answerSec.firstChild) {
                     answerSec.removeChild(answerSec.lastChild);
                 }
-                answerSec.appendChild(p);
                 if (status < 0) {
-                    p.style.color = "red";
+                    let alert: HTMLDivElement = createAlertElement(message, true);
+                    answerSec.appendChild(alert);
                 } else {
-                    p.style.color = "green";
+                    let alert: HTMLDivElement = createAlertElement(message, false);
+                    answerSec.appendChild(alert);
                 }
             }
         } else {
