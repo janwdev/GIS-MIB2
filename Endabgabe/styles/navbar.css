@@ -8,7 +8,7 @@ header {
     width: 100%;
     top: 0;
     right: 0;
-    background: var(--dark-color-2);
+    background: var(--bg-color-2);
     z-index: 1000;
 }
 
@@ -64,7 +64,7 @@ header h1 a {
     left: 10px;
     height: 4px;
     width: 55px;
-    background:var(--light-color);
+    background:var(--bg-color-3);
     border-radius: 2px;
     display: block;
     transition: 0.5s;

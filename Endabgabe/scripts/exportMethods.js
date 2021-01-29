@@ -196,8 +196,8 @@ var Twitter;
                 window.location.reload();
             });
             htmlUserName.href = "userdetails.html";
+            btDelete.className = "btn btnSec col";
             element.appendChild(btDelete);
-            btDelete.className = "btn btnSec col-s-3";
             //TODO Edit
         }
         element.className = "tweet";

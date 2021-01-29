@@ -1,21 +1,26 @@
 .btnFirst {
     background-color: var(--acc-3);
-    color: var(--light-color);
+    color: var(--bg-color-3);
+}
+
+.btnFirst:hover, .btnFirst:focus {
+    background-color: var(--acc-3-d);
 }
 
 .btnSec {
     background-color: var(--acc-2);
-    color: var(--light-color);
+    color: var(--bg-color-3);
+}
+
+.btnSec:hover, .btnSec:focus {
+    background-color: var(--acc-2-d);
 }
 
 #inputForm {
     position: fixed;
-    height: 100px;
     bottom: 0;
-    left: 10%;
-    right: 10%;
-    width: 80%;
-    background-color: var(--dark-color);
+    width: 100%;
+    background-color: var(--bg-color);
     z-index: 100;
 }
 
@@ -24,9 +29,25 @@
 }
 
 .tweet {
-    background-color: var(--dark-color-2);
+    background-color: var(--bg-color-2);
     padding: 15px;
     margin: 15px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     border-radius: 5px;
+}
+
+@media (min-width: 600px) {
+    #inputForm {
+        max-width: 720px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+@media (min-width: 1025px) {
+    #inputForm {
+        max-width: 960px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
 }

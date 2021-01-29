@@ -1,7 +1,13 @@
 .btnEdit{
     background-color: var(--acc-3);
 }
+.btnEdit:hover, .btnEdit:focus {
+    background-color: var(--acc-3-d);
+}
 
 .btnEditPW{
     background-color: var(--acc-2);
+}
+.btnEditPW:hover, .btnEditPW:focus {
+    background-color: var(--acc-2-d);
 }

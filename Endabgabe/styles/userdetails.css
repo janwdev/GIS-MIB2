@@ -1,11 +1,20 @@
 .btnEdit{
     background-color: var(--acc-1);
 }
+.btnEdit:hover, .btnEdit:focus {
+    background-color: var(--acc-1-d);
+}
 
 .btnLogout{
     background-color: var(--acc-3);
 }
+.btnLogout:hover, .btnLogout:focus {
+    background-color: var(--acc-3-d);
+}
 
 .btnDelete{
     background-color: var(--acc-2);
+}
+.btnDelete:hover, .btnDelete:focus {
+    background-color: var(--acc-2-d);
 }

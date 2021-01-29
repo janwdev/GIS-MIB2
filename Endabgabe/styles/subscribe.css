@@ -1,10 +1,10 @@
 td, th {
-    border: 1px solid var(--dark-color-2);
+    border: 1px solid var(--bg-color-2);
     padding: 8px;
 }
 
 tr:nth-child(even) {
-    background-color:var(--dark-color-2);
+    background-color:var(--bg-color-2);
 }
 
 th {
@@ -17,4 +17,7 @@ th {
 
 .btn{
     background-color: var(--acc-3-d);
+}
+.btn:hover, .btn:focus {
+    background-color: var(--acc-3);
 }
