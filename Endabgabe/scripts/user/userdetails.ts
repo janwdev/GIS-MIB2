@@ -60,22 +60,35 @@ namespace Twitter {
                     }
 
                     if (query.get("email") == "me" || query.get("email") == null) {
+                        let htmlRow: HTMLDivElement = document.createElement("div");
+                        htmlRow.className = "row";
+                        htmlControllSec.appendChild(htmlRow);
+
                         let linkEdit: HTMLAnchorElement = document.createElement("a");
                         linkEdit.href = "edit.html";
-                        linkEdit.textContent = "Edit";
-                        htmlControllSec.appendChild(linkEdit);
+                        let linkEditSpan: HTMLSpanElement = document.createElement("span");
+                        linkEditSpan.textContent = "Edit";
+                        linkEdit.appendChild(linkEditSpan);
+                        linkEdit.className = "col-s-3 btn btnEdit";
+                        htmlRow.appendChild(linkEdit);
 
                         let btLogout: HTMLButtonElement = document.createElement("button");
-                        btLogout.textContent = "Logout";
+                        let logoutSpan: HTMLSpanElement = document.createElement("span");
+                        logoutSpan.textContent = "Logout";
+                        btLogout.appendChild(logoutSpan);
+                        btLogout.className = "col-s-3 btn btnLogout";
                         btLogout.addEventListener("click", function (): void {
                             deleteAuthCookie(true);
                         });
-                        htmlControllSec.appendChild(btLogout);
+                        htmlRow.appendChild(btLogout);
 
                         let btDelete: HTMLButtonElement = document.createElement("button");
-                        btDelete.textContent = "Delete User";
+                        let deleteSpan: HTMLSpanElement = document.createElement("span");
+                        deleteSpan.textContent = "Delete User";
+                        btDelete.appendChild(deleteSpan);
+                        btDelete.className = "col-s-2 btn btnDelete";
                         btDelete.addEventListener("click", deleteThisUser);
-                        htmlControllSec.appendChild(btDelete);
+                        htmlRow.appendChild(btDelete);
                     }
                 } else {
                     while (answerSec.firstChild) {

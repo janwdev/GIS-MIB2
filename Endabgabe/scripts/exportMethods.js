@@ -19,6 +19,10 @@ var Twitter;
         });
     }
     Twitter.ping = ping;
+    async function delay(ms) {
+        return new Promise(res => setTimeout(res, ms));
+    }
+    Twitter.delay = delay;
     async function postToServer(requestData) {
         if (requestData.email) {
             if (!validateEmail(requestData.email)) {
@@ -95,9 +99,10 @@ var Twitter;
         }
     }
     Twitter.redirectToLastLocation = redirectToLastLocation;
-    function saveAuthCookie(authCookieString) {
+    async function saveAuthCookie(authCookieString) {
         document.cookie = authCookieString + "; path=/; SameSite=Lax";
         console.log("Saved");
+        await delay(1500);
         redirectToLastLocation();
     }
     Twitter.saveAuthCookie = saveAuthCookie;
@@ -158,7 +163,6 @@ var Twitter;
     Twitter.createAlertElement = createAlertElement;
     function createTweetElement(tweet) {
         let element = document.createElement("div");
-        //TODO styling
         let htmlUserName = document.createElement("a");
         htmlUserName.textContent = tweet.userName;
         if (tweet.userName != "Admin") {
@@ -184,21 +188,24 @@ var Twitter;
         element.appendChild(htmlCreationDate);
         if (sessionStorage.getItem("email") == tweet.userEmail) {
             let btDelete = document.createElement("button");
-            btDelete.textContent = "Delete";
+            let spanDelete = document.createElement("span");
+            spanDelete.textContent = "Delete";
+            btDelete.appendChild(spanDelete);
             btDelete.addEventListener("click", async function () {
                 await deleteTweet(tweet._id);
                 window.location.reload();
             });
             htmlUserName.href = "userdetails.html";
             element.appendChild(btDelete);
+            btDelete.className = "btn btnSec col-s-3";
             //TODO Edit
         }
+        element.className = "tweet";
         //TODO media
         return element;
     }
     Twitter.createTweetElement = createTweetElement;
     async function deleteTweet(id) {
-        //TODO
         let request = { command: "deleteTweet", tweetID: id };
         let answer = await postToServer(request);
         if (answer != null) {

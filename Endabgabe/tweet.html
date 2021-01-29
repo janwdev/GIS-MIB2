@@ -10,10 +10,11 @@
     <link rel="stylesheet" href="styles/datepicker.css">
     <link rel="stylesheet" href="styles/general.css">
     <link rel="stylesheet" href="styles/navbar.css">
+    <link rel="stylesheet" href="styles/tweet.css">
     <title>Tweet</title>
 </head>
 
-<body>
+<body class="container-fluid back-dark">
     <header class="header">
         <input type="checkbox" id="hamburg">
         <label for="hamburg" class="hamburg">
@@ -31,18 +32,22 @@
     </header>
     <main>
         <div id="answerSection"></div>
-        
-        <form id="inputForm">
-            <input id="tweet" name="tweet" type="text" placeholder="Tweet">
-            <button type="button" id="sendTweet">Send</button>
-        </form>
-
-        <h1>Timeline:</h1>
-        <div>
-            <p>First Date Tweets:</p>
-            <input type="text" id="date-input" autocomplete="off">
+        <div class="container">
+            <form id="inputForm">
+                <div class="row">
+                    <textarea id="tweet" name="tweet" type="text" placeholder="Tweet" rows="1"
+                        class="col-m-9"></textarea>
+                    <button class="col-m-3 btn btnFirst" type="button" id="sendTweet"><span>Send</span></button>
+                </div>
+            </form>
+            <h1>Timeline:</h1>
+            <div>
+                <p>First Date Tweets:</p>
+                <input type="text" id="date-input" autocomplete="off">
+            </div>
+            <div id="tweetTimeline"></div>
         </div>
-        <div id="tweetTimeline"></div>
+
     </main>
 
 </body>

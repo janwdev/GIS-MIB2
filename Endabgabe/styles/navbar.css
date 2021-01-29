@@ -8,18 +8,12 @@ header {
     width: 100%;
     top: 0;
     right: 0;
-    background: #333;
+    background: var(--dark-color-2);
     z-index: 1000;
 }
 
 header h1 a {
-    color: white;
-    padding-left: 20px;
-    text-decoration: none;
-}
-
-header h1 a:visited {
-    color: white;
+    color: var(--text-color);
     padding-left: 20px;
     text-decoration: none;
 }
@@ -42,7 +36,7 @@ header h1 a:visited {
 
 .menulist li>a {
     display: block;
-    color: white;
+    color: var(--text-color);
     text-align: center;
     padding-top: 50px;
     text-decoration: none;
@@ -70,7 +64,7 @@ header h1 a:visited {
     left: 10px;
     height: 4px;
     width: 55px;
-    background: #fff;
+    background:var(--light-color);
     border-radius: 2px;
     display: block;
     transition: 0.5s;
@@ -119,7 +113,6 @@ header h1 a:visited {
 @media (min-width: 1025px) {
     header {
         max-height: 80px;
-        background-color: #333;
     }
     /*Navigationsmenu*/
     .hamburg {
@@ -141,8 +134,5 @@ header h1 a:visited {
     }
     .menulist li>a {
         padding: 14px 16px;
-    }
-    .menulist li>a:hover {
-        background-color: #111;
     }
 }

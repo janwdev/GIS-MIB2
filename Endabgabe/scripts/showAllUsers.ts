@@ -2,6 +2,7 @@ namespace Twitter {
     showAllUsers();
 
     let answerSection: HTMLDivElement = <HTMLDivElement>document.getElementById("answerSection");
+    answerSection.className = "container-m";
 
     async function showAllUsers(): Promise<void> {
         let requestData: RequestToServerInterface = { command: "showAllUsers" };
@@ -37,7 +38,9 @@ namespace Twitter {
             let tr: HTMLTableRowElement = table.insertRow(0);
             for (let i: number = 0; i < col.length; i++) {
                 let th: HTMLTableHeaderCellElement = document.createElement("th");
-                th.textContent = col[i];
+                let p: HTMLParagraphElement = document.createElement("p");
+                p.textContent = col[i];
+                th.appendChild(p);
                 tr.appendChild(th);
             }
 
@@ -52,7 +55,9 @@ namespace Twitter {
                 htmlName.href = "userdetails.html?email=" + user.email;
                 tabCellName.appendChild(htmlName);
                 let tabCellEmail: HTMLTableCellElement = tr.insertCell();
-                tabCellEmail.textContent = user.email;
+                let pEmail: HTMLParagraphElement = document.createElement("p");
+                pEmail.textContent = user.email;
+                tabCellEmail.appendChild(pEmail);
                 let tabCellSuscribe: HTMLTableCellElement = tr.insertCell();
 
                 let following: boolean = false;
@@ -63,17 +68,23 @@ namespace Twitter {
                     }
                 }
                 if (following) {
-                    let btUnSuscribe: HTMLButtonElement = document.createElement("button");
-                    btUnSuscribe.textContent = "Unsuscribe";
-                    tabCellSuscribe.appendChild(btUnSuscribe);
-                    btUnSuscribe.addEventListener("click", function (): void {
+                    let btUnSubscribe: HTMLButtonElement = document.createElement("button");
+                    let span: HTMLSpanElement = document.createElement("span");
+                    span.textContent = "Unsubscribe";
+                    btUnSubscribe.appendChild(span);
+                    btUnSubscribe.className = "btn col";
+                    tabCellSuscribe.appendChild(btUnSubscribe);
+                    btUnSubscribe.addEventListener("click", function (): void {
                         suscribeUnsuscribeToUserWithId(user._id, "unsubscribe");
                     });
                 } else {
-                    let btSuscribe: HTMLButtonElement = document.createElement("button");
-                    btSuscribe.textContent = "Suscribe";
-                    tabCellSuscribe.appendChild(btSuscribe);
-                    btSuscribe.addEventListener("click", function (): void {
+                    let btSubscribe: HTMLButtonElement = document.createElement("button");
+                    let span: HTMLSpanElement = document.createElement("span");
+                    span.textContent = "Subscribe";
+                    btSubscribe.appendChild(span);
+                    btSubscribe.className = "btn col";
+                    tabCellSuscribe.appendChild(btSubscribe);
+                    btSubscribe.addEventListener("click", function (): void {
                         suscribeUnsuscribeToUserWithId(user._id, "subscribe");
                     });
                 }
@@ -96,6 +107,7 @@ namespace Twitter {
             }
             let alert: HTMLDivElement = createAlertElement("No Answer", KEYALERTWARNING);
             answerSection.appendChild(alert);
+            delay(3000);
         }
         showAllUsers();
     }

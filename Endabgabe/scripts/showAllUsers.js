@@ -3,6 +3,7 @@ var Twitter;
 (function (Twitter) {
     showAllUsers();
     let answerSection = document.getElementById("answerSection");
+    answerSection.className = "container-m";
     async function showAllUsers() {
         let requestData = { command: "showAllUsers" };
         let responseFromServer = await Twitter.postToServer(requestData);
@@ -36,7 +37,9 @@ var Twitter;
             let tr = table.insertRow(0);
             for (let i = 0; i < col.length; i++) {
                 let th = document.createElement("th");
-                th.textContent = col[i];
+                let p = document.createElement("p");
+                p.textContent = col[i];
+                th.appendChild(p);
                 tr.appendChild(th);
             }
             let thisUserFollowing = array[0].following;
@@ -49,7 +52,9 @@ var Twitter;
                 htmlName.href = "userdetails.html?email=" + user.email;
                 tabCellName.appendChild(htmlName);
                 let tabCellEmail = tr.insertCell();
-                tabCellEmail.textContent = user.email;
+                let pEmail = document.createElement("p");
+                pEmail.textContent = user.email;
+                tabCellEmail.appendChild(pEmail);
                 let tabCellSuscribe = tr.insertCell();
                 let following = false;
                 for (let j = 0; j < thisUserFollowing.length; j++) {
@@ -59,18 +64,24 @@ var Twitter;
                     }
                 }
                 if (following) {
-                    let btUnSuscribe = document.createElement("button");
-                    btUnSuscribe.textContent = "Unsuscribe";
-                    tabCellSuscribe.appendChild(btUnSuscribe);
-                    btUnSuscribe.addEventListener("click", function () {
+                    let btUnSubscribe = document.createElement("button");
+                    let span = document.createElement("span");
+                    span.textContent = "Unsubscribe";
+                    btUnSubscribe.appendChild(span);
+                    btUnSubscribe.className = "btn col";
+                    tabCellSuscribe.appendChild(btUnSubscribe);
+                    btUnSubscribe.addEventListener("click", function () {
                         suscribeUnsuscribeToUserWithId(user._id, "unsubscribe");
                     });
                 }
                 else {
-                    let btSuscribe = document.createElement("button");
-                    btSuscribe.textContent = "Suscribe";
-                    tabCellSuscribe.appendChild(btSuscribe);
-                    btSuscribe.addEventListener("click", function () {
+                    let btSubscribe = document.createElement("button");
+                    let span = document.createElement("span");
+                    span.textContent = "Subscribe";
+                    btSubscribe.appendChild(span);
+                    btSubscribe.className = "btn col";
+                    tabCellSuscribe.appendChild(btSubscribe);
+                    btSubscribe.addEventListener("click", function () {
                         suscribeUnsuscribeToUserWithId(user._id, "subscribe");
                     });
                 }
@@ -93,6 +104,7 @@ var Twitter;
             }
             let alert = Twitter.createAlertElement("No Answer", Twitter.KEYALERTWARNING);
             answerSection.appendChild(alert);
+            Twitter.delay(3000);
         }
         showAllUsers();
     }

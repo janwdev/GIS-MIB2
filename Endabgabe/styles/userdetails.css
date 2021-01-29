@@ -1,0 +1,11 @@
+.btnEdit{
+    background-color: var(--acc-1);
+}
+
+.btnLogout{
+    background-color: var(--acc-3);
+}
+
+.btnDelete{
+    background-color: var(--acc-2);
+}

@@ -55,6 +55,10 @@ namespace Twitter {
         });
     }
 
+    export async function delay(ms: number): Promise<void> {
+        return new Promise(res => setTimeout(res, ms));
+    }
+
     export async function postToServer(requestData: RequestToServerInterface): Promise<ResponseFromServer> {
         if (requestData.email) {
             if (!validateEmail(requestData.email)) {
@@ -128,9 +132,10 @@ namespace Twitter {
         }
     }
 
-    export function saveAuthCookie(authCookieString: string): void {
+    export async function saveAuthCookie(authCookieString: string): Promise<void> {
         document.cookie = authCookieString + "; path=/; SameSite=Lax";
         console.log("Saved");
+        await delay(1500);
         redirectToLastLocation();
     }
 
@@ -191,7 +196,6 @@ namespace Twitter {
 
     export function createTweetElement(tweet: Tweet): HTMLDivElement {
         let element: HTMLDivElement = document.createElement("div");
-        //TODO styling
         let htmlUserName: HTMLAnchorElement = document.createElement("a");
         htmlUserName.textContent = tweet.userName;
         if (tweet.userName != "Admin") {
@@ -219,23 +223,25 @@ namespace Twitter {
 
         if (sessionStorage.getItem("email") == tweet.userEmail) {
             let btDelete: HTMLButtonElement = document.createElement("button");
-            btDelete.textContent = "Delete";
+            let spanDelete: HTMLSpanElement = document.createElement("span");
+            spanDelete.textContent = "Delete";
+            btDelete.appendChild(spanDelete);
             btDelete.addEventListener("click", async function (): Promise<void> {
                 await deleteTweet(tweet._id);
                 window.location.reload();
             });
             htmlUserName.href = "userdetails.html";
             element.appendChild(btDelete);
+            btDelete.className = "btn btnSec col-s-3";
             //TODO Edit
         }
-
-
+        element.className = "tweet";
+        
         //TODO media
         return element;
     }
 
     async function deleteTweet(id: string): Promise<void | boolean> {
-        //TODO
         let request: RequestToServerInterface = { command: "deleteTweet", tweetID: id };
         let answer: ResponseFromServer = await postToServer(request);
         if (answer != null) {
