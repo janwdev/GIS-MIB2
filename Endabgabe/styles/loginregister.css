@@ -1,0 +1,21 @@
+.btnFirst {
+    background-color: var(--acc-1);
+    color: var(--light-color);
+}
+
+.btnFirst:hover, .btnFirst:focus {
+    background-color: var(--acc-1-d);
+}
+
+.btnSec {
+    background-color: var(--acc-2);
+    color: var(--light-color);
+}
+
+.btnSec:hover, .btnFirst:focus {
+    background-color: var(--acc-2-d);
+}
+
+.placeholder{
+    margin-top: 30vh;
+}

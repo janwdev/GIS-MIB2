@@ -9,36 +9,44 @@
     <script src="scripts/user/register.js" defer></script>
     <link rel="stylesheet" href="styles/general.css">
     <link rel="stylesheet" href="styles/cookiebanner.css">
+    <link rel="stylesheet" href="styles/loginregister.css">
     <title>Register</title>
 </head>
 
-<body>
+<body class="container-fluid back-dark">
     <main>
         <div id="answerSection"></div>
         <!-- ### https://codepen.io/DeolaJ/pen/vPOGwv -->
         <div id="cookie-banner">
             <div>
-                <p>This Website uses Cookies to store your login on the device. By using our services you agree to this.</p>
-                <p>We only use cookies for this usage and never share any data with other parties. More information can be found <a href="">here</a>.</p>
+                <p>This Website uses Cookies to store your login on the device. By using our services you agree to this.
+                </p>
+                <p>We only use cookies for this usage and never share any data with other parties. More information can
+                    be found <a href="">here</a>.</p>
             </div>
             <button id="close">&times;</button>
         </div>
         <!-- ### -->
-        <form id="form">
-            <div>
-                <input name="lastname" type="text" placeholder="LastName">
-                <input name="firstname" type="text" placeholder="Firstname">
-                <input name="email" type="text" placeholder="Email">
-                <input name="password" type="password" placeholder="Password">
-                <input name="studycourse" type="text" placeholder="Studycourse">
-                <input name="semester" type="text" placeholder="Semester">
-            </div>
-            <div>
-                <button type="button" id="sendRegister">Register</button>
-            </div>
-        </form>
 
-        <a href="login.html">Login</a>
+        <div class="container-xs placeholder">
+            <form id="form">
+                <div class="row">
+                    <input class="col-s-12" name="lastname" type="text" placeholder="LastName">
+                    <input class="col-s-12" name="firstname" type="text" placeholder="Firstname">
+                    <input class="col-s-12" name="email" type="text" placeholder="Email">
+                    <input class="col-s-12" name="password" type="password" placeholder="Password">
+                    <input class="col-s-12" name="studycourse" type="text" placeholder="Studycourse">
+                    <input class="col-s-12" name="semester" type="text" placeholder="Semester">
+                </div>
+                <div class="row">
+                    <button class="col-l-6 center btn btnFirst" type="button" id="sendRegister"><span>Register</span></button>
+                </div>
+            </form>
+            <div class="row">
+                <a class="col-l-6 center btn btnSec" href="login.html"><span>Login</span></a>
+            </div>
+
+        </div>
     </main>
 </body>
 

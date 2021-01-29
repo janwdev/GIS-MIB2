@@ -9,31 +9,38 @@
     <script src="scripts/user/login.js" defer></script>
     <link rel="stylesheet" href="styles/general.css">
     <link rel="stylesheet" href="styles/cookiebanner.css">
+    <link rel="stylesheet" href="styles/loginregister.css">
     <title>Login</title>
 </head>
 
-<body>
+<body class="container-fluid back-dark">
     <main>
         <div id="answerSection"></div>
         <!-- ### https://codepen.io/DeolaJ/pen/vPOGwv -->
         <div id="cookie-banner">
             <div>
-                <p>This Website uses Cookies to store your login on the device. By using our services you agree to this.</p>
-                <p>We only use cookies for this usage and never share any data with other parties. More information can be found <a href="">here</a>.</p>
+                <p>This Website uses Cookies to store your login on the device. By using our services you agree to this.
+                </p>
+                <p>We only use cookies for this usage and never share any data with other parties. More information can
+                    be found <a href="">here</a>.</p>
             </div>
             <button id="close">&times;</button>
         </div>
         <!-- ### -->
-        <form id="form">
-            <div>
-                <input name="email" type="text" placeholder="Email">
-                <input name="password" type="password" placeholder="Password">
+        <div class="container-xs placeholder">
+            <form id="form">
+                <div class="row">
+                    <input class="col-s-12" name="email" type="text" placeholder="Email">
+                    <input class="col-s-12" name="password" type="password" placeholder="Password">
+                </div>
+                <div class="row">
+                    <button class="col-l-6 center btn btnFirst" type="button" id="sendLogin"><span>Login</span></button>
+                </div>
+            </form>
+            <div class="row">
+                <a class="col-l-6 center btn btnSec" href="register.html"><span>Register</span></a>
             </div>
-            <div>
-                <button type="button" id="sendLogin">Login</button>
-            </div>
-        </form>
-        <a href="register.html">Register</a>
+        </div>
     </main>
 </body>
 
