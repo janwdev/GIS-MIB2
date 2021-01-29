@@ -1,6 +1,6 @@
 namespace Twitter {
-    export let url: string = "http://localhost:8100";
-    // export let url: string = "https://twitterclonegis.herokuapp.com";
+    // export let url: string = "http://localhost:8100";
+    export let url: string = "https://twitterclonegis.herokuapp.com";
 
     let KEYLASTLOCATION: string = "lastLocation";
     export let KEYLOGINREDIRECTMESSAGE: string = "loginRedirectMessage";
