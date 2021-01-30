@@ -49,9 +49,11 @@ export async function registration(data: RequestData): Promise<auth.TokenData> {
                 let user: User = { firstname: firstname, lastname: lastname, studycourse: studycourse, semester: semester, email: email, password: hashedPassword, followers: [], following: [] };
                 await addUserToDB(user);
                 let dbUser: User = await findUserByEmail(email);
-                suscribe(dbUser, dbUser._id);
-                console.log("Registration for User: " + user.email);
-                return auth.createToken(user.email);
+                if (dbUser) {
+                    await suscribe(dbUser, dbUser._id);
+                    console.log("Registration for User: " + user.email);
+                    return auth.createToken(user.email);
+                }
             }
         }
     }
@@ -133,7 +135,7 @@ export async function findUserByEmail(email: string): Promise<User> {
 }
 
 export async function addUserToDB(user: User): Promise<void> {
-    db.dbUsers.insertOne(user);
+    await db.dbUsers.insertOne(user);
 }
 
 export async function getAllUsers(email: string): Promise<User[]> {
@@ -154,11 +156,11 @@ export async function suscribe(user: User, idToSubscribe: string): Promise<void>
 
     user.following.push(userIDToSubscribe);
     let following: string[] = user.following;
-    db.dbUsers.findOneAndUpdate({ email: user.email }, { $set: { following: following } });
+    await db.dbUsers.findOneAndUpdate({ email: user.email }, { $set: { following: following } });
 
     userToFollow.followers.push(user._id + "");
     let followers: string[] = userToFollow.followers;
-    db.dbUsers.findOneAndUpdate({ email: userToFollow.email }, { $set: { followers: followers } });
+    await db.dbUsers.findOneAndUpdate({ email: userToFollow.email }, { $set: { followers: followers } });
 }
 
 export async function unsuscribe(user: User, idToUnSuscribe: string): Promise<void> {
