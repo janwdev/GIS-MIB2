@@ -34,10 +34,12 @@ namespace Twitter {
                 if (responseFromServer.users && responseFromServer.users.length > 0) {
                     let user: User = responseFromServer.users[0];
                     if (user.pictureLink) {
-                        let htmlProfilePic: HTMLImageElement = document.createElement("img");
-                        //TODO styling
-                        htmlProfilePic.src = user.pictureLink;
-                        htmlProfPicSec.appendChild(htmlProfilePic);
+                        if (user.pictureLink.length > 0) {
+                            let htmlProfilePic: HTMLImageElement = document.createElement("img");
+                            htmlProfilePic.src = user.pictureLink;
+                            htmlProfilePic.className = "profPic";
+                            htmlProfPicSec.appendChild(htmlProfilePic);
+                        }
                     }
                     htmlName.textContent = user.firstname + " " + user.lastname;
                     htmlEmail.textContent = user.email;

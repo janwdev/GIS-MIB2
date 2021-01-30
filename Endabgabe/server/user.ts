@@ -3,7 +3,7 @@ import * as Mongo from "mongodb";
 
 import * as auth from "./auth";
 import * as db from "./db";
-import {RequestData} from "./server";
+import { RequestData } from "./server";
 
 export interface User {
     _id?: string;
@@ -64,11 +64,22 @@ export async function editUser(user: User, data: RequestData): Promise<auth.Toke
     let email: string = <string>data.email;
     let studycourse: string = <string>data.studycourse;
     let semester: string = <string>data.semester;
-    let updated: Mongo.FindAndModifyWriteOpResultObject<User> = await db.dbUsers.findOneAndUpdate(
-        { email: user.email },
-        { $set: { lastname: lastname, firstname: firstname, email: email, studycourse: studycourse, semester: semester } },
-        { returnOriginal: false }
-    );
+    let updated: Mongo.FindAndModifyWriteOpResultObject<User>
+    if (data.profPic) {
+        let profPicLink: string = <string>data.profPic;
+        updated = await db.dbUsers.findOneAndUpdate(
+            { email: user.email },
+            { $set: { lastname: lastname, firstname: firstname, email: email, studycourse: studycourse, semester: semester, pictureLink: profPicLink } },
+            { returnOriginal: false }
+        );
+    } else {
+        updated = await db.dbUsers.findOneAndUpdate(
+            { email: user.email },
+            { $set: { lastname: lastname, firstname: firstname, email: email, studycourse: studycourse, semester: semester, pictureLink: "" } },
+            { returnOriginal: false }
+        );
+    }
+
 
     if (updated.ok == 1) {
         let updatedUser: User = updated.value;
@@ -107,7 +118,7 @@ export async function deleteUser(user: User): Promise<boolean> {
     if (result1.result.ok == 1) {
         let result2: Mongo.DeleteWriteOpResultObject = await db.dbUsers.deleteOne({ email: user.email });
         if (result2.result.ok == 1) {
-            await db.dbDeletedUsers.insertOne({email: user.email});
+            await db.dbDeletedUsers.insertOne({ email: user.email });
             return true;
         }
     }

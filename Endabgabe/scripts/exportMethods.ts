@@ -196,6 +196,8 @@ namespace Twitter {
 
     export function createTweetElement(tweet: Tweet): HTMLDivElement {
         let element: HTMLDivElement = document.createElement("div");
+        let htmlUserTextSec: HTMLDivElement = document.createElement("div");
+        htmlUserTextSec.className = "col-4";
         let htmlUserName: HTMLAnchorElement = document.createElement("a");
         htmlUserName.textContent = tweet.userName;
         if (tweet.userName != "Admin") {
@@ -205,19 +207,27 @@ namespace Twitter {
         htmlUserEmail.textContent = tweet.userEmail;
         let htmlUserImg: HTMLImageElement;
         if (tweet.userPicture) {
-            htmlUserImg = document.createElement("img");
-            htmlUserImg.src = tweet.userPicture;
+            if (tweet.userPicture.length > 0) {
+                htmlUserImg = document.createElement("img");
+                htmlUserImg.src = tweet.userPicture;
+                htmlUserImg.className = "col-4 profPicS";
+            }
         }
         let htmlText: HTMLParagraphElement = document.createElement("p");
         htmlText.textContent = tweet.text;
         let htmlCreationDate: HTMLParagraphElement = document.createElement("p");
         htmlCreationDate.textContent = new Date(tweet.creationDate).toDateString();
 
-        element.appendChild(htmlUserName);
-        element.appendChild(htmlUserEmail);
+        let htmlUserRow: HTMLDivElement = document.createElement("div");
+        htmlUserRow.className = "row";
+
+        htmlUserTextSec.appendChild(htmlUserName);
+        htmlUserTextSec.appendChild(htmlUserEmail);
         if (tweet.userPicture) {
-            element.appendChild(htmlUserImg);
+            htmlUserRow.appendChild(htmlUserImg);
         }
+        htmlUserRow.appendChild(htmlUserTextSec);
+        element.appendChild(htmlUserRow);
         element.appendChild(htmlText);
         element.appendChild(htmlCreationDate);
 
@@ -232,11 +242,11 @@ namespace Twitter {
             });
             htmlUserName.href = "userdetails.html";
             btDelete.className = "btn btnSec col";
-            element.appendChild(btDelete);
+            htmlUserRow.appendChild(btDelete);
             //TODO Edit
         }
         element.className = "tweet";
-        
+
         //TODO media
         return element;
     }

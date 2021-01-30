@@ -33,6 +33,7 @@ var Twitter;
             col.push("Name");
             col.push("Email");
             col.push("Suscribe");
+            col.push("Picture");
             // Header
             let tr = table.insertRow(0);
             for (let i = 0; i < col.length; i++) {
@@ -84,6 +85,15 @@ var Twitter;
                     btSubscribe.addEventListener("click", function () {
                         suscribeUnsuscribeToUserWithId(user._id, "subscribe");
                     });
+                }
+                let tabCellPic = tr.insertCell();
+                if (user.pictureLink) {
+                    if (user.pictureLink.length > 0) {
+                        let img = document.createElement("img");
+                        img.src = user.pictureLink;
+                        img.className = "col-4 profPicS";
+                        tabCellPic.appendChild(img);
+                    }
                 }
             }
             answerSection.appendChild(table);

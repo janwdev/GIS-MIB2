@@ -9,6 +9,7 @@ var Twitter;
     let inputEmail = document.getElementsByName("email")[0];
     let inputStudyCourse = document.getElementsByName("studycourse")[0];
     let inputSemester = document.getElementsByName("semester")[0];
+    let inputProfPic = document.getElementsByName("profPic")[0];
     let formPWEdit = document.getElementById("editPWForm");
     let btEditPW = document.getElementById("editPassword");
     btEditPW.addEventListener("click", editPW);
@@ -26,6 +27,9 @@ var Twitter;
             inputSemester.value = me.semester;
             userEmail = me.email;
             inputEmailPW.value = userEmail;
+            if (me.pictureLink) {
+                inputProfPic.value = me.pictureLink;
+            }
         }
         else {
             console.log("Error: Me is null");
@@ -37,6 +41,7 @@ var Twitter;
         inputEmail.value = "";
         inputStudyCourse.value = "";
         inputSemester.value = "";
+        inputProfPic.value = "";
     }
     async function getUserDetailsFromServer() {
         let request = { command: "showUserDetail" };

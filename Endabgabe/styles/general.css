@@ -15,6 +15,48 @@ body {
     font-family: sans-serif;
 }
 
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bg-color {
+    background-color: var(--bg-color);
+}
+
+.bg-color-2 {
+    background-color: var(--bg-color-2);
+}
+
+.bg-color-3 {
+    background-color: var(--bg-color-3);
+}
+
+.back-acc1 {
+    background-color: var(--acc-1);
+}
+
+.back-acc2 {
+    background-color: var(--acc-2);
+}
+
+p, h1, h2, a {
+    color: var(--text-color);
+}
+
+.profPic {
+    max-height: 400px;
+    max-width: 400px;
+    border-radius: 5px;
+}
+
+.profPicS {
+    max-height: 150px;
+    max-width: 150px;
+    margin-right: 20px;
+    border-radius: 5px;
+}
+
 /* https://www.w3schools.com/howto/howto_js_alert.asp */
 
 .alert-bad {
@@ -49,35 +91,6 @@ body {
 
 .alert-closebtn:hover {
     color: black;
-}
-
-.center {
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.bg-color {
-    background-color: var(--bg-color);
-}
-
-.bg-color-2 {
-    background-color: var(--bg-color-2);
-}
-
-.bg-color-3 {
-    background-color: var(--bg-color-3);
-}
-
-.back-acc1 {
-    background-color: var(--acc-1);
-}
-
-.back-acc2 {
-    background-color: var(--acc-2);
-}
-
-p, h1, h2, a {
-    color: var(--text-color);
 }
 
 /* Btn From https://codepen.io/sebj54/pen/oxluI */
@@ -203,7 +216,7 @@ input[type="password"] {
     justify-content: flex-start;
     /* justify-content: center; */
     align-self: flex-start;
-    align-items: baseline;
+    align-items: flex-start;
     align-content: flex-start;
 }
 

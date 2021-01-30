@@ -9,6 +9,7 @@ namespace Twitter {
     let inputEmail: HTMLInputElement = <HTMLInputElement>document.getElementsByName("email")[0];
     let inputStudyCourse: HTMLInputElement = <HTMLInputElement>document.getElementsByName("studycourse")[0];
     let inputSemester: HTMLInputElement = <HTMLInputElement>document.getElementsByName("semester")[0];
+    let inputProfPic: HTMLInputElement = <HTMLInputElement>document.getElementsByName("profPic")[0];
 
     let formPWEdit: HTMLFormElement = <HTMLFormElement>document.getElementById("editPWForm");
     let btEditPW: HTMLButtonElement = <HTMLButtonElement>document.getElementById("editPassword");
@@ -31,6 +32,9 @@ namespace Twitter {
             inputSemester.value = me.semester;
             userEmail = me.email;
             inputEmailPW.value = userEmail;
+            if (me.pictureLink) {
+                inputProfPic.value = me.pictureLink;
+            }
         } else {
             console.log("Error: Me is null");
         }
@@ -42,6 +46,7 @@ namespace Twitter {
         inputEmail.value = "";
         inputStudyCourse.value = "";
         inputSemester.value = "";
+        inputProfPic.value = "";
     }
 
     async function getUserDetailsFromServer(): Promise<User> {

@@ -34,6 +34,7 @@ namespace Twitter {
             col.push("Name");
             col.push("Email");
             col.push("Suscribe");
+            col.push("Picture");
             // Header
             let tr: HTMLTableRowElement = table.insertRow(0);
             for (let i: number = 0; i < col.length; i++) {
@@ -87,6 +88,16 @@ namespace Twitter {
                     btSubscribe.addEventListener("click", function (): void {
                         suscribeUnsuscribeToUserWithId(user._id, "subscribe");
                     });
+                }
+
+                let tabCellPic: HTMLTableCellElement = tr.insertCell();
+                if (user.pictureLink) {
+                    if (user.pictureLink.length > 0) {
+                        let img: HTMLImageElement = document.createElement("img");
+                        img.src = user.pictureLink;
+                        img.className = "col-4 profPicS";
+                        tabCellPic.appendChild(img);
+                    }
                 }
             }
             answerSection.appendChild(table);

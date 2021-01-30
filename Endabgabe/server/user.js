@@ -52,7 +52,14 @@ async function editUser(user, data) {
     let email = data.email;
     let studycourse = data.studycourse;
     let semester = data.semester;
-    let updated = await db.dbUsers.findOneAndUpdate({ email: user.email }, { $set: { lastname: lastname, firstname: firstname, email: email, studycourse: studycourse, semester: semester } }, { returnOriginal: false });
+    let updated;
+    if (data.profPic) {
+        let profPicLink = data.profPic;
+        updated = await db.dbUsers.findOneAndUpdate({ email: user.email }, { $set: { lastname: lastname, firstname: firstname, email: email, studycourse: studycourse, semester: semester, pictureLink: profPicLink } }, { returnOriginal: false });
+    }
+    else {
+        updated = await db.dbUsers.findOneAndUpdate({ email: user.email }, { $set: { lastname: lastname, firstname: firstname, email: email, studycourse: studycourse, semester: semester, pictureLink: "" } }, { returnOriginal: false });
+    }
     if (updated.ok == 1) {
         let updatedUser = updated.value;
         return auth.createToken(updatedUser.email);
