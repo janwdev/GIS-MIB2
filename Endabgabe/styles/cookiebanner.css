@@ -1,40 +1,43 @@
 /* ### https://codepen.io/DeolaJ/pen/vPOGwv */
 
 #cookie-banner {
-    position: fixed;
-    bottom: 40px;
-    left: 10%;
-    right: 10%;
-    width: 80%;
-    padding: 5px 14px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color:var(--bg-color-2);
-    border-radius: 5px;
-    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
-    transition: opacity 1s;
-    opacity: 0;
-    z-index: 1000;
+  position: fixed;
+  bottom: 40px;
+  left: 10%;
+  right: 10%;
+  width: 80%;
+  padding: 5px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--bg-color-2);
+  border-radius: 5px;
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+  transition: opacity 1s;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1000;
 }
 
 #cookie-banner.fadeIn {
-    opacity: 1;
+  visibility: visible;
+  opacity: 1;
 }
-  
-  #cookie-banner.fadeOut {
-    opacity: 0;
-  }
+
+#cookie-banner.fadeOut {
+  visibility: hidden;
+  opacity: 0;
+}
 
 #close {
-    height: 20px;
-    background-color: #777;
-    border: none;
-    color: white;
-    border-radius: 2px;
-    cursor: pointer;
+  height: 20px;
+  background-color: #777;
+  border: none;
+  color: white;
+  border-radius: 2px;
+  cursor: pointer;
 }
 
-a{
+a {
   color: var(--acc-1);
 }
