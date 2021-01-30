@@ -32,9 +32,13 @@ namespace Twitter {
             let table: HTMLTableElement = document.createElement("table");
             let col: Array<string> = [];
             col.push("Name");
-            col.push("Email");
+            if (window.innerWidth > 700) {
+                col.push("Picture");
+            }
+            if (window.innerWidth > 480) {
+                col.push("Email");
+            }
             col.push("Suscribe");
-            col.push("Picture");
             // Header
             let tr: HTMLTableRowElement = table.insertRow(0);
             for (let i: number = 0; i < col.length; i++) {
@@ -50,17 +54,31 @@ namespace Twitter {
             for (let i: number = 1; i < array.length; i++) {
                 let user: User = array[i];
                 let tr: HTMLTableRowElement = table.insertRow();
+
                 let tabCellName: HTMLTableCellElement = tr.insertCell();
                 let htmlName: HTMLAnchorElement = document.createElement("a");
                 htmlName.textContent = user.firstname + " " + user.lastname;
                 htmlName.href = "userdetails.html?email=" + user.email;
                 tabCellName.appendChild(htmlName);
-                let tabCellEmail: HTMLTableCellElement = tr.insertCell();
-                let pEmail: HTMLParagraphElement = document.createElement("p");
-                pEmail.textContent = user.email;
-                tabCellEmail.appendChild(pEmail);
-                let tabCellSuscribe: HTMLTableCellElement = tr.insertCell();
+                if (window.innerWidth > 700) {
+                    let tabCellPic: HTMLTableCellElement = tr.insertCell();
+                    if (user.pictureLink) {
+                        if (user.pictureLink.length > 0) {
+                            let img: HTMLImageElement = document.createElement("img");
+                            img.src = user.pictureLink;
+                            img.className = "col-4 profPicS";
+                            tabCellPic.appendChild(img);
+                        }
+                    }
+                }
+                if (window.innerWidth > 480) {
+                    let tabCellEmail: HTMLTableCellElement = tr.insertCell();
+                    let pEmail: HTMLParagraphElement = document.createElement("p");
+                    pEmail.textContent = user.email;
+                    tabCellEmail.appendChild(pEmail);
+                }
 
+                let tabCellSuscribe: HTMLTableCellElement = tr.insertCell();
                 let following: boolean = false;
                 for (let j: number = 0; j < thisUserFollowing.length; j++) {
                     if (user._id == thisUserFollowing[j]) {
@@ -88,16 +106,6 @@ namespace Twitter {
                     btSubscribe.addEventListener("click", function (): void {
                         suscribeUnsuscribeToUserWithId(user._id, "subscribe");
                     });
-                }
-
-                let tabCellPic: HTMLTableCellElement = tr.insertCell();
-                if (user.pictureLink) {
-                    if (user.pictureLink.length > 0) {
-                        let img: HTMLImageElement = document.createElement("img");
-                        img.src = user.pictureLink;
-                        img.className = "col-4 profPicS";
-                        tabCellPic.appendChild(img);
-                    }
                 }
             }
             answerSection.appendChild(table);

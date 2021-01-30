@@ -84,7 +84,7 @@ var Twitter;
                         let deleteSpan = document.createElement("span");
                         deleteSpan.textContent = "Delete User";
                         btDelete.appendChild(deleteSpan);
-                        btDelete.className = "col-s-2 btn btnDelete";
+                        btDelete.className = "col btn btnDelete";
                         btDelete.addEventListener("click", deleteThisUser);
                         htmlRow.appendChild(btDelete);
                     }

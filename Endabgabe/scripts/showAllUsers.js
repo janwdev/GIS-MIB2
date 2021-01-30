@@ -31,9 +31,13 @@ var Twitter;
             let table = document.createElement("table");
             let col = [];
             col.push("Name");
-            col.push("Email");
+            if (window.innerWidth > 700) {
+                col.push("Picture");
+            }
+            if (window.innerWidth > 480) {
+                col.push("Email");
+            }
             col.push("Suscribe");
-            col.push("Picture");
             // Header
             let tr = table.insertRow(0);
             for (let i = 0; i < col.length; i++) {
@@ -52,10 +56,23 @@ var Twitter;
                 htmlName.textContent = user.firstname + " " + user.lastname;
                 htmlName.href = "userdetails.html?email=" + user.email;
                 tabCellName.appendChild(htmlName);
-                let tabCellEmail = tr.insertCell();
-                let pEmail = document.createElement("p");
-                pEmail.textContent = user.email;
-                tabCellEmail.appendChild(pEmail);
+                if (window.innerWidth > 700) {
+                    let tabCellPic = tr.insertCell();
+                    if (user.pictureLink) {
+                        if (user.pictureLink.length > 0) {
+                            let img = document.createElement("img");
+                            img.src = user.pictureLink;
+                            img.className = "col-4 profPicS";
+                            tabCellPic.appendChild(img);
+                        }
+                    }
+                }
+                if (window.innerWidth > 480) {
+                    let tabCellEmail = tr.insertCell();
+                    let pEmail = document.createElement("p");
+                    pEmail.textContent = user.email;
+                    tabCellEmail.appendChild(pEmail);
+                }
                 let tabCellSuscribe = tr.insertCell();
                 let following = false;
                 for (let j = 0; j < thisUserFollowing.length; j++) {
@@ -85,15 +102,6 @@ var Twitter;
                     btSubscribe.addEventListener("click", function () {
                         suscribeUnsuscribeToUserWithId(user._id, "subscribe");
                     });
-                }
-                let tabCellPic = tr.insertCell();
-                if (user.pictureLink) {
-                    if (user.pictureLink.length > 0) {
-                        let img = document.createElement("img");
-                        img.src = user.pictureLink;
-                        img.className = "col-4 profPicS";
-                        tabCellPic.appendChild(img);
-                    }
                 }
             }
             answerSection.appendChild(table);
