@@ -125,7 +125,7 @@ namespace Twitter {
         }
         let authCode: string = getAuthCode();
         if (authCode != null && authCode.length > 0) {
-            window.location.replace("tweet.html");
+            window.location.replace("chamois.html");
         } else {
             sessionStorage.removeItem(KEYLASTLOCATION);
             window.location.replace("login.html");

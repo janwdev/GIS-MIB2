@@ -91,7 +91,7 @@ var Twitter;
         }
         let authCode = getAuthCode();
         if (authCode != null && authCode.length > 0) {
-            window.location.replace("tweet.html");
+            window.location.replace("chamois.html");
         }
         else {
             sessionStorage.removeItem(KEYLASTLOCATION);
