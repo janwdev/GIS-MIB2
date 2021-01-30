@@ -91,6 +91,47 @@ namespace Twitter {
                         btDelete.className = "col btn btnDelete";
                         btDelete.addEventListener("click", deleteThisUser);
                         htmlRow.appendChild(btDelete);
+                    } else {
+                        let requestDataNew: RequestToServerInterface = { command: "showUserDetail" };
+                        let responseFromServerNew: ResponseFromServer = await postToServer(requestDataNew);
+                        if (responseFromServerNew) {
+                            if (responseFromServerNew.status >= 0) {
+                                if (responseFromServerNew.users && responseFromServerNew.users.length > 0) {
+                                    let me: User = responseFromServerNew.users[0];
+                                    let thisUserFollowing: string[] = me.following;
+                                    let following: boolean = false;
+                                    for (let j: number = 0; j < thisUserFollowing.length; j++) {
+                                        if (user._id == thisUserFollowing[j]) {
+                                            following = true;
+                                            break;
+                                        }
+                                    }
+                                    if (following) {
+                                        let btUnSubscribe: HTMLButtonElement = document.createElement("button");
+                                        let span: HTMLSpanElement = document.createElement("span");
+                                        span.textContent = "Unsubscribe";
+                                        btUnSubscribe.appendChild(span);
+                                        btUnSubscribe.className = "btn col btnFirst";
+                                        htmlControllSec.appendChild(btUnSubscribe);
+                                        btUnSubscribe.addEventListener("click", async function (): Promise<void> {
+                                            await suscribeUnsuscribeToUserWithId(user._id, "unsubscribe");
+                                            location.reload(); 
+                                        });
+                                    } else {
+                                        let btSubscribe: HTMLButtonElement = document.createElement("button");
+                                        let span: HTMLSpanElement = document.createElement("span");
+                                        span.textContent = "Subscribe";
+                                        btSubscribe.appendChild(span);
+                                        btSubscribe.className = "btn col btnFirst";
+                                        htmlControllSec.appendChild(btSubscribe);
+                                        btSubscribe.addEventListener("click", async function (): Promise<void> {
+                                            await suscribeUnsuscribeToUserWithId(user._id, "subscribe");
+                                            location.reload(); 
+                                        });
+                                    }
+                                }
+                            }
+                        }
                     }
                 } else {
                     while (answerSec.firstChild) {

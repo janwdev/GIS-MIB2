@@ -194,6 +194,18 @@ namespace Twitter {
         return alert;
     }
 
+    export async function suscribeUnsuscribeToUserWithId(id: string, command: string): Promise<void> {
+        console.log("Try to suscribe to User with id: " + id);
+        let requestData: RequestToServerInterface = { command: command, _id: id };
+        let responseFromServer: ResponseFromServer = await postToServer(requestData);
+        if (responseFromServer) {
+            console.log("Answer:");
+            console.log(responseFromServer);
+        } else {
+            console.log("No Response");
+        }
+    }
+
     export function createTweetElement(tweet: Tweet): HTMLDivElement {
         let element: HTMLDivElement = document.createElement("div");
         let htmlUserTextSec: HTMLDivElement = document.createElement("div");

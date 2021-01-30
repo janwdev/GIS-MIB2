@@ -161,6 +161,19 @@ var Twitter;
         return alert;
     }
     Twitter.createAlertElement = createAlertElement;
+    async function suscribeUnsuscribeToUserWithId(id, command) {
+        console.log("Try to suscribe to User with id: " + id);
+        let requestData = { command: command, _id: id };
+        let responseFromServer = await postToServer(requestData);
+        if (responseFromServer) {
+            console.log("Answer:");
+            console.log(responseFromServer);
+        }
+        else {
+            console.log("No Response");
+        }
+    }
+    Twitter.suscribeUnsuscribeToUserWithId = suscribeUnsuscribeToUserWithId;
     function createTweetElement(tweet) {
         let element = document.createElement("div");
         let htmlUserTextSec = document.createElement("div");

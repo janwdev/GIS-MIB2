@@ -88,8 +88,9 @@ var Twitter;
                     btUnSubscribe.appendChild(span);
                     btUnSubscribe.className = "btn col";
                     tabCellSuscribe.appendChild(btUnSubscribe);
-                    btUnSubscribe.addEventListener("click", function () {
-                        suscribeUnsuscribeToUserWithId(user._id, "unsubscribe");
+                    btUnSubscribe.addEventListener("click", async function () {
+                        await Twitter.suscribeUnsuscribeToUserWithId(user._id, "unsubscribe");
+                        showAllUsers();
                     });
                 }
                 else {
@@ -99,32 +100,14 @@ var Twitter;
                     btSubscribe.appendChild(span);
                     btSubscribe.className = "btn col";
                     tabCellSuscribe.appendChild(btSubscribe);
-                    btSubscribe.addEventListener("click", function () {
-                        suscribeUnsuscribeToUserWithId(user._id, "subscribe");
+                    btSubscribe.addEventListener("click", async function () {
+                        await Twitter.suscribeUnsuscribeToUserWithId(user._id, "subscribe");
+                        showAllUsers();
                     });
                 }
             }
             answerSection.appendChild(table);
         }
-    }
-    async function suscribeUnsuscribeToUserWithId(id, command) {
-        console.log("Try to suscribe to User with id: " + id);
-        let requestData = { command: command, _id: id };
-        let responseFromServer = await Twitter.postToServer(requestData);
-        if (responseFromServer) {
-            console.log("Answer:");
-            console.log(responseFromServer);
-        }
-        else {
-            console.log("No Response");
-            while (answerSection.firstChild) {
-                answerSection.removeChild(answerSection.lastChild);
-            }
-            let alert = Twitter.createAlertElement("No Answer", Twitter.KEYALERTWARNING);
-            answerSection.appendChild(alert);
-            Twitter.delay(3000);
-        }
-        showAllUsers();
     }
 })(Twitter || (Twitter = {}));
 //# sourceMappingURL=showAllUsers.js.map

@@ -64,7 +64,7 @@ export async function editUser(user: User, data: RequestData): Promise<auth.Toke
     let email: string = <string>data.email;
     let studycourse: string = <string>data.studycourse;
     let semester: string = <string>data.semester;
-    let updated: Mongo.FindAndModifyWriteOpResultObject<User>
+    let updated: Mongo.FindAndModifyWriteOpResultObject<User>;
     if (data.profPic) {
         let profPicLink: string = <string>data.profPic;
         updated = await db.dbUsers.findOneAndUpdate(

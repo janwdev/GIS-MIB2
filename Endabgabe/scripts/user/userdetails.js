@@ -88,6 +88,49 @@ var Twitter;
                         btDelete.addEventListener("click", deleteThisUser);
                         htmlRow.appendChild(btDelete);
                     }
+                    else {
+                        let requestDataNew = { command: "showUserDetail" };
+                        let responseFromServerNew = await Twitter.postToServer(requestDataNew);
+                        if (responseFromServerNew) {
+                            if (responseFromServerNew.status >= 0) {
+                                if (responseFromServerNew.users && responseFromServerNew.users.length > 0) {
+                                    let me = responseFromServerNew.users[0];
+                                    let thisUserFollowing = me.following;
+                                    let following = false;
+                                    for (let j = 0; j < thisUserFollowing.length; j++) {
+                                        if (user._id == thisUserFollowing[j]) {
+                                            following = true;
+                                            break;
+                                        }
+                                    }
+                                    if (following) {
+                                        let btUnSubscribe = document.createElement("button");
+                                        let span = document.createElement("span");
+                                        span.textContent = "Unsubscribe";
+                                        btUnSubscribe.appendChild(span);
+                                        btUnSubscribe.className = "btn col btnFirst";
+                                        htmlControllSec.appendChild(btUnSubscribe);
+                                        btUnSubscribe.addEventListener("click", async function () {
+                                            await Twitter.suscribeUnsuscribeToUserWithId(user._id, "unsubscribe");
+                                            location.reload();
+                                        });
+                                    }
+                                    else {
+                                        let btSubscribe = document.createElement("button");
+                                        let span = document.createElement("span");
+                                        span.textContent = "Subscribe";
+                                        btSubscribe.appendChild(span);
+                                        btSubscribe.className = "btn col btnFirst";
+                                        htmlControllSec.appendChild(btSubscribe);
+                                        btSubscribe.addEventListener("click", async function () {
+                                            await Twitter.suscribeUnsuscribeToUserWithId(user._id, "subscribe");
+                                            location.reload();
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
                 else {
                     while (answerSec.firstChild) {
