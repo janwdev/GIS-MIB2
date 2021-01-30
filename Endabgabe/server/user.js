@@ -27,7 +27,7 @@ async function registration(data) {
     let email = data.email;
     let password = data.password;
     if (email && password) {
-        if (!await db.dbUsers.findOne({ email: data.email })) {
+        if (!await db.dbUsers.findOne({ email: email })) {
             const hashedPassword = await bcrypt.hash(password, 10);
             let firstname = data.firstname;
             let lastname = data.lastname;

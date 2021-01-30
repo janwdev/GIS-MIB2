@@ -39,7 +39,7 @@ export async function registration(data: RequestData): Promise<auth.TokenData> {
     let email: string = <string>data.email;
     let password: string = <string>data.password;
     if (email && password) {
-        if (!await db.dbUsers.findOne({ email: data.email })) {
+        if (!await db.dbUsers.findOne({ email: email })) {
             const hashedPassword: string = await bcrypt.hash(password, 10);
             let firstname: string = <string>data.firstname;
             let lastname: string = <string>data.lastname;
